@@ -106,7 +106,7 @@ class RhinoHelper extends Helper {
 			$tabButtons .= $this->formatTemplate('tabButton', [
 				'content' => $tabName,
 				'tab' => $block,
-				'tabGroup' => $tabGroupName 
+				'tabGroup' => $tabGroupName
 			]);
 			$content .= $this->formatTemplate('tab', [
 				'content' => $this->getView()->fetch($block),
@@ -117,7 +117,7 @@ class RhinoHelper extends Helper {
 		return $this->formatTemplate('tabGroup', [
 			'tabButtons' => $tabButtons,
 			'content' => $content,
-			'tabGroup' => $tabGroupName 
+			'tabGroup' => $tabGroupName
 		]);
 	}
 
@@ -202,7 +202,7 @@ class RhinoHelper extends Helper {
 
 		$name = $options['name'] ?? $fieldName;
 		$humanName = __(Inflector::humanize(Inflector::underscore($fieldName)));
-		
+
 		$label = $this->Form->label($options["id"], $humanName);
 		$text = $this->Form->input($fieldName, [
 			'type' => 'text',
@@ -415,7 +415,7 @@ class RhinoHelper extends Helper {
 	public function escape(string $string) : string {
 		return $this->_domId($string);
 	}
-	
+
 	public function backLink() : string {
 		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "#";
 	}
@@ -433,7 +433,7 @@ class RhinoHelper extends Helper {
 				if (empty($key)) {
 					$key = 'pass';
 				}
-				
+
 				$value = $request->getParam((string)$key);
 
 				if (is_array($value)) {
@@ -481,7 +481,7 @@ class RhinoHelper extends Helper {
 
 					$content .= '<' . $style . '>' . $items . '</' . $style . '>';
 					break;
-				
+
 				default:
 					$content .= '<p>' . $data->text . '</p>';
 					break;
@@ -490,11 +490,11 @@ class RhinoHelper extends Helper {
 
 		return $content;
 	}
-	
+
 	public function parseMedia(?string $id = null) : string {
 		$this->MediaCategories = new MediaCategoriesTable();
 		$content = '';
-		
+
 		if (!empty($id)) {
 			$media = $this->MediaCategories->Media->get($id);
 			$content .= $this->displayMedia($media);
@@ -535,13 +535,13 @@ class RhinoHelper extends Helper {
 		if ($this->layoutMode) {
 			return $this->Layout->region($name, $id);
 		}
-	
+
 		return $this->_View->fetch($name);
 	}
 
 	public function component($component) {
 		$this->counter[$component->id] = 0;
-		
+
 		if ($this->layoutMode) {
 			return $this->Layout->component($component);
 		}
@@ -556,7 +556,7 @@ class RhinoHelper extends Helper {
 		$content = '';
 
 		$count = isset($this->counter[$parentId]) ? $this->counter[$parentId]++ : 0;
-		
+
 		if (!empty($name)) {
 			$component = $this->Components->find()
 				->where(['parent_id' => $parentId, 'name' => $name])
@@ -578,7 +578,23 @@ class RhinoHelper extends Helper {
 		if ($this->layoutMode) {
 			return $this->Layout->slot($parentId, $content);
 		}
-		
+
 		return $content;
 	}
+
+
+
+
+    // public function ActionArea(array $actions) : string {
+    //     $content = '';
+    //     foreach ($actions as $action) {
+    //         $content .= $this->Html->tag('li', $action);
+    //     }
+    //     return $this->_View->element('action-area', compact('content'));
+    // }
+
+
+
+    public function ActionButton(string $labelText = null, mixed $link = null, string $iconName = null, array $params = []) : string {
+    }
 }

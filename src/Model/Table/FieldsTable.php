@@ -67,6 +67,12 @@ class FieldsTable extends Table {
     public function initialize(array $config): void {
 		parent::initialize($config);
 
+        $this->belongsTo('Rhino.Applications', [
+            'className' => 'Rhino.Applications',
+            'foreignKey' => 'table_name',
+            'bindingKey' => 'name'
+        ]);
+
 		$this->setTable('rhino_fields');
 		$this->setDisplayField('id');
 		$this->setPrimaryKey('id');

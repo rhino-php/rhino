@@ -53,6 +53,18 @@ class ApplicationsController extends RhinoController {
     }
 
     /**
+     * View method
+     *
+     * @param string|null $id Rhino Media id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view(string $id = null) {
+        $data = $this->Applications->get($id, ['contain' => 'Fields']);
+        $this->set(compact('data'));
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
