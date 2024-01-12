@@ -41,16 +41,8 @@ export default class Editor {
 
 	}
 	
-	async save() {
-		return new Promise((resolve, reject) => {
-			this.editor.save().then((outputData) => {
-				console.log('Article data: ', outputData)
-				resolve(outputData);
-			}).catch((error) => {
-				// console.log('Saving failed: ', error)
-				reject(error);
-			});
-		});
+	save() {
+		return this.editor.save();
 	}
 	
 	destroy() {

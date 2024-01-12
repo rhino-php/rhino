@@ -38,6 +38,15 @@ export default class ComponentsHandler {
 		// this.DragDrop = new DragDrop();
 			
 		if (layoutContainers) {
+			this.saveButton = document.querySelector(this.Config.saveButton);
+			this.saveButton.addEventListener('click', () => this.save());
+			document.addEventListener('keydown', (e) => {
+				if (e.ctrlKey && e.keyCode === 83) {
+					e.preventDefault();
+					this.save();
+					return false;
+				}
+			});
 			this.setup(document);
 		}
 	}
@@ -51,7 +60,7 @@ export default class ComponentsHandler {
 		this.newButtons = parentNode.querySelectorAll(this.Config.newButtonSelector);
 		this.componentElements = parentNode.querySelectorAll(this.Config.componentSelector);
 		this.layoutContainers = parentNode.querySelectorAll(this.Config.layoutContainerSelector);
-		this.saveButton = parentNode.querySelector(this.Config.saveButton);
+		
 
 		console.log(this.newButtons.length);
 
@@ -70,15 +79,6 @@ export default class ComponentsHandler {
 			// nodeElement.classList.add('mark');
 			let component = new Component(this, nodeElement);
 			this.components.push(component);
-		});
-
-		this.saveButton.addEventListener('click', () => this.save());
-		document.addEventListener('keydown', (e) => {
-			if (e.ctrlKey && e.keyCode === 83) {
-				e.preventDefault();
-				this.save();
-				return false;
-			}
 		});
 	}
 
@@ -172,33 +172,19 @@ export default class ComponentsHandler {
 	}
 
 	async save() {
-		console.log('saving...', this.components.length);
-
-		let data = this.prepareContent(this.components).then(data => {
-			// return data;
-			console.log('ready to save');
-			this.postFetch(this.Actions.save, data);
+		let data = [];
+		this.components.forEach(component => {
+			data.push(this.prepareContent(component));
 		});
 
-
-		console.log('done saving.', data.length);
+		Promise.all(data)
+			.then((result) => {
+				this.postFetch(this.Actions.save, result);
+			});
 	}
 
-	async prepareContent(components) {
-		// let data = [];
-		// components.forEach(component => {
-		// 	component.getContent()
-		// 		.then(content => data.push(content));
-		// });
-		// return data;
-		return new Promise((resolve, reject) => {
-			let data = [];
-			components.forEach(component => {
-				component.getContent()
-					.then(content => data.push(content));
-			});
-			resolve(data);
-		});
+	async prepareContent(component) {
+		return await component.getContent();
 	}
 }
 //# sourceMappingURL=componentsHandler.js.map

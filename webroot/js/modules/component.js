@@ -39,19 +39,10 @@ export default class Component {
 		this.toggleButton = this.element.querySelector('[name=toggle]');
 		this.moveHandle = this.element.querySelector('[name=move]');
 
-		// this.saveButton.addEventListener('click', () => this.save());
 		this.deleteButton.addEventListener('click', () => this.delete());
 		this.select.addEventListener('change', () => this.switch({
 			template_id: this.select.value
 		}));
-
-		// this.element.addEventListener('keydown', (e) => {
-		// 	if (e.ctrlKey && e.keyCode === 83) {
-		// 		e.preventDefault();
-		// 		this.save();
-		// 		return false;
-		// 	}
-		// });
 
 		this.addEditor();
 		this.addMedia();
@@ -184,15 +175,12 @@ export default class Component {
 		};
 
 		if (this.editor) {
-			this.editor.save().then(editorData => {
-				console.log('has Data');
-				this.content.value = JSON.stringify(editorData);
-				this.content.innerHTML = this.content.value;
-			});
+			let editorData = await this.editor.save();
+			this.content.value = JSON.stringify(editorData);
+			this.content.innerHTML = this.content.value;
 		}
 
 		data.content = this.content ? this.content.value : null;
-
 		return data;
 	}
 
@@ -200,10 +188,18 @@ export default class Component {
 	 * destroy
 	 */
 	destroy() {
+		let index = this.Handler.components.indexOf(this);
+	
+		if (index > -1) { // only splice array when item is found
+			this.Handler.components.splice(index, 1);
+		}
+
 		if (this.editor) {
 			this.editor.destroy();
 		}
+
 		this.element.remove();
+		delete this;
 	}
 }
 //# sourceMappingURL=component.js.map
