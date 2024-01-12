@@ -1,4 +1,4 @@
-import LayoutComponents from "/rhino/js/modules/components.js";
+import ComponentsHandler from "/rhino/js/modules/componentsHandler.js";
 // import EditorJS from "/rhino/js/vendor/editor.js";
 
 class Layout {
@@ -10,7 +10,7 @@ class Layout {
 	}
 	
 	init() {
-		this.Components = new LayoutComponents(this);
+		this.Components = new ComponentsHandler(this);
 		// this.elements.setModal(this.LayoutModal.modal);
 	}
 

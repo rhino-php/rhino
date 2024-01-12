@@ -95,7 +95,7 @@ class ComponentsController extends BaseController {
 		return $this->getElement($component, true);
 	}
 
-	public function update() {
+	public function save() {
 		$data = $this->request->getData();
 
 		$content = $this->Components->get($data['id']);
@@ -118,7 +118,7 @@ class ComponentsController extends BaseController {
 		return $response;
 	}
 
-	public function change() {
+	public function switch() {
 		$this->viewBuilder()->disableAutoLayout();
 		$data = $this->request->getData();
 

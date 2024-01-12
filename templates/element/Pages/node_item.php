@@ -3,9 +3,16 @@
 		<div class="page-item__body node-type-<?= $node['node_type'] ?>">
 			<?= $this->Html->link($node['name'], ['action' => 'layout', $node['id']], ['class' => 'button outline']) ?>
 
-			<div class="page-item__actions">
+			<details>
+				<summary>debug</summary>
+				<div>
+					<?php debug($node) ?>
+				</div>
+			</details>
 
-				<div class="cluster pill">
+				<div class="page-item__actions">
+
+					<div class="cluster pill">
 					<?php
 					echo $this->Html->Link($this->Icon->svg('arrow-up'), ['action' => 'moveUp', $node->id], ['escape' => false, 'class' => 'button']);
 					echo $this->Html->Link($this->Icon->svg('arrow-down'), ['action' => 'moveDown', $node->id], ['escape' => false, 'class' => 'button']);

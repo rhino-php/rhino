@@ -30,7 +30,7 @@ $border-width: 4px;
 	align-items: center;
 
 	padding: 0;
-	padding-right: 1rem;
+	// padding-right: 1rem;
 
 	p {
 		padding: 0;
@@ -43,6 +43,7 @@ $border-width: 4px;
 
 	.layout-button {
 		padding-block: 0.25rem;
+		min-height: 100%;
 	}
 }
 
@@ -50,6 +51,14 @@ $border-width: 4px;
 	width: 100%;
 	position: relative;
 }
+
+// .layout-container {
+// 	border-bottom: color('primary', 400) solid $border-width;
+	
+// 	& > *:last-child {
+// 		margin-bottom: $border-width * -1;
+// 	}
+// }
 
 .layout-element {
 	position: relative;
@@ -114,6 +123,8 @@ $border-width: 4px;
 	@include measurements;
 
 	display: inline-flex;
+	align-self: stretch;
+	align-items: center;
 	background-color: color('primary', 400);
 	color: $white;
 	font-weight: 800;
@@ -130,17 +141,31 @@ $border-width: 4px;
 	&[name=new-component] {
 		position: absolute;
 		z-index: 1200;
+		// bottom: -0.4px;
 		bottom: $border-width;
 		left: 50%;
 		transform: translate(-50%, 100%);
 		border-radius: 0;
 		border-bottom-left-radius: $border-radius;
 		border-bottom-right-radius: $border-radius;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			z-index: 1200;
+			background-color: color('primary', 400);
+			height: $border-width;
+			width: 200px;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: $border-radius;
+		}
 	}
 
 	svg {
 		// ToDo: Check Webcomponents or CSS Layers
-		height: 1.2rem;
+		height: 24px;
 		width: auto;
 		vertical-align: middle;
 	}
@@ -282,4 +307,8 @@ dialog {
 	color: #333;
 	border-radius: $border-radius;
 	padding: $spacing $spacing $spacing $spacing * 4;
+}
+
+.mark {
+	outline: tomato 8px dotted;
 }
