@@ -13,6 +13,9 @@ export default class Editor {
 		} 
 
 		this.editor = new EditorJS({
+			// https://editorjs.io/configuration/#log-level
+			logLevel: 'ERROR',
+
 			/** 
 			 * Id of Element that should contain the Editor 
 			 */
@@ -38,10 +41,10 @@ export default class Editor {
 
 	}
 	
-	save() {
+	async save() {
 		return new Promise((resolve, reject) => {
 			this.editor.save().then((outputData) => {
-				// console.log('Article data: ', outputData)
+				console.log('Article data: ', outputData)
 				resolve(outputData);
 			}).catch((error) => {
 				// console.log('Saving failed: ', error)

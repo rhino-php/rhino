@@ -31,12 +31,14 @@
 				'class' => 'layout-button'
 			]) ?>
 
-			<?= $this->Form->button($this->Icon->svg("Rhino.save"), [
-				'escapeTitle' => false,
-				'title' => __("Save"),
-				'name' => 'save', 
-				'class' => 'layout-button'
-			]) ?>
+			<?php 
+			//  $this->Form->button($this->Icon->svg("Rhino.save"), [
+			// 	'escapeTitle' => false,
+			// 	'title' => __("Save"),
+			// 	'name' => 'save', 
+			// 	'class' => 'layout-button'
+			// ]) 
+			?>
 
 			<?= $this->Form->button($this->Icon->svg("Rhino.trash"), [
 				'escapeTitle' => false,

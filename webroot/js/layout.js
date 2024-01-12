@@ -3,7 +3,7 @@ import ComponentsHandler from "/rhino/js/modules/componentsHandler.js";
 
 class Layout {
 	constructor() {
-		this.debug = true;
+		this.debug = false;
 		window.addEventListener("load", (event) => {
 			this.init();
 		});

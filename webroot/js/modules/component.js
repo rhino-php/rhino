@@ -14,12 +14,6 @@ export default class Component {
 	constructor(handler, element = null) {
 		this.Handler = handler;
 
-		this.fields = [
-			'template_id',
-			'content',
-			// 'media',
-		];
-
 		if (typeof element == "object" && element.nodeType) {
 			this.element = element;
 		} else if (typeof element == "string") {
@@ -45,19 +39,19 @@ export default class Component {
 		this.toggleButton = this.element.querySelector('[name=toggle]');
 		this.moveHandle = this.element.querySelector('[name=move]');
 
-		this.saveButton.addEventListener('click', () => this.save());
+		// this.saveButton.addEventListener('click', () => this.save());
 		this.deleteButton.addEventListener('click', () => this.delete());
 		this.select.addEventListener('change', () => this.switch({
 			template_id: this.select.value
 		}));
 
-		this.element.addEventListener('keydown', (e) => {
-			if (e.ctrlKey && e.keyCode === 83) {
-				e.preventDefault();
-				this.save();
-				return false;
-			}
-		});
+		// this.element.addEventListener('keydown', (e) => {
+		// 	if (e.ctrlKey && e.keyCode === 83) {
+		// 		e.preventDefault();
+		// 		this.save();
+		// 		return false;
+		// 	}
+		// });
 
 		this.addEditor();
 		this.addMedia();
@@ -185,15 +179,19 @@ export default class Component {
 	 * @returns 
 	 */
 	async getContent() {
+		let data = {
+			id: this.id,
+		};
+
 		if (this.editor) {
-			let editorData = await this.editor.save();
-			this.content.value = JSON.stringify(editorData);
-			this.content.innerHTML = this.content.value;
+			this.editor.save().then(editorData => {
+				console.log('has Data');
+				this.content.value = JSON.stringify(editorData);
+				this.content.innerHTML = this.content.value;
+			});
 		}
 
-		let data = {
-			content: this.content.value
-		};
+		data.content = this.content ? this.content.value : null;
 
 		return data;
 	}

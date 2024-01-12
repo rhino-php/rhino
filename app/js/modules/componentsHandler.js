@@ -19,17 +19,19 @@ export default class ComponentsHandler {
 		this.Config = {
 			newButtonSelector: 'button[name=new-component]',
 			layoutContainerSelector: '.layout-container',
-			elementSelector: '.layout-element'
+			componentSelector: '.layout-element',
+			saveButton: '.layout-button[name=save]'
 		}
 
 		this.Actions = {
 			new: 	'/rhino/components/new/',
-			save: '/rhino/components/save/',
+			save: '/rhino/components/save_all/',
 			switch: '/rhino/components/switch/',
 			delete: '/rhino/components/delete/',
 		}
 
 		this.containers = {};
+		this.components = [];
 
 		let layoutContainers = document.querySelector(this.Config.layoutContainerSelector);
 		
@@ -47,8 +49,9 @@ export default class ComponentsHandler {
 		this.pageId = this.main.getPageId();
 
 		this.newButtons = parentNode.querySelectorAll(this.Config.newButtonSelector);
-		this.elements = parentNode.querySelectorAll(this.Config.elementSelector);
+		this.componentElements = parentNode.querySelectorAll(this.Config.componentSelector);
 		this.layoutContainers = parentNode.querySelectorAll(this.Config.layoutContainerSelector);
+		this.saveButton = parentNode.querySelector(this.Config.saveButton);
 
 		console.log(this.newButtons.length);
 
@@ -63,9 +66,19 @@ export default class ComponentsHandler {
 			});
 		});
 		
-		this.elements.forEach(nodeElement => {
+		this.componentElements.forEach(nodeElement => {
 			// nodeElement.classList.add('mark');
-			new Component(this, nodeElement);
+			let component = new Component(this, nodeElement);
+			this.components.push(component);
+		});
+
+		this.saveButton.addEventListener('click', () => this.save());
+		document.addEventListener('keydown', (e) => {
+			if (e.ctrlKey && e.keyCode === 83) {
+				e.preventDefault();
+				this.save();
+				return false;
+			}
 		});
 	}
 
@@ -77,6 +90,8 @@ export default class ComponentsHandler {
 	 * @returns 
 	 */
 	async postFetch(url, data = '') {
+		console.log(data);
+	
 		return fetch(url, {
 			method: 'POST',
 			headers: {
@@ -106,6 +121,7 @@ export default class ComponentsHandler {
 			.then((html) => {
 				let component = new Component(this, html);
 				container.appendChild(component.element);
+				this.components.push(component);
 
 				this.setup(component.element);
 			});
@@ -153,5 +169,35 @@ export default class ComponentsHandler {
 		}
 
 		this.updateContent('move', url, element, { position: position });
+	}
+
+	async save() {
+		console.log('saving...', this.components.length);
+
+		let data = this.prepareContent(this.components).then(data => {
+			// return data;
+			console.log('ready to save');
+			this.postFetch(this.Actions.save, data);
+		});
+
+
+		console.log('done saving.', data.length);
+	}
+
+	async prepareContent(components) {
+		// let data = [];
+		// components.forEach(component => {
+		// 	component.getContent()
+		// 		.then(content => data.push(content));
+		// });
+		// return data;
+		return new Promise((resolve, reject) => {
+			let data = [];
+			components.forEach(component => {
+				component.getContent()
+					.then(content => data.push(content));
+			});
+			resolve(data);
+		});
 	}
 }
