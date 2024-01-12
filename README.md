@@ -1,5 +1,7 @@
 # Rhino plugin for CakePHP
 
+test
+
 ## Quick Start:
 
 ```
