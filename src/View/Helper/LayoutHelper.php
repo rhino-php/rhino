@@ -120,11 +120,8 @@ class LayoutHelper extends Helper
 		return $element;
 	}
 
-	public function slot(int $parentId, string $content) {
-		$name = uniqid();
-		if (empty($content)) {
-			$content = $this->getNewButton($name, $parentId);
-		}
+	public function slot(int $parentId, string $content, string $name) {
+		$content = $this->getNewButton($name, $parentId, 'slot') . $content;
 
 		$content = $this->Templater->format('tag', [
 			'content' => $content,
@@ -139,13 +136,13 @@ class LayoutHelper extends Helper
 		return $content;
 	}
 
-	private function getNewButton($name, $id) {
+	private function getNewButton($name, $id, $type = 'component') {
 		return $this->Templater->format('tag', [
 			'content' => $this->Icon->svg("Rhino.plus"),
 			'tag' => 'button',
 			'attrs' => $this->Templater->formatAttributes([
-				'class' => 'layout-button',
-				'name' => "new-component",
+				'class' => 'layout-button layout-button--new',
+				'name' => "new-" . $type,
 				'value' => $name,
 				'data-id' => $id
 			]),

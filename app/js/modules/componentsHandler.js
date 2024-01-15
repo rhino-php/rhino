@@ -61,11 +61,7 @@ export default class ComponentsHandler {
 		this.componentElements = parentNode.querySelectorAll(this.Config.componentSelector);
 		this.layoutContainers = parentNode.querySelectorAll(this.Config.layoutContainerSelector);
 		
-
-		console.log(this.newButtons.length);
-
 		this.layoutContainers.forEach(container => {
-			// container.classList.add('mark');
 			this.containers[container.getAttribute('name')] = container;
 		});
 		
@@ -76,7 +72,6 @@ export default class ComponentsHandler {
 		});
 		
 		this.componentElements.forEach(nodeElement => {
-			// nodeElement.classList.add('mark');
 			let component = new Component(this, nodeElement);
 			this.components.push(component);
 		});
@@ -90,8 +85,6 @@ export default class ComponentsHandler {
 	 * @returns 
 	 */
 	async postFetch(url, data = '') {
-		console.log(data);
-	
 		return fetch(url, {
 			method: 'POST',
 			headers: {

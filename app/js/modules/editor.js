@@ -8,7 +8,7 @@
 export default class Editor {
 	constructor(selector, contents) {
 		let editorData = '';
-		if (contents.length > 0) {
+		if (contents && contents.length > 0) {
 			editorData = JSON.parse(contents);
 		} 
 

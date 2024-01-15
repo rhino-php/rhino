@@ -555,28 +555,28 @@ class RhinoHelper extends Helper {
 		$this->Components = new ComponentsTable();
 		$content = '';
 
-		$count = isset($this->counter[$parentId]) ? $this->counter[$parentId]++ : 0;
-		
-		if (!empty($name)) {
-			$component = $this->Components->find()
-				->where(['parent_id' => $parentId, 'name' => $name])
-				->contain(['Templates'])
-				->first();
-		} else {
-			$component = $this->Components->find()
-				->where(['parent_id' => $parentId])
-				->contain(['Templates'])
-				->offset($count)
-				->orderBy(['lft' => 'ASC'])
-				->first();
+		if (!isset($this->counter[$parentId])) {
+			$this->counter[$parentId] = 0;
 		}
+
+		$count = $this->counter[$parentId]++;
+
+		if (empty($name)) {
+			$name = (string)$count;
+		}
+
+		$component = $this->Components->find()
+			->where(['parent_id' => $parentId, 'Components.name' => $name])
+			->contain(['Templates'])
+			->orderBy(['lft' => 'ASC'])
+			->first();
 
 		if (!empty($component)) {
 			$content = $this->component($component);
 		}
 
 		if ($this->layoutMode) {
-			return $this->Layout->slot($parentId, $content);
+			return $this->Layout->slot($parentId, $content, $name);
 		}
 		
 		return $content;

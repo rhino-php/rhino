@@ -19,13 +19,10 @@ export default class Component {
 		} else if (typeof element == "string") {
 			this.element = this.createElement(element);
 		}
-
-		this.content = this.element.querySelector('[name=content]');
-		this.select = this.element.querySelector('[name=template_id]');
-
+		
 		this.id = this.element.dataset.id;
 		this.region = this.element.dataset.region;
-
+		
 		this.initialize();
 	}
 
@@ -34,10 +31,12 @@ export default class Component {
 	 * 
 	 */
 	initialize() {
-		this.saveButton = this.element.querySelector('[name=save]');
+		this.content = this.element.querySelector('[name=content]');
+		this.select = this.element.querySelector('[name=template_id]');
 		this.deleteButton = this.element.querySelector('[name=delete]');
 		this.toggleButton = this.element.querySelector('[name=toggle]');
 		this.moveHandle = this.element.querySelector('[name=move]');
+		this.slots = this.element.querySelectorAll('.layout-slot[value="' + this.id + '"]');
 
 		this.deleteButton.addEventListener('click', () => this.delete());
 		this.select.addEventListener('change', () => this.switch({
@@ -46,12 +45,30 @@ export default class Component {
 
 		this.addEditor();
 		this.addMedia();
+
+		this.slots.forEach(slot => {
+			let newButton = slot.querySelector('[name=new-slot]');
+			newButton.addEventListener('click', () => this.newSlot(slot));
+		});
+	}
+
+	newSlot(container) {
+		this.Handler.postFetch(this.Handler.Actions.new, {
+			region: container.getAttribute('name'),
+			parentId: this.id
+		}).then((response) => response.text())
+			.then((html) => {
+				let component = new Component(this, html);
+				container.appendChild(component.element);
+				this.Handler.components.push(component);
+
+				// this.setup(component.element);
+			});
 	}
 
 	async save() {
 		let data = await this.getContent();
 		data.id = this.id;
-		console.log('Update', this.id);
 
 		this.Handler.postFetch(this.Handler.Actions.save, data);
 	}
@@ -72,8 +89,6 @@ export default class Component {
 	}
 
 	async delete() {
-		console.log('Delete', this.id);
-		
 		this.Handler.postFetch(this.Handler.Actions.delete, {
 			id: this.id
 		}).then((response) => response.text())
@@ -113,6 +128,9 @@ export default class Component {
 			return;
 		}
 
+		// let container = this.element.querySelector('.element-container');
+		// this.content = container.querySelectorAll('textarea[name="content"]');
+
 		this.editor = new Editor(editorElement, this.content.value);
 	}
 
@@ -148,8 +166,6 @@ export default class Component {
 			let selected = modal.querySelector('input[type=radio]:checked');
 
 			this.media.value = selected.value;
-
-			console.log(this.media.value);
 
 			this.elementHandler.updateContent(
 				'update',
