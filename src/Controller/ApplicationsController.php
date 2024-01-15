@@ -35,7 +35,7 @@ class ApplicationsController extends RhinoController {
 
 		$_ungrouped = $this->Applications->getList(array_column($apps, 'name'));
 		$ungrouped = [];
-		
+
 		foreach ($_ungrouped as $key => $value) {
 			$ungrouped[] = ['name' => $value];
 		}
@@ -50,6 +50,18 @@ class ApplicationsController extends RhinoController {
 		$rhinoTables = $this->Applications->tableBlackList;
 
         $this->set(compact('groups', 'rhinoTables'));
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Rhino Media id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view(string $id = null) {
+        $data = $this->Applications->get($id, ['contain' => 'Fields']);
+        $this->set(compact('data'));
     }
 
     /**
@@ -77,7 +89,7 @@ class ApplicationsController extends RhinoController {
      */
 	public function edit($tableName) {
 		$entry = $this->Applications->getByName($tableName);
-		
+
 		if (!$entry) {
 			$entry = $this->Applications->newEmptyEntity();
 			$entry['name'] = $tableName;
@@ -136,7 +148,7 @@ class ApplicationsController extends RhinoController {
         if ($this->request->is(['patch', 'post', 'put'])) {
 			$entry = $this->Groups->newEmptyEntity();
             $group = $this->Groups->patchEntity($entry, $this->request->getData());
-            
+
 			if ($this->Groups->save($group)) {
                 $this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
 
@@ -146,13 +158,13 @@ class ApplicationsController extends RhinoController {
             $this->Flash->error(__('The table could not be saved. Please, try again.'), ['plugin' => 'Rhino']);
         }
 	}
-	
+
 	public function renameGroup($id) {
 		$entry = $this->Groups->get($id);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $group = $this->Groups->patchEntity($entry, $this->request->getData());
-            
+
 			if ($this->Groups->save($group)) {
                 $this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
 

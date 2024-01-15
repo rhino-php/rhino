@@ -1,4 +1,23 @@
 <div class="cluster pill">
+
+<?php
+// foreach ($buttons as $button) {
+//     if (!$button['valid']) {
+//         continue;
+//     }
+//     echo $this->Html->link(
+//         $this->Iocn->svg($button['icon']), // todo: Add label
+//         $button['link'],
+//         [
+//
+//
+//
+// }
+?>
+
+
+
+
 	<?php if (isset($view) && $view['valid']) {
 		echo $this->Html->link(
 			$this->Icon->svg("Rhino.eye"),
@@ -45,4 +64,15 @@
 			]
 		);
 	} ?>
+    <?php if (isset($editFields) && $editFields['valid']) {
+        echo $this->Html->link(
+            $this->Icon->svg('Rhino.table') . ' ' . $this->Html->tag('span', __('Edit fields')),
+            $editFields['link'],
+            [
+                'escape' => false,
+                'title' => __('Edit fields'),
+                'class' => 'button'
+            ]
+        );
+    } ?>
 </div>

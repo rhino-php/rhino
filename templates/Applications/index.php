@@ -54,25 +54,42 @@
 							</td>
 							<td data-cell="Actions" colspan="2">
 								<?php
-								$this->start('actions');
-								echo $this->element("layout-elements/actions", [
-									"view" => [
-										"link" => ["controller" => "Fields", "action" => 'index', $table['name']],
-										"valid" => in_array('view', $rights)
-									],
-									"edit" => [
-										"link" => ['action' => 'edit', $table['name']],
-										"valid" => in_array('edit', $rights)
-									],
-									"delete" => [
-										"link" => ['action' => 'delete', $table['name']],
-										"valid" => in_array('edit', $rights),
-										"confirm" => __('Are you sure you want to delete: {0}?', $table['name']),
-									],
-								]);
-								$this->end();
+                                echo $this->element('action-area', [
+                                    'actions' => [
+                                        $this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $table['name']]),
+                                        $this->ActionButton->link('Rhino.eye', null, ['action' => 'view', $table['id']]),
+                                        $this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $table['id']]),
+                                        $this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $table['name']],
+                                            [
+                                                'confirm' => __('Are you sure you want to delete: {0}?', $table['name']),
+                                                'title' => __('Delete entry'),
+                                            ]
+                                        )
+                                    ]
+                                ]);
+                                // $this->start('actions');
+								// echo $this->element("layout-elements/actions", [
+								// 	"editFields" => [
+								// 		"link" => ["controller" => "Fields", "action" => 'index', $table['name']],
+								// 		"valid" => in_array('view', $rights)
+								// 	],
+								// 	"view" => [
+								// 		"link" => ["action" => 'view', $table['name']],
+								// 		"valid" => in_array('view', $rights)
+								// 	],
+								// 	"edit" => [
+								// 		"link" => ['action' => 'edit', $table['name']],
+								// 		"valid" => in_array('edit', $rights)
+								// 	],
+								// 	"delete" => [
+								// 		"link" => ['action' => 'delete', $table['name']],
+								// 		"valid" => in_array('edit', $rights),
+								// 		"confirm" => __('Are you sure you want to delete: {0}?', $table['name']),
+								// 	],
+								// ]);
+								// $this->end();
 								?>
-								<?= $this->fetch('actions'); ?>
+                                <?php  /*echo $this->fetch('actions');*/ ?>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -89,15 +106,26 @@
 										<div class="cluster">
 											<dd>
 												<?php
+                                                echo $this->Html->link(
+                                                    $this->Icon->svg('Rhino.trash'),
+                                                    ['controller' => 'Fields', 'action' => 'index', $table],
+                                                    [
+                                                        'escape' => false,
+                                                        'title' => __('Edit fields'),
+                                                        'class' => 'button'
+                                                    ]
+                                                );
+
 												$this->start('actions');
 												echo $this->element("layout-elements/actions", [
-													"view" => [
-														"link" => ["controller" => "Fields", "action" => 'index', $table],
-														"valid" => in_array('view', $rights)
-													]
+                                                    "view" => [
+                                                        "link" => ["controller" => "Applications", "action" => 'view', $table],
+                                                        "valid" => in_array('view', $rights)
+                                                    ]
 												]);
 												$this->end();
 												?>
+
 												<?= $this->fetch('actions'); ?>
 											</dd>
 											<dt>

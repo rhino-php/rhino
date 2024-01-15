@@ -5,6 +5,7 @@ namespace Rhino\Model\Table;
 
 use Cake\ORM\Table;
 
+// use Rhino\Model\Table\FieldsTable;
 use Migrations\Migrations;
 use Migrations\AbstractMigration;
 
@@ -30,6 +31,8 @@ class ApplicationsTable extends Table
         'rhino_templates'
 	];
 
+
+
     /**
      * Initialize method
      *
@@ -40,9 +43,16 @@ class ApplicationsTable extends Table
     {
 		parent::initialize($config);
 
+        $this->hasMany('Rhino.Fields', [
+            'className' => 'Rhino.Fields',
+            'foreignKey' => 'table_name',
+            'bindingKey' => 'name',
+        ]);
+
         $this->setTable('rhino_apps');
-		$this->setDisplayField('id');
+		$this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
 
 		// Create Abstact to start Database Operations
 		$migrations = new Migrations;
@@ -86,8 +96,8 @@ class ApplicationsTable extends Table
 	}
 
 	public function beforeMarshal($event, $data, $options) {
-		if (!empty($data['overviewFields'])) {
-			$data['overviewFields'] = json_encode($data['overviewFields']);
+		if (!empty($data['overview_fields'])) {
+			$data['overview_fields'] = json_encode($data['overview_fields']);
 		}
 	}
 

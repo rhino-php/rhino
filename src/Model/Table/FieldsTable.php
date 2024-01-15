@@ -67,6 +67,12 @@ class FieldsTable extends Table {
     public function initialize(array $config): void {
 		parent::initialize($config);
 
+        $this->belongsTo('Rhino.Applications', [
+            'className' => 'Rhino.Applications',
+            'foreignKey' => 'table_name',
+            'bindingKey' => 'name'
+        ]);
+
 		$this->setTable('rhino_fields');
 		$this->setDisplayField('id');
 		$this->setPrimaryKey('id');
@@ -158,7 +164,7 @@ class FieldsTable extends Table {
 		if (empty($entry)) {
 			$entry = $this->newEmptyEntity();
 			$entry->name = $fieldName;
-			$entry->tableName = $tableName;
+			$entry->table_name = $tableName;
 
 		}
 		
@@ -173,8 +179,12 @@ class FieldsTable extends Table {
 		return $entry;
 	}
 
+
+
+
+
 	public function checkForEntry($fieldName, $tableName) {
-		$query = $this->find()->where(['name' => $fieldName, 'tableName' => $tableName]);
+		$query = $this->find()->where(['name' => $fieldName, 'table_name' => $tableName]);
 		if (!$query->all()->isEmpty()) {
 			return $query->first();
 		}
