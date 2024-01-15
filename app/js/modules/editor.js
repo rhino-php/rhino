@@ -8,11 +8,14 @@
 export default class Editor {
 	constructor(selector, contents) {
 		let editorData = '';
-		if (contents.length > 0) {
+		if (contents && contents.length > 0) {
 			editorData = JSON.parse(contents);
 		} 
 
 		this.editor = new EditorJS({
+			// https://editorjs.io/configuration/#log-level
+			logLevel: 'ERROR',
+
 			/** 
 			 * Id of Element that should contain the Editor 
 			 */
@@ -39,15 +42,7 @@ export default class Editor {
 	}
 	
 	save() {
-		return new Promise((resolve, reject) => {
-			this.editor.save().then((outputData) => {
-				// console.log('Article data: ', outputData)
-				resolve(outputData);
-			}).catch((error) => {
-				// console.log('Saving failed: ', error)
-				reject(error);
-			});
-		});
+		return this.editor.save();
 	}
 	
 	destroy() {

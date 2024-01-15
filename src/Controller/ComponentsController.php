@@ -95,13 +95,16 @@ class ComponentsController extends BaseController {
 		return $this->getElement($component, true);
 	}
 
-	public function update() {
+	public function saveAll() {
 		$data = $this->request->getData();
+		$ids = array_column($data,'id');
+		$list = $this->Components->find()
+			->where(['id IN' => $ids])
+			->all()
+			->toList();
+		$content = $this->Components->patchEntities($list, $data);
 
-		$content = $this->Components->get($data['id']);
-		$content = $this->Components->patchEntity($content, $data);
-
-		if ($this->Components->save($content)) {
+		if ($this->Components->saveMany($content)) {
 			$response = $this->response->withType('application/json')
 				->withStringBody(json_encode([
 					'status' => 200,
@@ -118,7 +121,7 @@ class ComponentsController extends BaseController {
 		return $response;
 	}
 
-	public function change() {
+	public function switch() {
 		$this->viewBuilder()->disableAutoLayout();
 		$data = $this->request->getData();
 

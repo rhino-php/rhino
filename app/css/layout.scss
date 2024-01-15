@@ -10,48 +10,40 @@
 @forward "components/media-select";
 
 $spacing: 1rem;
-$menu-size: 2rem;
 $border-radius: 0.5rem;
-
-body {
-	// padding-left: 300px;
-	padding-top: $menu-size;
-}
+$border-width: 4px;
 
 .layout-menu {
 	background-color: grey;
-	position: absolute;
+	position: fixed;
 	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 200;
-	height: $menu-size;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 2000;
+	width: fit-content;
 	box-sizing: border-box;
+	border-bottom-left-radius: $border-radius;
+	border-bottom-right-radius: $border-radius;
+	overflow: hidden;
+	display: flex;
+	gap: var(--spacing, $spacing);
+	align-items: center;
 
-	padding: 0 1rem;
+	padding: 0;
+	// padding-right: 1rem;
 
-	&__button {
-		display: inline-block;
-		background-color: color('primary', 400);
-		font-weight: 800;
-		color: $white;
-		text-decoration: none;
-		border: none;
-		padding: 0 1rem;
-		// line-height: 1;
-
-		&:focus,
-		&:hover {
-			background-color: color('primary', 500);
-		}
-
-		&+* {
-			margin-left: auto;
-		}
+	p {
+		padding: 0;
+		margin: 0;
 	}
 
-	&>*>* {
-		margin-bottom: 0;
+	a:not(.layout-button) {
+		color: color('primary', 400);
+	}
+
+	.layout-button {
+		padding-block: 0.25rem;
+		min-height: 100%;
 	}
 }
 
@@ -60,19 +52,21 @@ body {
 	position: relative;
 }
 
-.layout-container {
-	border: solid 4px grey;
-}
+// .layout-container {
+// 	border-bottom: color('primary', 400) solid $border-width;
+	
+// 	& > *:last-child {
+// 		margin-bottom: $border-width * -1;
+// 	}
+// }
 
 .layout-element {
 	position: relative;
-	border: solid 4px transparent;
-	margin-top: -4px;
-	margin-bottom: -4px;
+	border: solid $border-width transparent;
 	transition: 150ms border-color;
 
 	&:hover {
-		border: solid 4px color('primary', 400);
+		border: solid $border-width color('primary', 400);
 
 		.layout-handle {
 			opacity: 1;
@@ -93,12 +87,13 @@ body {
 	background: #f6f6f6;
 	color: #333;
 	border-radius: $border-radius;
-	padding: $spacing $spacing $spacing $spacing * 4;
+	padding: $spacing;
 }
 
 .layout-handle {
 	opacity: 0;
 	position: absolute;
+	z-index: 10;
 	top: 0;
 	right: 1rem;
 	left: 1rem;
@@ -106,6 +101,11 @@ body {
 	display: flex;
 	gap: 2rem;
 	justify-content: space-between;
+	pointer-events: none;
+
+	& > * {
+		pointer-events: all;
+	}
 
 	&__actions {
 		:first-child {
@@ -118,29 +118,69 @@ body {
 	}
 }
 
-.rhino-button {
+.layout-button {
 	@include light;
 	@include measurements;
 
-	display: inline-block;
+	display: inline-flex;
+	align-self: stretch;
+	align-items: center;
 	background-color: color('primary', 400);
 	color: $white;
 	font-weight: 800;
 	text-decoration: none;
 	border: none;
 	padding: 0.5rem 1rem;
+	cursor: pointer;
+
+	svg {
+		// ToDo: Check Webcomponents or CSS Layers
+		height: 24px;
+		width: auto;
+		vertical-align: middle;
+	}
 
 	&:focus,
 	&:hover {
 		background-color: color('primary', 500);
 	}
 
-	&[name=new-component] {
-		position: absolute;
-		// top: 0;
+	&--new {
+		border-radius: $border-radius;
 		left: 50%;
-		transform: translate(-50%, -50%);
-		border-radius: var(--border-radius);
+		
+		.layout-container > & {
+			position: absolute;
+			z-index: 12;
+			bottom: $border-width;
+			transform: translate(-50%, 100%);
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				z-index: 12;
+				background-color: color('primary', 400);
+				height: $border-width;
+				width: 200px;
+				left: 50%;
+				transform: translateX(-50%);
+				border-radius: $border-radius;
+			}
+		}
+
+		.layout-slot > & {
+			display: none;
+			position: relative;
+			transform: translateX(-50%);
+			margin: $spacing * 2 0;
+
+			&:only-child {
+				display: inherit;
+			}
+		}
 	}
 }
 
@@ -150,14 +190,17 @@ body {
 
 	display: inline-block;
 	color: color("neutral", 700);
+	// background-color: $white;
 	font-weight: 600;
 	appearance: none;
 	padding-right: 2rem;
 	padding-left: 0.5rem;
 	padding-block: 0rem;
 	text-decoration: none;
-	border: color('primary', 400) solid 0.5rem;
+	margin-top: $border-width * -1;
+	border: color('primary', 400) solid $border-width;
 	border-radius: 0 0 $border-radius $border-radius;
+	cursor: pointer;
 
 	--icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{to-rgb(color("neutral", 700))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 	background-image: var(--icon-chevron);
@@ -268,7 +311,7 @@ dialog {
 	}
 
 	button {
-		@extend .rhino-button;
+		@extend .layout-button;
 	}
 }
 
@@ -277,4 +320,8 @@ dialog {
 	color: #333;
 	border-radius: $border-radius;
 	padding: $spacing $spacing $spacing $spacing * 4;
+}
+
+.mark {
+	outline: tomato 8px dotted;
 }

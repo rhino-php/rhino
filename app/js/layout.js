@@ -1,16 +1,16 @@
-import LayoutComponents from "/rhino/js/modules/components.js";
+import ComponentsHandler from "/rhino/js/modules/componentsHandler.js";
 // import EditorJS from "/rhino/js/vendor/editor.js";
 
 class Layout {
 	constructor() {
-		this.debug = true;
+		this.debug = false;
 		window.addEventListener("load", (event) => {
 			this.init();
 		});
 	}
 	
 	init() {
-		this.Components = new LayoutComponents(this);
+		this.Components = new ComponentsHandler(this);
 		// this.elements.setModal(this.LayoutModal.modal);
 	}
 
