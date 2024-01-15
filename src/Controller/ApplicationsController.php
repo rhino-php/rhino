@@ -59,8 +59,8 @@ class ApplicationsController extends RhinoController {
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(string $id = null) {
-        $data = $this->Applications->get($id, ['contain' => 'Fields']);
+    public function view(string $name = null) {
+        $data = $this->Applications->getByName($name, ['contain' => 'Fields']);
         $this->set(compact('data'));
     }
 
@@ -87,16 +87,16 @@ class ApplicationsController extends RhinoController {
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-	public function edit($tableName) {
-		$entry = $this->Applications->getByName($tableName);
+	public function edit(string $name = null) {
+		$entry = $this->Applications->getByName($name);
 
 		if (!$entry) {
 			$entry = $this->Applications->newEmptyEntity();
-			$entry['name'] = $tableName;
+			$entry['name'] = $name;
 		}
 
 		$this->set([
-			"tableName" => $tableName
+			"tableName" => $name
 		]);
 
 		$this->compose($entry, [

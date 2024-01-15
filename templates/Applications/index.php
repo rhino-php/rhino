@@ -57,8 +57,8 @@
                                 echo $this->element('action-area', [
                                     'actions' => [
                                         $this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $table['name']]),
-                                        $this->ActionButton->link('Rhino.eye', null, ['action' => 'view', $table['id']]),
-                                        $this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $table['id']]),
+                                        $this->ActionButton->link('Rhino.eye', null, ['action' => 'view', $table['name']]),
+                                        $this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $table['name']]),
                                         $this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $table['name']],
                                             [
                                                 'confirm' => __('Are you sure you want to delete: {0}?', $table['name']),
