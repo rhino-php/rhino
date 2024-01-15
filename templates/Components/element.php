@@ -3,7 +3,6 @@
 	<div class="layout-handle">
 		<div class="layout-handle__actions">
 			<?php
-			echo $component->id;
 			// $this->Form->button("menu", [
 			// 	'name' => 'move', 
 			// 	'class' => 'layout-button icon',

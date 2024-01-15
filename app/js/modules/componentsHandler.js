@@ -85,7 +85,8 @@ export default class ComponentsHandler {
 	 * @returns 
 	 */
 	async postFetch(url, data = '') {
-		return fetch(url, {
+		document.body.classList.add('layout-loading');
+		let response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -95,7 +96,9 @@ export default class ComponentsHandler {
 			},
 			credentials: "same-origin",
 			body: JSON.stringify(data)
-		})
+		});
+		document.body.classList.remove('layout-loading');
+		return response;
 	}
 
 	/**

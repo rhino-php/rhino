@@ -58,11 +58,11 @@ export default class Component {
 			parentId: this.id
 		}).then((response) => response.text())
 			.then((html) => {
-				let component = new Component(this, html);
+				let component = new Component(this.Handler, html);
 				container.appendChild(component.element);
 				this.Handler.components.push(component);
 
-				// this.setup(component.element);
+				this.Handler.setup(component.element);
 			});
 	}
 
