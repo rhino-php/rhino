@@ -25,6 +25,7 @@ class RhinoHelper extends Helper {
 	 * @var array
 	 */
 	public $counter = [];
+	public $currentComponent;
 
 	/**
 	 * Default config for this class
@@ -449,7 +450,9 @@ class RhinoHelper extends Helper {
 		return 'aria-current="page"';
 	}
 
-	public function parseEditor(?string $json = '[]') : string {
+	public function editor() : string {
+		$json = isset($this->currentComponent->content) ? $this->currentComponent->content : '[]';
+		
 		if ($this->layoutMode) {
 			return $this->Layout->parseEditor($json);
 		}
@@ -491,26 +494,31 @@ class RhinoHelper extends Helper {
 		return $content;
 	}
 
-	public function parseMedia(?string $id = null) : string {
+	public function media() : string {
 		$this->MediaCategories = new MediaCategoriesTable();
-		$content = '';
+		$id = isset($this->currentComponent->content) ? $this->currentComponent->content : null;
+
 
 		if (!empty($id)) {
 			$media = $this->MediaCategories->Media->get($id);
-			$content .= $this->displayMedia($media);
-		} else {
-			$content .= '<img src="" />';
 		}
 
+		$content = $this->displayMedia($media);
+		
 		if ($this->layoutMode) {
 			return $this->Layout->parseMedia($content, $id);
 		}
-
+		
 		return $content;
 	}
 
 	public function displayMedia($media) {
-		$content = '<img src="/media/' . $media->filename . '" />';
+		if (!empty($media)) {
+			return '<img src="/media/' . $media->filename . '" />';
+		}
+
+		return '<img src="" />';
+
 		// switch ($media->type) {
 		// 	case 'image':
 		// 		$content .= '<img src="/media/' . $media->filename . '" />';
@@ -520,7 +528,6 @@ class RhinoHelper extends Helper {
 		// 		# code...
 		// 		break;
 		// }
-		return $content;
 	}
 
 	public function parseWidget($id) {
@@ -541,6 +548,7 @@ class RhinoHelper extends Helper {
 
 	public function component($component) {
 		$this->counter[$component->id] = 0;
+		$this->currentComponent = $component;
 
 		if ($this->layoutMode) {
 			return $this->Layout->component($component);

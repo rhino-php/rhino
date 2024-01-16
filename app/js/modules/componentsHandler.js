@@ -85,6 +85,10 @@ export default class ComponentsHandler {
 	 * @returns 
 	 */
 	async postFetch(url, data = '') {
+		if (this.main.debug) {
+			console.debug(data);
+		}
+
 		document.body.classList.add('layout-loading');
 		let response = await fetch(url, {
 			method: 'POST',

@@ -123,8 +123,7 @@ export default class Component {
 			return;
 		}
 
-		let parentElement = editorElement.closest('.layout-element');
-		if (this.element.dataset.id != parentElement.dataset.id) {
+		if (this.checkContainer(editorElement)) {
 			return;
 		}
 
@@ -146,10 +145,15 @@ export default class Component {
 			return;
 		}
 
-		if (!this.Modal) {
-			this.Modal = new Modal(this);
+		if (this.checkContainer(mediaButton)) {
+			return;
 		}
 
+		if (!this.Modal) {
+			this.Modal = new Modal(this.Handler.main);
+		}
+
+		console.log('new Modal', this.id);
 		let modal = this.Modal.newModal(mediaButton, false);
 		this.Modal.addQuery(modal);
 
@@ -165,19 +169,20 @@ export default class Component {
 		modal.addEventListener('confirm', (e) => {
 			let selected = modal.querySelector('input[type=radio]:checked');
 
-			this.media.value = selected.value;
-
-			this.elementHandler.updateContent(
-				'update',
-				this.select.dataset.url,
-				this,
-				{ media: this.media.value },
-			);
+			this.content.value = selected.value;
+			let image = this.content.parentNode.querySelector('img');
+			console.log(image);
+			image.src = 'test';
 		});
 
 		modal.addEventListener('close', (e) => {
 			this.Modal.reset(modal);
 		});
+	}
+
+	checkContainer(nodeElement) {
+		let parentElement = nodeElement.closest('.layout-element');
+		return this.element.dataset.id != parentElement.dataset.id;
 	}
 
 	/**

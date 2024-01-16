@@ -1,8 +1,8 @@
 /**
  * @project       tusk
  * @author        carsten.coull@swu.de
- * @build         Mon, Jan 15, 2024 5:20 PM ET
- * @release       318425badc6f83015e6e4329f732d4a94c83c618 [dev]
+ * @build         Tue, Jan 16, 2024 5:31 PM ET
+ * @release       32733eae9077a763c99eeaa6b2bf82d2f114205c [dev]
  * @copyright     Copyright (c) 2024, SWU Stadtwerke Ulm / Neu-Ulm GmbH
  *
  */

@@ -106,12 +106,12 @@ class GroupsCell extends Cell {
 						'icon' => "Rhino.sidebar",
 						'rights' => 'rhino_widgets'
 					],
-					[
-						'name' => 'Nodes',
-						'link' => ['controller' => 'Nodes', 'action' => 'index'],
-						'icon' => "Rhino.table",
-						'rights' => 'rhino_widgets'
-					]
+					// [
+					// 	'name' => 'Nodes',
+					// 	'link' => ['controller' => 'Nodes', 'action' => 'index'],
+					// 	'icon' => "Rhino.table",
+					// 	'rights' => 'rhino_widgets'
+					// ]
 				]
 			],
 			[
@@ -142,29 +142,47 @@ class GroupsCell extends Cell {
 						// ]
 					],
 					[
-						'name' => 'Admin',
-						'icon' => "Rhino.settings",
-						'buttons' => [
-							[
-								'name' => _('Applications-Manager'),
-								'icon' => "Rhino.unlock",
-								'link' => ['controller' => 'Applications', "action" => "index"],
-								'rights' => 'rhino_apps'
-							],
-							[
-								'name' => 'Nutzerverwaltung',
-								'icon' => "Rhino.users",
-								'link' => ['controller' => 'Users', 'action' => 'index'],
-								'rights' => 'rhino_users'
-							],
-							[
-								'name' => 'Rechteverwaltung',
-								'icon' => "Rhino.lock",
-								'link' => ['controller' => 'Roles', 'action' => 'index'],
-								'rights' => 'rhino_roles'
-							]
-						]
+						'name' => _('App-Manager'),
+						'icon' => "Rhino.database",
+						'link' => ['controller' => 'Applications', "action" => "index"],
+						'rights' => 'rhino_apps'
+					],
+					[
+						'name' => 'Nutzerverwaltung',
+						'icon' => "Rhino.users",
+						'link' => ['controller' => 'Users', 'action' => 'index'],
+						'rights' => 'rhino_users'
+					],
+					[
+						'name' => 'Rechteverwaltung',
+						'icon' => "Rhino.lock",
+						'link' => ['controller' => 'Roles', 'action' => 'index'],
+						'rights' => 'rhino_roles'
 					]
+					// [
+					// 	'name' => 'Admin',
+					// 	'icon' => "Rhino.settings",
+					// 	'buttons' => [
+					// 		[
+					// 			'name' => _('Applications-Manager'),
+					// 			'icon' => "Rhino.unlock",
+					// 			'link' => ['controller' => 'Applications', "action" => "index"],
+					// 			'rights' => 'rhino_apps'
+					// 		],
+					// 		[
+					// 			'name' => 'Nutzerverwaltung',
+					// 			'icon' => "Rhino.users",
+					// 			'link' => ['controller' => 'Users', 'action' => 'index'],
+					// 			'rights' => 'rhino_users'
+					// 		],
+					// 		[
+					// 			'name' => 'Rechteverwaltung',
+					// 			'icon' => "Rhino.lock",
+					// 			'link' => ['controller' => 'Roles', 'action' => 'index'],
+					// 			'rights' => 'rhino_roles'
+					// 		]
+					// 	]
+					// ]
 				],
 			]
 		];

@@ -72,7 +72,7 @@ class LayoutHelper extends Helper
 			]),
 		]);
 
-		$content .= '<input type="text" name="media" hidden value="' . $id . '" />';
+		$content .= '<input type="text" name="content" hidden value="' . $id . '" />';
 
 		return $content;
 	}

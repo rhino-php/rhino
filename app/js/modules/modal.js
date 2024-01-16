@@ -72,6 +72,9 @@ export default class Modal {
 	}
 
 	openModal(modal) {
+		if (this.main.debug) {
+			console.debug("Modal::open");
+		}
 		this.visibleModal = modal;
 
 		let event = new CustomEvent("open", {
@@ -83,6 +86,10 @@ export default class Modal {
 	}
 
 	closeModal(modal) {
+		if (this.main.debug) {
+			console.debug("Modal::close");
+		}
+
 		this.visibleModal = null;
 
 		modal.close();
