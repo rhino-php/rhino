@@ -171,8 +171,8 @@ export default class Component {
 
 			this.content.value = selected.value;
 			let image = this.content.parentNode.querySelector('img');
-			console.log(image);
-			image.src = 'test';
+			console.log(selected.dataset.src);
+			image.src = selected.dataset.src;
 		});
 
 		modal.addEventListener('close', (e) => {

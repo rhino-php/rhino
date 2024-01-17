@@ -9,7 +9,7 @@
 							<img class="meida-image" src="<?= '/media/' . $media->filename ?>"/>
 
 							<figcaption>
-								<input id="<?= $media->id ?>" type="radio" value="<?= $media->id ?>" name="media">
+								<input id="<?= $media->id ?>" type="radio" value="<?= $media->id ?>" name="media" data-src="<?= '/media/' . $media->filename ?>">
 								<label class="" for="<?= $media->id ?>"><?= $media->filename ?></label>
 							</figcaption>
 						</figure>

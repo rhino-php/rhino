@@ -497,12 +497,12 @@ class RhinoHelper extends Helper {
 	public function media() : string {
 		$this->MediaCategories = new MediaCategoriesTable();
 		$id = isset($this->currentComponent->content) ? $this->currentComponent->content : null;
-
+		$media = null;
 
 		if (!empty($id)) {
 			$media = $this->MediaCategories->Media->get($id);
 		}
-
+		
 		$content = $this->displayMedia($media);
 		
 		if ($this->layoutMode) {
@@ -512,7 +512,7 @@ class RhinoHelper extends Helper {
 		return $content;
 	}
 
-	public function displayMedia($media) {
+	public function displayMedia($media = null) {
 		if (!empty($media)) {
 			return '<img src="/media/' . $media->filename . '" />';
 		}
