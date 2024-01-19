@@ -13,9 +13,10 @@ declare(strict_types=1);
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\View;
+namespace Rhino\View;
 
-use Rhino\View\RhinoView;
+use Cake\Core\Configure;
+use Cake\View\View;
 
 /**
  * Application View
@@ -24,8 +25,27 @@ use Rhino\View\RhinoView;
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
  */
-class AppView extends RhinoView {
-	public function initialize(): void {
+class RhinoView extends View
+{
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading helpers.
+     *
+     * e.g. `$this->loadHelper('Html');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
 		parent::initialize();
-	}
+		$this->loadHelper('Authentication.Identity');
+		$this->loadHelper('Rhino.Icon');
+		$this->loadHelper('Rhino.Menu');
+		$this->loadHelper('Rhino.Rhino');
+
+		Configure::load('app', 'default', true);
+		$local = Configure::read('App.defaultLocale');
+		$this->set(compact("local"));
+    }
 }

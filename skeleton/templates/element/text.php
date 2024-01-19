@@ -1,3 +1,3 @@
 <div class="inner-bound">
-	<div><?= $this->parseEditor($html) ?></div>
+	<div><?= $this->Rhino->editor() ?></div>
 </div>

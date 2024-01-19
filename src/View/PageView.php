@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Rhino\View;
 
 use Cake\Core\Configure;
-use App\View\AppView;
+use Cake\View\View;
 
 /**
  * Application View
@@ -25,7 +25,7 @@ use App\View\AppView;
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
  */
-class PageView extends AppView {
+class PageView extends View {
     /**
      * Initialization hook method.
      *

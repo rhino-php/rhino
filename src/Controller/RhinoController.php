@@ -242,6 +242,10 @@ class RhinoController extends BaseController {
 			$this->preRender();
 		}
 
+		if ($this->viewBuilder()->getClassName() == null) {
+			$this->viewBuilder()->setClassName('Rhino.Rhino');
+		}
+
 		if ($this->useTable) {
 			$tableName = $this->Table->getTable();
 			$this->set([
