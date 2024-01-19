@@ -1,5 +1,5 @@
 {
-	"name": "coull/rhino",
+	"name": "rhino-php/rhino",
 	"description": "Rhino, a CMS and Application-Framework plugin for CakePHP",
 	"type": "cakephp-plugin",
 	"keywords": [
@@ -12,6 +12,10 @@
 		{
 			"name": "Carsten Coull",
 			"homepage": "https://coull.dev",
+			"role": "Author"
+		},
+		{
+			"name": "Johannes Braun",
 			"role": "Author"
 		}
 	],

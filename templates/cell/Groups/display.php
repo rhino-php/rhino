@@ -7,7 +7,7 @@
 	?>
 
 	<div class="nav-block">
-		<p class="nav-block__label"><?= $nav['heading'] ?></p>
+		 
 		<ul class="nav-block__list">
 			<?php foreach ($nav['buttons'] as $button) : ?>
 				<?php if (!isset($button['name'])) {
