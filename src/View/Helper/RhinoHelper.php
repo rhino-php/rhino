@@ -7,7 +7,6 @@ use Cake\Collection\Iterator\UniqueIterator;
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
 use Cake\Utility\Inflector;
-use Rhino\Handlers\FieldHandler;
 use Rhino\Handlers\FileHandler;
 use Cake\View\Helper\IdGeneratorTrait;
 use Cake\Core\Configure;
@@ -56,7 +55,6 @@ class RhinoHelper extends Helper {
 	protected array $helpers = ['Form', 'Html', 'Icon', 'Url', 'Layout'];
 
 	public function initialize(array $config): void {
-		$this->FieldHandler = new FieldHandler();
 		$this->FileHandler = new FileHandler();
 		$this->layoutMode = Configure::read('layoutMode') ?? false;
 	}
@@ -120,31 +118,6 @@ class RhinoHelper extends Helper {
 			'content' => $content,
 			'tabGroup' => $tabGroupName
 		]);
-	}
-
-	public function render($fields, $entity, $options) {
-		$content = '';
-
-		foreach ($fields as $field) {
-			if ($field['name'] == 'id' && $field['extra'] == 'auto_increment') {
-				continue;
-			}
-
-			$options['label'] = $field['alias'];
-			$content .= $this->editField($field->name, $entity, $options);
-		}
-
-		return $content;
-	}
-
-	public function editField($fieldName, $entity, $options = []) {
-		$displayOptions = $this->FieldHandler->loadField($fieldName, $entity);
-		$options = array_merge($displayOptions ?? [], $options);
-		return $this->control($fieldName, $options);
-	}
-
-	public function displayField($fieldName, $entity) {
-		return $this->FieldHandler->displayField($fieldName, $entity);
 	}
 
 	private function multiSelect(string $fieldName, array $options = []): string {
