@@ -54,7 +54,7 @@ class FieldHelper extends Helper
 	 *
 	 * @var array
 	 */
-	protected array $helpers = ['Form', 'Html', 'Icon', 'Url', 'Layout'];
+	protected array $helpers = ['Form', 'Html', 'Icon', 'Url', 'Layout', 'Rhino'];
 
 	public function initialize(array $config): void {
 		$this->FieldHandler = new FieldHandler();
@@ -63,7 +63,7 @@ class FieldHelper extends Helper
 	public function editField($fieldName, $entity, $options = []) {
 		$displayOptions = $this->FieldHandler->loadField($fieldName, $entity);
 		$options = array_merge($displayOptions ?? [], $options);
-		return $this->control($fieldName, $options);
+		return $this->Rhino->control($fieldName, $options);
 	}
 
 	public function displayField($fieldName, $entity) {

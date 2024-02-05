@@ -24,7 +24,7 @@
 			<?= $this->Form->create($entry, ['type' => 'file', "class" => "stack"]) ?>
 			<fieldset>
 				<legend><?= __('Edit Rhino Media') ?></legend>
-				<?= $this->Rhino->render($fields, $entry, []) ?>
+				<?= $this->Field->render($fields, $entry, []) ?>
 			</fieldset>
 			<?= $this->Form->button(__('Submit')) ?>
 			<?= $this->Form->end() ?>

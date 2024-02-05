@@ -31,11 +31,11 @@
 									<figcaption>
 										<small><?= h($widget->template) ?></small>
 									</figcaption>
-									<?= $this->Rhino->displayField('template', $widget) ?>
+									<?= $this->Field->displayField('template', $widget) ?>
 								</figure>
 
 								<div class="stack">
-									<?= $this->Rhino->displayField('position', $widget) ?>
+									<?= $this->Field->displayField('position', $widget) ?>
 									<?php $this->start('actions');
 									echo $this->element("layout-elements/actions", [
 										"view" => [

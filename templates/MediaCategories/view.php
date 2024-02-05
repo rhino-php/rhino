@@ -32,11 +32,11 @@
 									<figcaption>
 										<small><?= h($media->filename) ?></small>
 									</figcaption>
-									<?= $this->Rhino->displayField('filename', $media) ?>
+									<?= $this->Field->displayField('filename', $media) ?>
 								</figure>
 
 								<div class="stack">
-									<?= $this->Rhino->displayField('position', $media) ?>
+									<?= $this->Field->displayField('position', $media) ?>
 									<?php $this->start('actions');
 									echo $this->element("layout-elements/actions", [
 										"view" => [

@@ -59,7 +59,7 @@
 							<?php if (!empty($app->overviewData) && !in_array($column, $app->overviewData)) {
 								continue;
 							} ?>
-							<td data-cell="<?= h(ucfirst($column)) ?>"><?= $this->Rhino->displayField($column, $entry) ?></td>
+							<td data-cell="<?= h(ucfirst($column)) ?>"><?= $this->Field->displayField($column, $entry) ?></td>
 						<?php endforeach ?>
 
 						<td class="actions" data-cell="Actions">

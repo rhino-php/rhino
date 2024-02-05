@@ -19,7 +19,7 @@ if (isset($readonly) && $readonly) {
 		</div>
 	<?php endif ?>
 	
-	<?= $this->Rhino->render($fields, $entry, $options) ?>
+	<?= $this->Field->render($fields, $entry, $options) ?>
 
 	<?php if ($entry->getVirtual() > 0) {
 		// foreach ($entry->getVirtual() as $virtual) {

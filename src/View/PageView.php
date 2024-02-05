@@ -40,6 +40,10 @@ class PageView extends View {
 		$isLayout = Configure::read('layoutMode');
 		$page = $this->get('page');
 		$this->assign('title', $page->name);
+		$this->loadHelper('Authentication.Identity');
+		$this->loadHelper('Rhino.Icon');
+		$this->loadHelper('Rhino.Menu');
+		$this->loadHelper('Rhino.Rhino');
 		$this->loadHelper('Rhino.Layout');
 
 		if ($isLayout) {

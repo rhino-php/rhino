@@ -21,7 +21,7 @@
             <?= $this->Form->create($widget) ?>
             <fieldset>
                 <legend><?= __('Edit Widget') ?></legend>
-				<?= $this->Rhino->render($fields, $widget, []) ?>
+				<?= $this->Field->render($fields, $widget, []) ?>
 			</fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
