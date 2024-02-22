@@ -37,6 +37,10 @@ class PageView extends View {
      */
     public function initialize(): void {
 		parent::initialize();
+		Configure::load('app', 'default', true);
+		$local = Configure::read('App.defaultLocale');
+		$this->set(compact("local"));
+
 		$isLayout = Configure::read('layoutMode');
 		$page = $this->get('page');
 		$this->assign('title', $page->name);
