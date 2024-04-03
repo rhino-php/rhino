@@ -62,7 +62,7 @@ class ApplicationsTable extends Table
 
 		// Use Abstract to alter database
 		// https://book.cakephp.org/phinx/0/en/migrations.html
-		$this->abstract = new AbstractMigration('default', 1);
+		$this->abstract = new AbstractMigration('default', 19700101000000);
 		$this->abstract->setAdapter($env->getAdapter());
     }
 
