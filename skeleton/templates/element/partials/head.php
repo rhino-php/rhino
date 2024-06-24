@@ -1,63 +1,55 @@
-	<?= $this->Html->charset() ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+	$cakeDescription = 'Tusk';
+?>
 
-	<title>Rhino | <?= $this->fetch('title') ?> </title>
+<?= $this->Html->charset() ?>
 
-	<script type="module">
-		document.documentElement.classList.remove('no-js');
-		document.documentElement.classList.add('js');
-	</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<meta name="author" content="carsten.coull@swu.de">
+<title>
+	<?= $cakeDescription ?>:
+	<?= $this->fetch('title') ?>
+</title>
 
-	<!-- To do: add Version Number to css -->
-	<?= $this->Html->css(['webfonts', 'main']) ?>
+<?= $this->Html->meta(
+    'favicon.ico',
+    '/favicon.ico',
+    ['type' => 'icon']
+); ?>
 
-		<!-- Load main javascript -->
-	<?= $this->Html->script(['main'], ["type" => "module"]) ?>
+<?= $this->Html->css([
+	'webfonts',
+	'main'
+]) ?>
 
-	<?= $this->fetch('meta') ?>
-	<?= $this->fetch('css') ?>
-	<?= $this->fetch('script') ?>
+<?= $this->Html->script([
+	'main'
+], ['type' => 'module']) ?>
 
+<?= $this->fetch('meta') ?>
+<?= $this->fetch('css') ?>
+<?= $this->fetch('script') ?>
 
-	<!-- To do: check for OG support -->
-	<!-- og:title, og:description, og:image, og:locale, og:type, og:url -->
-	
-	<meta name="theme-color" content="#ffffff">
+<!--  Essential META Tags -->
+<meta property="og:title" content="<?= $this->fetch('title') ?>">
+<!-- <meta property="og:type" content="" />
+<meta property="og:image" content="">
+<meta property="og:url" content="">
+<meta name="twitter:card" content=""> -->
 
-	<!-- Schema.org JSON+LD -->
-	<script type="application/ld+json">
-		{
-			"@context": "http://schema.org/",
-			"@type": "WebSite",
-			"name": "WEBNAME",
-			"url": "URL"
-		}
-	</script>
-	<script type="application/ld+json">
-		{
-			"@context": "http://schema.org/",
-			"@type": "",
-			"name": "",
-			"legalName": "",
-			"url": "URL",
-			"email": "",
-			"telephone": "",
-			"address": {
-				"@type": "PostalAddress",
-				"addressLocality": "",
-				"postalCode": "",
-				"streetAddress": ""
-			}
-		}
-	</script>
+<!--  Non-Essential, But Recommended -->
+<meta property="og:site_name" content="<?= $this->fetch('title') ?>">
 
-	<!-- Fail save for when JS is not working -->
-	<script>
-		window.onload = function() {
-			setTimeout(() => {
-				document.body.classList.add('page-has-loaded');
-			}, 3000);
-		}
-	</script>
+<script type="module">
+	document.documentElement.classList.remove('no-js');
+	document.documentElement.classList.add('js');
+</script>
+
+<!-- Fail save for when JS is not working -->
+<script>
+	window.onload = function() {
+		setTimeout(() => {
+			document.body.classList.add('page-has-loaded');
+		}, 3000);
+	}
+</script>

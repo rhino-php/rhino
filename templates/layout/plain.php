@@ -2,7 +2,7 @@
 <html class="no-js" lang="<?= $local ?>" data-theme="light">
 
 <head>
-	<?= $this->element('../layout/partials/head') ?>
+	<?= $this->element('Rhino.partials/head') ?>
 </head>
 
 <?= $this->fetch('Rhino') ?>
@@ -11,7 +11,7 @@
 	<a href="#main" class="button skip-link">Navigation Überspringen</a>
 
 	<!-- Main header -->
-	<?= $this->element('../layout/partials/header') ?>
+	<?= $this->element('Rhino.partials/header') ?>
 
 	<!-- Main Content -->
 	<main id="main" class="main-content">
@@ -23,7 +23,7 @@
 	</main>
 
 	<!-- Main footer -->
-	<?= $this->element('../layout/partials/footer') ?>
+	<?= $this->element('Rhino./partials/footer') ?>
 
 	<!-- To do: add Loading screen -->
 </body>

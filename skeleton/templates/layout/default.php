@@ -5,21 +5,26 @@
 	<?= $this->element('partials/head') ?>
 </head>
 
-<?= $this->fetch('Rhino') ?>
-
-<body>
+<body class="is-loading">
 	<a href="#main" class="skip-link button">common.skip-navigation</a>
 
-	<!-- Main header -->
-	<?= $this->element('partials/header') ?>
+	<header class="header box">
+		<?= $this->element('partials/header') ?>
+	</header>
 
-	<!-- Main Content -->
-	<?= $this->element('partials/main') ?>
+	<main class="main-content inner-bound">
+		<?= $this->element('partials/main') ?>
+	</main>
 
-	<!-- Main footer -->
-	<?= $this->element('partials/footer') ?>
+	<footer class="footer box">
+		<?= $this->element('partials/footer') ?>
+	</footer>
 
-	<!-- To do: add Loading screen -->
+	<div class="loading-screen">
+		<div class="loading-screen__animation"></div>
+	</div>
+
+	<?= $this->fetch('Rhino') ?>
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 <html class="no-js" lang="<?= $local ?>" data-theme="light">
 
 <head>
-	<?= $this->element('../layout/partials/head') ?>
+	<?= $this->element('Rhino.partials/head') ?>
 </head>
 
 <body>

@@ -27,14 +27,14 @@
 						<li role="presentation">
 							<?= $this->Html->link(
 								$this->Icon->svg('user') . "<span>Profil</span>",
-								["controller" => "Users", "action" => "edit", $this->Identity->get("id")],
+								['plugin' => 'Rhino', "controller" => "Users", "action" => "edit", $this->Identity->get("id")],
 								['class' => 'button', 'escape' => false]
 							) ?>
 						</li>
 						<li role="presentation">
 							<?= $this->Html->link(
 								$this->Icon->svg('log-out') . "<span>Log-out</span>",
-								['controller' => 'users', 'action' => 'logout'],
+								['plugin' => 'Rhino', 'controller' => 'users', 'action' => 'logout'],
 								['class' => 'button', 'escape' => false]
 							) ?>
 						</li>

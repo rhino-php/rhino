@@ -44,6 +44,8 @@ class RhinoController extends BaseController {
 		$this->FieldHandler = new FieldHandler();
 		$this->Apps = new ApplicationsTable();
 		$this->Session = $this->request->getSession();
+		$this->viewBuilder()
+			->setLayout('Rhino.default');
     }
 	
 	private function bootstrap() {

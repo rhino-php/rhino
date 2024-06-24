@@ -1,29 +1,29 @@
-<?php $rootId = 2 ?>
+<?php $rootId = 1 ?>
 
-<header class="main-header box">
-	<div class="outer-bound">
+<div class="header__wrapper outer-bound">
+	<a href="<?= $this->Url->build('/') ?>" class="logo cluster">
+		<?= $this->Icon->svg('logo') ?>
+		<span>Tusk</span>
+	</a>
 
-		<a id="home" href="/">
-			<div class="logo">
-				<!-- $this->parse(PATHTOWEBROOT . 'dist/img/logo.svg') ?> -->
-				<span>Rhino</span>
-			</div>
-			<span class="sr-only">cmt_title</span>
-		</a>
-
-		<button id="menu-button" class="button nav--menu" aria-expanded="false">
-			<div class="bars">
-				<!-- $this->parse(PATHTOWEBROOT . 'dist/icons/bars.svg') ?> -->
-			</div>
-
-			<div class="cross">
-				<!-- $this->parse(PATHTOWEBROOT . 'dist/icons/cross.svg') ?> -->
-			</div>
-		</button>
-
-		<!-- $this->parsePHP(PATHTOWEBROOT . 'templates/shapes/components/nav.php', [
-			'navId' => 'main-nav',
-			'parentId' => $rootId
-		]); ?> -->
+	<div class="menu">
+		<nav id="main-menu">
+			<?php
+			echo $this->Menu->get($rootId, [
+				'limit' => 0,
+				'ul' => ['class' => 'nav-list'],
+				'li' => ['class' => 'nav-list__item'],
+				'link' => ['class' => 'button'],
+				'summary' => ['class' => 'button alt-button'],
+				'details' => ['role' => 'list'],
+			]);
+			?>
+		</nav>
 	</div>
-</header>
+
+	<button id="menu-button" class="menu__button button" aria-expanded="false">
+		<span class="menu--open"><?= $this->Icon->svg('menu'); ?></span>
+		<span class="sr-only">toggle Menu</span>
+	</button>
+</div>
+</div>
