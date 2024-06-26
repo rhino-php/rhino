@@ -126,6 +126,13 @@ class UsersController extends RhinoController
 	public function login() {
 		$this->Authorization->skipAuthorization();
 
+		$userCount = $this->Users->find()->count('*');
+		
+		if ($userCount === 0) {
+			return $this->redirect(['action'=> 'new']);
+		}
+		
+
 		$this->viewBuilder()->setLayout('blank');
 		
 		$this->request->allowMethod(['get', 'post']);

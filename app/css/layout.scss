@@ -3,9 +3,9 @@
 @use "settings" as *;
 
 // Get lib before custom
-@use "lib" as *;
-@use "theme/light" as *;
-@use "theme/measurements" as *;
+@use "base_theme/library" as *;
+// @use "theme/light" as *;
+@use "base_theme/theme/measurements" as *;
 
 @forward "components/media-select";
 
@@ -125,7 +125,7 @@ $border-width: 4px;
 }
 
 .layout-button {
-	@include light;
+	// @include light;
 	@include measurements;
 
 	display: inline-flex;
@@ -191,7 +191,7 @@ $border-width: 4px;
 }
 
 .rhino-select {
-	@include light;
+	// @include light;
 	@include measurements;
 
 	display: inline-block;
@@ -224,7 +224,7 @@ $border-width: 4px;
 }
 
 dialog {
-	@include light;
+	// @include light;
 	@include measurements;
 	width: 100%;
 	max-width: 52rem;

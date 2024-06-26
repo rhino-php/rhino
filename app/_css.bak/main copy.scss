@@ -1,0 +1,14 @@
+// add reset, makes things easier to handel
+@forward "lib/reset";
+
+// Add Base pico styling
+@forward "theme/pico";
+
+// Add Theme
+@forward "theme";
+
+// partials are for general setup
+@forward "partials";
+
+// components are used for specific elements
+@forward "components";

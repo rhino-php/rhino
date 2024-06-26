@@ -1,3 +1,7 @@
+:root {
+	--backdrop-color: var(--muted-border-color);
+}
+
 .footer {
 	background-color: var(--muted-border-color);
 	$offset: 1.2rem;

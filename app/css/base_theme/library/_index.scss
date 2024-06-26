@@ -1,0 +1,21 @@
+/**
+ * src/css/libhalma/_libhalma.scss
+ *
+ * Libhalma: A simple, solid and accessible basic library for css
+ *
+ * @author Johannes Braun <j.braun@agentur-halma.de>
+ * @package libhalma
+ * @version 2020-11-09
+ */
+
+// Edit as needed
+
+@forward"utils";
+
+@forward "rwd";
+
+@forward "type-setting";
+
+@forward "colors";
+
+@forward "classes";

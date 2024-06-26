@@ -1,0 +1,253 @@
+/**
+ * src/css/libhalma/_classes.scss
+ *
+ * Predefined utility classes
+ *
+ * @author C.Coull <c.coull@agentur-halma.de>
+ * @author J. Braun <j.braun@agentur-halma.de>
+ * @package libhalma
+ * @version 2021-05-27
+ */
+
+// Screenreader only
+@mixin sr-only($visible-on-focus: true) {
+	// color: transparent;
+	display: inline-block;
+	opacity: 0;
+	background: none;
+	position: absolute;
+	line-height: 0;
+	font-size: 0;
+	overflow: hidden;
+	width: 2px;
+	height: 2px;
+	margin: -1px;
+
+	@if $visible-on-focus {
+		&:focus,
+		&:active {
+			opacity: 1;
+			// color: inherit;
+			font-size: inherit;
+			line-height: inherit;
+			width: auto;
+			width: max-content;
+			height: auto;
+			height: max-content;
+			margin: 0;
+			z-index: 1;
+		}
+	}
+}
+
+@mixin bound($bound-width: 64rem, $padding: false) {
+	max-width: $bound-width;
+	margin-left: auto;
+	margin-right: auto;
+	
+	@media screen and (min-width: $bound-width) {
+		box-sizing: content-box; // Yes ;-) see EveryLayout: Center
+	}
+	
+	@if $padding {
+		padding-left: $padding;
+		padding-right: $padding;
+	}
+}
+
+
+// Take scrollbar-width in to account
+// @see https://destroytoday.com/blog/100vw-and-the-horizontal-overflow-you-probably-didnt-know-about
+@mixin full-width($scrollbar-width: 0) {
+	--half-screen-width: calc((100vw - #{$scrollbar-width}) / 2);
+	margin-left: calc(50% - var(--half-screen-width));
+	margin-right: calc(50% - var(--half-screen-width));
+}
+
+@mixin skip-link {
+	position: fixed;
+	z-index: 200;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, -200%);
+	transition: transform 300ms ease-in-out;
+	
+	&:focus {
+		transform: translate(-50%, 0%);
+	}
+}
+
+@mixin list-style-none {
+	list-style: none;
+	padding-left: 0;
+	
+	li {
+		list-style: none;
+		position: static;
+		padding: 0;
+		
+		&::before, &::marker {
+			content: none;
+			display: none;
+		}
+	}
+}
+
+// set thumb and Background Color
+// use on html to set global
+// Webkit and Chromium will ignore color when size isn't set
+@mixin scrollbars(
+	$foreground-color: #999,
+  	$background-color: #333,
+  	$size: false
+) {
+	@if $size {
+		// For Chrome & Safari
+		&::-webkit-scrollbar {
+			width: $size;
+			height: $size;
+		}
+	}
+
+	&::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--background-color);
+  }
+
+  // Standard version (Firefox only for now)
+  scrollbar-color: $foreground-color var(--background-color);
+}
+
+/**
+ * From: EveryLayout
+ */
+$box-color: var(--color) !default;
+$box-background: var(--muted-border-color) !default;
+$box-padding: var(--spacing) !default;
+$box-border-radius: var(--border-radius) !default;
+
+@mixin box(
+  $color: $box-color,
+  $background: $box-background,
+  $padding: $box-padding,
+  $border-radius: $box-border-radius,
+) {
+  padding: $padding;
+  color: $color;
+  background-color: $background;
+  border-radius: $border-radius;
+}
+
+/**
+ * From: EveryLayout
+ */
+@mixin center($max-width: false) {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	@if $max-width {
+		max-width: $max-width;
+	}
+}
+
+/**
+ * The Cluster
+ *
+ * https://every-layout.dev/demos/cluster-ctas/
+ *
+ * We can use `gap` now on flexbox items, so it gets really easy now :-)
+ */
+
+$cluster-spacing: 1rem !default;
+$cluster-gap: true;
+
+@mixin cluster($spacing: $cluster-spacing, $use-gap: $cluster-gap) {
+  @if $use-gap {
+    gap: $spacing;
+		display: flex;
+		flex-wrap: wrap;
+  } @else {
+    > * {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      margin: calc(#{$spacing} / 2 * -1);
+    }
+  }
+
+  @if $use-gap != true {
+    > * > * {
+      margin: calc(#{$spacing} / 2);
+    }
+  }
+}
+
+@mixin cover {
+  display: flex;
+  flex-direction: column;
+  min-block-size: var(--screen-height, 100vh);
+  padding: 1rem;
+
+  & > * {
+    margin-block: 1rem;
+  }
+  
+  & > :first-child:not(h1) {
+    margin-block-start: 0;
+  }
+  
+  & > :last-child:not(h1) {
+    margin-block-end: 0;
+  }
+  
+  & > h1 {
+    margin-block: auto;
+  }
+}
+
+@mixin icon($stroke: none, $vertical-align: -0.01em, $space: 0.5em) {
+	display: inline-block;
+	height: 0.75em;
+	width: 0.75em;
+	/* ↓ Override the em value with `1cap`  where `cap` is supported */  
+	height: 1cap;
+	width: 1cap;
+	overflow: visible;
+	vertical-align: $vertical-align;
+	
+	svg {
+		fill: currentColor !important;
+		stroke: $stroke;
+		display: block;
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+	}
+}
+
+@mixin with-icon($space: 0.5em) {
+	/* ↓ Set the `inline-flex` context,  which eliminates the word space */
+	display: inline-flex;
+	align-items: center;
+  gap: var(--space, #{$space});
+}
+
+/**
+ * The Stack
+ *
+ * Spacing for vertically stacked blocks
+ */
+
+$stack-spacing: 1rem !default;
+
+@mixin stack($spacing: $stack-spacing) {
+	> * + * {
+		margin-top: $spacing;
+	}
+}
+
+

@@ -1,0 +1,54 @@
+@use 'library/type-setting' as *;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	&:last-child {
+		margin-bottom: 0 !important;
+	}
+}
+
+h1 {
+	font-family: inherit;
+	@include type-setting(900);
+}
+
+h2 {
+	font-family: inherit;
+	@include type-setting(800);
+}
+
+h3 {
+	font-family: inherit;
+	@include type-setting(600);
+}
+
+h4 {
+	font-family: inherit;
+	@include type-setting(400);
+}
+
+h5 {
+	font-family: inherit;
+	@include type-setting(300, 1);
+}
+
+h6 {
+	font-family: inherit;
+	@include type-setting(200, 1);
+}
+
+p {
+	font-family: inherit;
+	@include type-setting(200, 1);
+}
+
+small,
+sub,
+sup {
+	font-family: inherit;
+	@include type-setting(100, 1);
+}

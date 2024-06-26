@@ -1,14 +1,13 @@
 // add reset, makes things easier to handel
-@forward "lib/reset";
+@forward "library/reset";
 
 // Add Base pico styling
-@forward "theme/pico";
+// @forward "theme/custom-pico";
 
 // Add Theme
 @forward "theme";
 
-// partials are for general setup
-@forward "partials";
-
 // components are used for specific elements
+// @forward "theme_components";
+@forward "partials";
 @forward "components";

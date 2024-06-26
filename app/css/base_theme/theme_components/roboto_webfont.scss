@@ -1,0 +1,81 @@
+/**
+* src/css/partials/_webfonts.scss
+*
+* @author Carsten Coull <c.coull@agentur-halma.de>
+* @author Johannes Braun <j.braun@agentur-halma.de>
+* @package halma-kickstart
+* @version 2021-05-28
+*/
+
+/************
+ * Webfonts *
+ ************/
+
+// Woff2 is preferered and - if available - the only format needed.
+// Use a font-face include line for each font face (regular, bold, italic, bold-italic, like shown below
+
+/**
+ * @example
+ *
+ * @include font-face('FontName', '../fonts/FontName-Regular', normal, normal, $file-types: woff2);
+ * @include font-face('FontName', '../fonts/FontName-Bold', bold, normal, $file-types: woff2);
+ * @include font-face('FontName', '../fonts/FontName-Italic', normal, italic, $file-types: woff2);
+ */
+
+// HOW-TO:
+//
+// Use
+// https://gwfh.mranftl.com/fonts
+//
+// - Enter #{$font-path} in "path" input
+// - Download the fonts and put in `src/fonts/`
+// - gulp build
+// - Paste CSS here
+// - add 'font-display: swap;' to each!!!
+// - Enjoy your fonts :-)
+
+$path: '/font/Roboto-Condensed/' !default;
+
+body {
+	font-family: 'Roboto Condensed', Arial, sans-serif;
+}
+
+/* roboto-condensed-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('#{$path}roboto-condensed-v27-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-condensed-italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto Condensed';
+  font-style: italic;
+  font-weight: 400;
+  src: url('#{$path}roboto-condensed-v27-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-condensed-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 600;
+  src: url('#{$path}roboto-condensed-v27-latin-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-condensed-800 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 800;
+  src: url('#{$path}roboto-condensed-v27-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+:root {
+	font-family: 'Noto Sans', 'Roboto Condensed', 'Frutiger', Arial, Helvetica, sans-serif;
+}

@@ -4,41 +4,29 @@
  * Use Sass variables and custom properties as appropriate, both are possible
  */
 
-/**********
- * Border *
- **********/
-
-$border: (
-	width: 2px,
-	radius: 4px,
-	color: currentColor,
-	type: solid,
-);
-
-$outline: (
-	width: 4px
-);
-
 /********
  * Typo *
  ********/
+
+@use "sass:map";
+@use "sass:color";
+@use "sass:math";
 
 $use-type-scale: false;
 $vertical-unit: 1.5rem;
 $modular-scale-ratio: 1.125;
 
 $font-sizes: (
-	100: 0.8,
-	200: 1,
-	300: 1.125,
-	400: 1.2,
-	500: 1.4,
-	600: 1.75,
-	700: 2.1,
-	800: 2.8,
-	900: 3.2,
+    100: 0.8,
+    200: 1,
+    300: 1.125,
+    400: 1.2,
+    500: 1.4,
+    600: 1.75,
+    700: 2.1,
+    800: 2.8,
+    900: 3.2,
 );
-
 
 /************
  * Measures *
@@ -55,32 +43,140 @@ $max-supported-screen-width: 3440px;
 $spacing: 1rem;
 
 $spacings: (
-	100: $spacing * 0.25,
-	200: $spacing * 0.5,
-	300: $spacing,
-	400: $spacing * 2,
-	500: $spacing * 4,
-	600: $spacing * 6,
-	700: $spacing * 8,
-	800: $spacing * 10,
-	900: $spacing * 14,
+    100: $spacing * 0.25,
+    200: $spacing * 0.5,
+    300: $spacing,
+    400: $spacing * 2,
+    500: $spacing * 4,
+    600: $spacing * 6,
+    700: $spacing * 8,
+    800: $spacing * 10,
+    900: $spacing * 14,
 );
 
-
-/********************
- * Options/Switches *
- ********************/
+/**********
+ * Colors *
+ **********/
 
 $default-colors: (
-	primary: hsl(162, 68%, 58%),
+   	primary: hsl(162, 68%, 58%),
 	secondary: hsl(194, 53%, 55%),
-	background: hsl(218, 13.2%, 39%),
-	neutral: hsl(235, 5%, 98% - 38),
-	warning: #ffca28,
-	error: #e53935,
-	success: #43a047,
+	foreground: (
+		100: hsl(0, 0%, 0%),
+		200: hsl(0, 0%, 5%),
+		300: hsl(0, 0%, 10%),
+		400: hsl(0, 0%, 15%),
+		500: hsl(0, 0%, 20%),
+		600: hsl(0, 0%, 25%),
+		700: hsl(0, 0%, 30%),
+		800: hsl(0, 0%, 35%),
+		900: hsl(0, 0%, 40%),
+	),
+	background: (
+		100: hsl(0, 0%, 100%),
+		200: hsl(0, 0%, 95%),
+		300: hsl(0, 0%, 90%),
+		400: hsl(0, 0%, 85%),
+		500: hsl(0, 0%, 80%),
+		600: hsl(0, 0%, 75%),
+		700: hsl(0, 0%, 70%),
+		800: hsl(0, 0%, 65%),
+		900: hsl(0, 0%, 60%),
+	),
+	neutral: (
+		100: hsl(0, 0%, 70%),
+		200: hsl(0, 0%, 65%),
+		300: hsl(0, 0%, 60%),
+		400: hsl(0, 0%, 55%),
+		500: hsl(0, 0%, 50%),
+		600: hsl(0, 0%, 45%),
+		700: hsl(0, 0%, 40%),
+		800: hsl(0, 0%, 35%),
+		900: hsl(0, 0%, 30%),
+	),
+	success: (
+		100: #99d49b,
+		200: #78c77c,
+		300: #58b95c,
+		400: #43a047,
+		500: #317534,
+		600: #285f2a,
+		700: #225124,
+		800: #1c431e,
+		900: #132d14,
+	),
+	warning: (
+		100: #f4e6bd,
+		200: #efd994,
+		300: #ebcb6a,
+		400: #e7be40,
+		500: #d5a515,
+		600: #bd920e,
+		700: #af8607,
+		800: #a27a00,
+		900: #846300,
+	),
+	error: (
+		100: #e8bdbc,
+		200: #de9a98,
+		300: #d47674,
+		400: #cc514e,
+		500: #b0302d,
+		600: #9b2623,
+		700: #901d1a,
+		800: #841411,
+		900: #6d0c0a,
+	),
+	primary-shade: 600, 
+	secondary-shade: 600,
+	foreground-shade: 400,
+	background-shade: 400,
+	neutral-shade: 400,
+	success-shade: 400,
+	warning-shade: 400,
+	error-shade: 400,
 );
 
+@function color-map($name, $color) {
+    $min-color: color.adjust($color, $lightness: -40%);
+    $max-color: color.adjust($color, $lightness: 30%);
+    $primary-colors: ();
+
+    @for $i from 1 through 9 {
+        $key: $i * 100;
+        $weight: $i * 10%;
+
+        $color: color.mix($min-color, $max-color, $weight);
+        $primary-colors: map.set(
+            $primary-colors,
+            $key,
+            color.adjust($color, $saturation: $weight - 10)
+        );
+    }
+
+    @return map.set($default-colors, $name, $primary-colors);
+}
+
+$default-colors: color-map("primary", map.get($default-colors, "primary"));
+$default-colors: color-map("secondary", map.get($default-colors, "secondary"));
+
+$black: #000;
+$white: #fff;
+
+/**********
+ * Border *
+ **********/
+
+$border: (
+    width: 2px,
+    radius: 4px,
+    color: currentColor,
+    type: solid,
+);
+
+$outline: (
+    width: 4px,
+);
 
 /********************
  * Options/Switches *
@@ -96,50 +192,53 @@ $collapsable-header: true;
 // subtracts header height from screen-heighht
 $substract-header-height: false;
 
- // fade in elements when page has loaded
+// fade in elements when page has loaded
 $fade-in-transition: false;
 
 // loading screen type [spinner, dots, bars]
-$loader: 'spinner';
+$loader: "spinner";
 
- // sets the color for header and hero to contrast-color
+// sets the color for header and hero to contrast-color
 $start-dark-background: false;
 
- // sets the style for the navbar [default, folding]
-$nav-style: 'default';
+// sets the style for the navbar [default, folding]
+$nav-style: "default";
 
 // Toggle wether all ul & ol elements will recive an Overwrite
 $list-reset: false;
 
 // --- pico ---
 
-// Set the root element for $enable-semantic-container and $enable-responsive-spacings
+// Theme color
+$theme-color-primary: "custom-primary"; // amber, azure, blue, cyan, fuchsia, green, grey, indigo, jade, lime, orange, pink, pumpkin, purple, red, sand, slate, violet, yellow, zinc
+$theme-color-secondary: "custom-secondary"; // amber, azure, blue, cyan, fuchsia, green, grey, indigo, jade, lime, orange, pink, pumpkin, purple, red, sand, slate, violet, yellow, zinc
+$theme-color-contrast: "default-contrast"; // amber, azure, blue, cyan, fuchsia, green, grey, indigo, jade, lime, orange, pink, pumpkin, purple, red, sand, slate, violet, yellow, zinc
+
+// Prefix for CSS variables
+$css-var-prefix: "--"; // Must start with "--", change to "--pico-" for Namespacing
+
+// Define the root element used to target <header>, <main>, <footer>
+// with $enable-semantic-container and $enable-responsive-spacings
 $semantic-root-element: "body";
 
 // Enable <header>, <main>, <footer> inside $semantic-root-element as containers
 $enable-semantic-container: true;
 
-// Enable .container and .container-fluid
-$enable-class-container: true;
-
-// Enable a centered viewport for <header>, <main>, <footer> inside $enable-semantic-container 
+// Enable a centered viewport for <header>, <main>, <footer> inside $semantic-root-element
 // Fluid layout if disabled
 $enable-viewport: true;
 
 // Enable responsive spacings for <header>, <main>, <footer>, <section>, <article>
-// Fixed spacings if disabled
-$enable-responsive-spacings: true;
+// Fixed spacings by default
+$enable-responsive-spacings: false;
 
 // Enable responsive typography
-// Fixed root element size if disabled
-$enable-responsive-typography: true;
+// Fixed root element size (rem) if disabled
+$enable-responsive-typography: false;
 
 // Enable .classes
 // .classless version if disabled
 $enable-classes: true;
-
-// Enable .grid class
-$enable-grid: true;
 
 // Enable transitions
 $enable-transitions: true;
@@ -147,37 +246,103 @@ $enable-transitions: true;
 // Enable overriding with !important
 $enable-important: true;
 
-/*****************
- *  Breakpoints  *
- *****************/
+// Optional parent selector
+// If defined, all HTML tags are wrapped with this selector
+// :root is not wrapped
+$parent-selector: "";
 
-// xs: Extra small (portrait phones)
-// sm: Small(landscape phones)
-// md: Medium(tablets)
-// lg: Large(desktops)
-// xl: Extra large (large desktops)
-
-// NOTE:
-// To provide an easy and fine styling on each breakpoint
-// we didn't use @each, @mixin or @include.
-// That means you need to edit each CSS selector file to add a breakpoint
-
-// Breakpoints
-// 'null' disable the breakpoint
+// Breakpoints, viewports and root font size
 $breakpoints: (
-	xs: 0,
-	sm: 576px,
-	md: 768px,
-	lg: 992px,
-	xl: 1200px,
-	xxl: 1650px,
+    // Small (landscape phones)
+    // Font size: 17px
+    sm:
+        (
+            breakpoint: 576px,
+            viewport: 510px,
+            root-font-size: 100%,
+        ),
+
+    // Medium (tablets)
+    // Font size: 18px
+    md:
+        (
+            breakpoint: 768px,
+            viewport: 700px,
+            root-font-size: 100%,
+        ),
+
+    // Large
+    // Font size: 19px
+    lg:
+        (
+            breakpoint: 1024px,
+            viewport: 950px,
+            root-font-size: 100%,
+        ),
+
+    // Extra large
+    // Font size: 20px
+    xl:
+        (
+            breakpoint: 1280px,
+            viewport: 1200px,
+            root-font-size: 100%,
+        ),
+
+    // Extra extra large
+    // Font size: 21px
+    xxl:
+        (
+            breakpoint: 1536px,
+            viewport: 1450px,
+            root-font-size: 100%,
+        )
 );
 
-// Viewports
-$viewports: (
-	// 'null' disable the viewport on a breakpoint
-	sm: 510px,
-	md: 700px,
-	lg: 920px,
-	xl: 1130px
+// Modules to export
+$modules: (
+    // Theme
+    "themes/default": true,
+
+    // Layout
+    "layout/document": true,
+    "layout/landmarks": false,
+    "layout/container": false,
+    "layout/section": true,
+    "layout/grid": true,
+    "layout/overflow-auto": true,
+
+    // Content
+    "content/link": true,
+    "content/typography": true,
+    "content/embedded": true,
+    "content/button": true,
+    "content/table": true,
+    "content/code": true,
+    "content/figure": true,
+    "content/miscs": true,
+
+    // Forms
+    "forms/basics": true,
+    "forms/checkbox-radio-switch": true,
+    "forms/input-color": true,
+    "forms/input-date": true,
+    "forms/input-file": true,
+    "forms/input-range": true,
+    "forms/input-search": true,
+
+    // Components
+    "components/accordion": true,
+    "components/card": true,
+    "components/dropdown": true,
+    "components/group": true,
+    "components/loading": true,
+    "components/modal": false,
+    "components/nav": true,
+    "components/progress": true,
+    "components/tooltip": true,
+
+    // Utilities
+    "utilities/accessibility": true,
+    "utilities/reduce-motion": true
 );

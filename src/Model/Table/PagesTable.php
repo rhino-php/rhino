@@ -77,6 +77,10 @@ class PagesTable extends NodesTable {
 
 		$menu = $_menu->toArray();
 
+		if (empty($menu)) {
+			return $menu;
+		}
+
 		if (isset($limit)) {
 			$limit = $menu[0]->level + $limit;
 		}

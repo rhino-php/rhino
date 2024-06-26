@@ -2,12 +2,12 @@
 @use "settings" as *;
 
 // Get lib before custom
-@use "lib" as *;
-@use "theme/light" as *;
-@use "theme/measurements" as *;
+@use "base_theme/library" as *;
+// @use "theme/light" as *;
+@use "base_theme/theme/measurements" as *;
 
 .media-select {
-	@include light;
+	// @include light;
 	@include measurements;
 
 	details {

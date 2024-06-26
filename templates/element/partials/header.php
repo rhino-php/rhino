@@ -18,7 +18,7 @@
 		<ul class="cluster">
 
 			<li>
-				<details role="list">
+				<details class="dropdown" role="list">
 					<summary aria-haspopup="listbox" role="button" class="primary icon"><?= $this->Icon->svg('user') ?> <span>Profil</span></summary>
 					<ul role="listbox">
 						<li><a href="#" data-theme-switcher="auto">Theme: Auto</a></li>

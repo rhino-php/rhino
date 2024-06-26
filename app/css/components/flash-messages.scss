@@ -1,5 +1,5 @@
-@use "../settings" as *;
-@use "../lib" as *;
+@use "settings" as *;
+@use "library" as *;
 
 .flash-messages {
 	top: var(--spacing-300);
