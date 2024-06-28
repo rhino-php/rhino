@@ -115,7 +115,7 @@ class ApplicationsController extends RhinoController {
 	}
 
 	public function preSave($data, $params) {
-		if ($params['action'] == "edit" && $data['has_table']) {
+		if ($params['action'] == "edit" && (isset($data['has_table']) && $data['has_table'])) {
 			if ($data['name'] != $data['currentName']) {
 				$this->Applications->rename($data["currentName"], $data["name"]);
 			}
