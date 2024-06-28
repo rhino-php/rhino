@@ -121,7 +121,7 @@ class ApplicationsController extends RhinoController {
 			}
 		}
 
-		if ($params['action'] == "edit") {
+		if ($params['action'] == "edit" && isset($data["has_table"])) {
 			unset($data["has_table"]);
 		}
 
