@@ -9,8 +9,24 @@
 	@include box();
 }
 
-.bottom > [role="listbox"] {
+.top {
+    top: 100%;
+	bottom: auto;
+}
+
+.bottom {
+	top: auto;
     bottom: 100%;
+}
+
+.left {
+	right: auto;
+    left: 0;
+}
+
+.right, [role="listbox"].right {
+    right: 0;
+	left: auto;
 }
 
 .center {

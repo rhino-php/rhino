@@ -15,10 +15,7 @@ class RhinoInit extends AbstractMigration
     public function change(): void {
 		$usersTable = 'rhino_users';
 		$rolesTable = 'rhino_roles';
-		$layoutsTable = 'rhino_layouts';
-		$elementsTable = 'rhino_elements';
 		$contentsTable = 'rhino_contents';
-		$pagesTable = 'rhino_pages';
 		$options = [
 			"collation" => 'utf8mb4_unicode_ci'
 		];

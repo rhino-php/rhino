@@ -44,8 +44,19 @@ class RhinoView extends View
 		$this->loadHelper('Rhino.Menu');
 		$this->loadHelper('Rhino.Rhino');
 
+		
 		Configure::load('app', 'default', true);
 		$local = Configure::read('App.defaultLocale');
-		$this->set(compact("local"));
+		
+		$theme = Configure::read('rhino-theme') ?? 'Rhino.main';
+		$icon = Configure::read('rhino-icon') ?? 'Rhino.rhino';
+		$iconBig = Configure::read('rhino-icon-big') ?? 'Rhino.rhino-big';
+
+		$title = $this->get('title');
+		if (isset($title) && !empty($title)) {
+			$this->assign('title', $title);
+		}
+
+		$this->set(compact("local", "theme", "icon", 'iconBig'));
     }
 }

@@ -1,51 +1,9 @@
-// import * as EditorJS from '../vendor/editor.js';
-// import * as Header from '/rhino/js/vendor/bundle.js';
-// import List from '@editorjs/list';
-
-// Todo: Implement:
-// https://codesandbox.io/s/editor-js-data-parser-demo-forked-l1v7v?file=/src/index.js
-
-export default class Editor {
-	constructor(selector, contents) {
-		let editorData = '';
-		if (contents && contents.length > 0) {
-			editorData = JSON.parse(contents);
-		} 
-
-		this.editor = new EditorJS({
-			// https://editorjs.io/configuration/#log-level
-			logLevel: 'ERROR',
-
-			/** 
-			 * Id of Element that should contain the Editor 
-			 */
-			holder: selector,
-	
-			/** 
-			 * Available Tools list. 
-			 * Pass Tool's class or Settings object for each Tool you want to use 
-			 */
-			tools: {
-				header: {
-					class: Header,
-					inlineToolbar: ['link']
-				},
-				list: List 
-			},
-
-			autofocus: true,
-			placeholder: 'Let`s write an awesome story!',
-			data: editorData,
-			minHeight: 0
-		});
-
-	}
-	
-	save() {
-		return this.editor.save();
-	}
-	
-	destroy() {
-		this.editor.destroy();
-	}
-}//# sourceMappingURL=editor.js.map
+/**
+ * @project       tusk
+ * @author        carsten.coull@swu.de
+ * @build         Fri, Jun 28, 2024 12:12 PM ET
+ * @release       f3bc757fed4fadc22ff21923995955fc84fbcfe1 [main]
+ * @copyright     Copyright (c) 2024, SWU Stadtwerke Ulm / Neu-Ulm GmbH
+ *
+ */
+import*as EditorJS from"../../vendor/editorjs/dist/editor.mjs";export default class Editor{constructor(e,t){let o="";t&&t.length>0&&(o=JSON.parse(t)),this.editor=new EditorJS({logLevel:"ERROR",holder:e,tools:{header:{class:Header,inlineToolbar:["link"]},list:List},autofocus:!0,placeholder:"Let`s write an awesome story!",data:o,minHeight:0})}save(){return this.editor.save()}destroy(){this.editor.destroy()}}

@@ -45,8 +45,6 @@ class IconHelper extends Helper {
 		$pluginCheck = $options['plugin'] !== false;
 
 		$file = $this->_getElementFileName($name, $pluginCheck);
-
-		
 	
 		if ($file) {
 			return $this->_render($file, $data);
@@ -56,8 +54,11 @@ class IconHelper extends Helper {
 			return '';
 		}
 
+		
 		[$plugin, $elementName] = $this->getView()->pluginSplit($name, $pluginCheck);
+		
 		$paths = iterator_to_array($this->getElementPaths($plugin));
+
 		throw new MissingElementException([$name . $this->_ext, $elementName . $this->_ext], $paths);
 	}
 
@@ -91,8 +92,9 @@ class IconHelper extends Helper {
 	 */
 	protected function getElementPaths(?string $plugin): Generator {
 		$paths = $this->getPluginPath($plugin);
-
+		
 		$paths = array_merge(
+			[''],
 			[$paths],
 			App::core('webroot')
 		);
@@ -107,7 +109,8 @@ class IconHelper extends Helper {
 	private function getPluginPath(?string $pluginName): string {
 
 		if (empty($pluginName)) {
-			return WWW_ROOT;
+			// return WWW_ROOT;
+			return '';
 		}
 
 		return Plugin::path($pluginName) . 'webroot' . DS ;

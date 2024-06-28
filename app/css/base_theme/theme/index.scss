@@ -30,6 +30,15 @@
 .button {
 	display: inline-block;
 	@extend button;
+
+	svg {
+		height: $modular-scale-ratio * 1em;
+
+		& + span {
+			margin-left: $spacing * 0.25;
+			vertical-align: middle;
+		}
+	}
 }
 
 // Accent-color

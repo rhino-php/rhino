@@ -1,7 +1,7 @@
 <menu id="main-menu" class="menu">
 	<header>
 		<div class="logo">
-			<?= $this->Icon->svg("Rhino." . $this->Identity->get('theme') . "-big") ?>
+			<?= $this->Icon->svg($icon) ?>
 		</div>
 		<span class="sr-only">Rhino</span>
 	</header>

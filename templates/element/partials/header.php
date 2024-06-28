@@ -15,25 +15,24 @@
 			</li>
 		</ul>
 
-		<ul class="cluster">
-
+		<ul>
 			<li>
 				<details class="dropdown" role="list">
-					<summary aria-haspopup="listbox" role="button" class="primary icon"><?= $this->Icon->svg('user') ?> <span>Profil</span></summary>
-					<ul role="listbox">
+					<summary aria-haspopup="listbox" role="button" class="button primary icon"><?= $this->Icon->svg('Rhino.user') ?> <span>Profil</span></summary>
+					<ul class="top right" role="listbox">
 						<li><a href="#" data-theme-switcher="auto">Theme: Auto</a></li>
 						<li><a href="#" data-theme-switcher="light">Theme: Light</a></li>
 						<li><a href="#" data-theme-switcher="dark">Theme: Dark</a></li>
 						<li role="presentation">
 							<?= $this->Html->link(
-								$this->Icon->svg('user') . "<span>Profil</span>",
+								$this->Icon->svg('Rhino.user') . "<span>Profil</span>",
 								['plugin' => 'Rhino', "controller" => "Users", "action" => "edit", $this->Identity->get("id")],
 								['class' => 'button', 'escape' => false]
 							) ?>
 						</li>
 						<li role="presentation">
 							<?= $this->Html->link(
-								$this->Icon->svg('log-out') . "<span>Log-out</span>",
+								$this->Icon->svg('Rhino.log-out') . "<span>Log-out</span>",
 								['plugin' => 'Rhino', 'controller' => 'users', 'action' => 'logout'],
 								['class' => 'button', 'escape' => false]
 							) ?>

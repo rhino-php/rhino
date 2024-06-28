@@ -2,8 +2,8 @@
 @use "library" as *;
 
 .menu {
-	$max-width: 24rem;
-	$min-width: 18rem;
+	$max-width: 26rem;
+	$min-width: 20rem;
 	@include slope-property-minmax(max-width, rem-to-px($min-width), rem-to-px($max-width), 1920px, 2560px);
 	max-height: 100vh;
 
@@ -112,14 +112,15 @@
 		display: flex;
 		justify-content: center;
 
-		height: 4rem;
-		margin: calc(var(--spacing) * 2);
+		width: 8rem;
+
+		margin: calc(var(--spacing) * 2) auto;
 		margin-top: 5rem;
 		margin-bottom: 4.2rem;
 
 		svg {
-			height: 100%;
-			width: auto;
+			height: auto;
+			width: 100%;
 		}
 	}
 
@@ -214,7 +215,8 @@
 
 	&__item {
 		a,
-		summary {
+		summary,
+		.button {
 			background-color: transparent;
 			border-color: transparent;
 			padding: 0.75rem $padding;

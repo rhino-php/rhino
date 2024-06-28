@@ -3,12 +3,12 @@
 <div class="login">
 	<article>
 		<div class="center">
-			<?= $this->Icon->svg("Rhino.rhino-big") ?>
+			<?= $this->Icon->svg($iconBig) ?>
 			<h3 class="sr-only">Login</h3>
 		</div>
 
 		<?= $this->Form->create(null, ['class' => 'stack']) ?>
-		<fieldset>
+		<fieldset class="stack">
 			<?= $this->Form->control('email', ['required' => true]) ?>
 			<?= $this->Form->control('password', ['required' => true]) ?>
 			<?= $this->Form->control('remember_me', ['type' => 'checkbox', 'role' => 'switch']) ?>

@@ -11,7 +11,7 @@
 			</thead>
 
 			<tbody>
-				<?php if (empty($groups)) : ?>
+				<?php if (empty($groups)): ?>
 					<tr>
 						<td colspan="3" align="center">
 							No Applications found.
@@ -19,11 +19,11 @@
 					</tr>
 				<?php endif ?>
 
-				<?php foreach ($groups as $group) : ?>
+				<?php foreach ($groups as $group): ?>
 					<tr>
 						<td data-cell="Group" colspan="2"><b><?= $group['name'] ?></b></td>
 						<td data-cell="Actions">
-							<?php if (isset($group['id'])) : ?>
+							<?php if (isset($group['id'])): ?>
 								<?php
 								$this->start('actions');
 								echo $this->element("layout-elements/actions", [
@@ -43,85 +43,62 @@
 							<?php endif ?>
 						</td>
 					</tr>
-					<?php foreach ($group['applications'] as $table) : ?>
+					<?php foreach ($group['applications'] as $table): ?>
 						<tr>
-							<td  data-cell="Application">
+							<td data-cell="Application">
 								<?= $this->Html->link(
-									isset($table['alias']) ? $table['alias'] : $table['name'],
+									isset($table['alias']) ? sprintf('%s [%s]', $table['alias'], $table['name']) : $table['name'],
 									["controller" => "Tables", "action" => 'index', $table['name']],
 									['class' => 'button outline']
 								) ?>
 							</td>
 							<td data-cell="Actions" colspan="2">
 								<?php
-                                echo $this->element('action-area', [
-                                    'actions' => [
-                                        $this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $table['name']]),
-                                        $this->ActionButton->link('Rhino.eye', null, ['action' => 'view', $table['name']]),
-                                        $this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $table['name']]),
-                                        $this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $table['name']],
-                                            [
-                                                'confirm' => __('Are you sure you want to delete: {0}?', $table['name']),
-                                                'title' => __('Delete entry'),
-                                            ]
-                                        )
-                                    ]
-                                ]);
-                                // $this->start('actions');
-								// echo $this->element("layout-elements/actions", [
-								// 	"editFields" => [
-								// 		"link" => ["controller" => "Fields", "action" => 'index', $table['name']],
-								// 		"valid" => in_array('view', $rights)
-								// 	],
-								// 	"view" => [
-								// 		"link" => ["action" => 'view', $table['name']],
-								// 		"valid" => in_array('view', $rights)
-								// 	],
-								// 	"edit" => [
-								// 		"link" => ['action' => 'edit', $table['name']],
-								// 		"valid" => in_array('edit', $rights)
-								// 	],
-								// 	"delete" => [
-								// 		"link" => ['action' => 'delete', $table['name']],
-								// 		"valid" => in_array('edit', $rights),
-								// 		"confirm" => __('Are you sure you want to delete: {0}?', $table['name']),
-								// 	],
-								// ]);
-								// $this->end();
+								$actions = [
+									$this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $table['name']]),
+									$this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $table['name']]),
+									$this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $table['name']],
+										[
+											'confirm' => __('Are you sure you want to delete: {0}?', $table['name']),
+											'title' => __('Delete entry'),
+										]
+									)
+								];
+
+								if (!$table['has_table']) {
+									unset($actions[0]);
+								}
+
+								echo $this->element('action-area', [
+									'actions' => $actions
+								]);
 								?>
-                                <?php  /*echo $this->fetch('actions');*/ ?>
 							</td>
 						</tr>
 					<?php endforeach ?>
 				<?php endforeach ?>
 
 
-				<?php if ($this->Identity->get('role_id') === '1') : // admin ?>
+				<?php if ($this->Identity->get('role_id') === '1'): // admin ?>
 					<tr>
 						<td colspan="3">
 							<details>
 								<summary>Rhino Tables</summary>
 								<dl class="stack">
-									<?php foreach ($rhinoTables as $table) : ?>
-										<div class="cluster">
-											<dd>
+									<?php foreach ($rhinoTables as $table): ?>
+										<div class="cluster cluster--shrink">
+											<dd class="pill">
 												<?php
-                                                echo $this->Html->link(
-                                                    $this->Icon->svg('Rhino.trash'),
-                                                    ['controller' => 'Fields', 'action' => 'index', $table],
-                                                    [
-                                                        'escape' => false,
-                                                        'title' => __('Edit fields'),
-                                                        'class' => 'button'
-                                                    ]
-                                                );
-
 												$this->start('actions');
 												echo $this->element("layout-elements/actions", [
-                                                    "view" => [
-                                                        "link" => ["controller" => "Applications", "action" => 'view', $table],
-                                                        "valid" => in_array('view', $rights)
-                                                    ]
+													"view" => [
+														"link" => ["controller" => "Applications", "action" => 'view', $table],
+														"valid" => in_array('view', $rights)
+													],
+													'edit' => [
+														"link" => ['controller' => 'Fields', 'action' => 'index', $table],
+														"valid" => in_array('edit', $rights)
+													]
 												]);
 												$this->end();
 												?>

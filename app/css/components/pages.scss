@@ -6,7 +6,7 @@
 
 	.page-list {
 		margin-top: var(--spacing-500);
-		margin-left: calc(var(--spacing) * -1);
+		margin-left: var(--spacing);
 
 		&,
 		ul,
@@ -17,7 +17,7 @@
 		}
 		
 		ul {
-			margin-left: var(--spacing-400);
+			margin-left: var(--spacing);
 		}
 
 		&::before, 
@@ -30,7 +30,7 @@
 			position: absolute;
 
 			top: 0;
-			left: calc(var(--border-width) * -2);
+			left: calc(var(--spacing) * -1);
 		}
 	}
 
@@ -55,7 +55,7 @@
 				content: "";
 				display: block;
 			
-				width: var(--spacing);
+				width: calc(var(--spacing) * 1);
 				height: var(--border-width);
 			
 				background-color: var(--backdrop-color);

@@ -1,3 +1,5 @@
+$global-theme: 'swu';
+
 // add reset, makes things easier to handel
 @forward "library/reset";
 
@@ -8,6 +10,7 @@
 @forward "theme";
 
 // components are used for specific elements
-// @forward "theme_components";
+@forward "theme_components";
 @forward "partials";
 @forward "components";
+

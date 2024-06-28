@@ -31,6 +31,16 @@ class ApplicationsTable extends Table
         'rhino_templates'
 	];
 
+	public array $unknownEntity = [
+		'name' => null,
+		'has_table' => true,
+		'active' => false,
+		'rhino_group_id' => null,
+		'created' => null,
+		'modified' => null,
+		'is_custom' => false,
+		'overviewData' => []
+	];
 
 
     /**
@@ -99,6 +109,18 @@ class ApplicationsTable extends Table
 		if (!empty($data['overview_fields'])) {
 			$data['overview_fields'] = json_encode($data['overview_fields']);
 		}
+	}
+
+	public function getUnknown() {
+		$unknown = [];
+		$apps = $this->find()->select(['name'])->where(['has_table' => true])->all()->toArray();
+		$_unknown = $this->getList(array_column($apps, 'name'));
+		
+		foreach ($_unknown as $table) {
+			$unknown[] = array_merge($this->unknownEntity, ['name' => $table]);
+		}
+
+		return $this->newEntities($unknown);
 	}
 
 	public function hasTable(string $tableName) : bool {

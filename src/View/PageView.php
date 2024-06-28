@@ -55,7 +55,7 @@ class PageView extends View {
 			$this->append('meta', $this->Html->meta('pageId', (string)$page->id));
 			$this->append('css', $this->Html->css('Rhino.layout')); 
 			$this->append('script', $this->Html->script(['Rhino.layout'], ["type" => "module"]));
-			$this->append('script', $this->Html->script(['Rhino./vendor/editorjs/dist/editor.js']));
+			$this->append('script', $this->Html->script(['Rhino./vendor/editorjs/dist/editor']));
 			$this->append('script', $this->Html->script(['Rhino./vendor/header/dist/bundle.js']));
 			$this->append('script', $this->Html->script(['Rhino./vendor/list/dist/bundle.js']));
 			$this->assign('Rhino', $this->element('Rhino.layout-menu'));

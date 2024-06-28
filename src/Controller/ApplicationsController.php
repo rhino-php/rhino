@@ -26,19 +26,9 @@ class ApplicationsController extends RhinoController {
     public function index()
     {
 		$groups = $this->Groups->find()->contain(['Applications'])->all()->toArray();
-
-        $apps = $this->Applications->find()->where(
-			function ($exp) {
-				return $exp->isNotNull("rhino_group_id");
-			}
-		)->all()->toArray();
-
-		$_ungrouped = $this->Applications->getList(array_column($apps, 'name'));
-		$ungrouped = [];
-
-		foreach ($_ungrouped as $key => $value) {
-			$ungrouped[] = ['name' => $value];
-		}
+		$ungrouped = $this->Applications->find()->where(['rhino_group_id IS' => Null])->all()->toArray();
+		$unknown = $this->Applications->getUnknown();
+		$ungrouped = array_merge($ungrouped, $unknown);
 
 		if (!empty($ungrouped)) {
 			$groups[] = [
@@ -110,7 +100,7 @@ class ApplicationsController extends RhinoController {
 
 		$groups = $this->Groups->getGroups();
 
-		if (!empty($tableName)) {
+		if (!empty($tableName) && $entry->has_table) {
 			$appFields = $this->FieldHandler->listColumns($tableName);
 			$this->set([
 				"appFields" => $this->setValueAsKey($appFields)
@@ -125,13 +115,17 @@ class ApplicationsController extends RhinoController {
 	}
 
 	public function preSave($data, $params) {
-		if ($params['action'] == "edit") {
+		if ($params['action'] == "edit" && $data['has_table']) {
 			if ($data['name'] != $data['currentName']) {
 				$this->Applications->rename($data["currentName"], $data["name"]);
 			}
 		}
 
-		if ($params['action'] == "add") {
+		if ($params['action'] == "edit") {
+			unset($data["has_table"]);
+		}
+
+		if ($params['action'] == "add" && $data['has_table']) {
 			$applications = $this->Applications->getList();
 			if (in_array($data['name'], $applications)) {
 				$this->Flash->error(__('The table ' . $data['name'] . ' already exists.'), ['plugin' => 'Rhino']);

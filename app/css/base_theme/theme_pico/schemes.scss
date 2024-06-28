@@ -1,10 +1,10 @@
 @use "sass:map";
-@use "settings" as *;
+@use "settings";
 
 @use "light";
 @use "dark";
 
-@if map.get($modules, "themes/default") {
+@if map.get(settings.$modules, "themes/default") {
   /**
    * Color schemes
    */
@@ -30,10 +30,10 @@
     @include dark.theme;
   }
 
-  #{$parent-selector} progress,
-  #{$parent-selector} [type="checkbox"],
-  #{$parent-selector} [type="radio"],
-  #{$parent-selector} [type="range"] {
-    accent-color: var(#{$css-var-prefix}primary);
+  #{settings.$parent-selector} progress,
+  #{settings.$parent-selector} [type="checkbox"],
+  #{settings.$parent-selector} [type="radio"],
+  #{settings.$parent-selector} [type="range"] {
+    accent-color: var(#{settings.$css-var-prefix}primary);
   }
 }

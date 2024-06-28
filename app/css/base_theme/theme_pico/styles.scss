@@ -5,6 +5,36 @@
 @use "theme-colors";
 
 @if map.get($modules, "themes/default") {
+
+	/**
+	 * Dropdown fixes
+	 */
+	nav details.dropdown {
+		display: inline-block;
+		margin: inherit;
+
+		.button:not(.outline) {
+			color: var(--primary-inverse);
+			
+			&.secondary {
+				color: var(--secondary-inverse);
+			}
+	
+			&.contrast {
+				color: var(--contrast-inverse);
+			}
+		}
+	}
+
+
+	/**
+	 * input fixes
+	 */
+	input, button, select, .input > input {
+		margin-bottom: 0;
+	}
+
+
   /**
    * Styles
    */

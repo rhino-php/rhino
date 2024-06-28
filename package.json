@@ -52,7 +52,8 @@
 		"@editorjs/header": "^2.7.0",
 		"@editorjs/list": "^1.8.0",
 		"@picocss/pico": "^2.0.6",
-		"feather-icons": "^4.29.1"
+		"feather-icons": "^4.29.1",
+		"prismjs": "^1.29.0"
 	},
 	"exports": {
 		"./settings.scss": {

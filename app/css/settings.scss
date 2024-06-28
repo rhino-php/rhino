@@ -11,6 +11,7 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
+// @use "swu" as *; // use to create swu theme
 
 $use-type-scale: false;
 $vertical-unit: 1.5rem;
@@ -58,7 +59,7 @@ $spacings: (
  * Colors *
  **********/
 
-$default-colors: (
+$colors: (
    	primary: hsl(162, 68%, 58%),
 	secondary: hsl(194, 53%, 55%),
 	foreground: (
@@ -154,11 +155,13 @@ $default-colors: (
         );
     }
 
-    @return map.set($default-colors, $name, $primary-colors);
+    @return map.set($colors, $name, $primary-colors);
 }
 
-$default-colors: color-map("primary", map.get($default-colors, "primary"));
-$default-colors: color-map("secondary", map.get($default-colors, "secondary"));
+$colors: color-map("primary", map.get($colors, "primary"));
+$colors: color-map("secondary", map.get($colors, "secondary"));
+
+$default-colors: $colors !default;
 
 $black: #000;
 $white: #fff;

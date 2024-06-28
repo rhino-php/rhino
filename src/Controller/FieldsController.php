@@ -8,17 +8,11 @@ use Rhino\Controller\RhinoController;
 class FieldsController extends RhinoController
 {
     public function index(string $tableName) {
-        // $columns = $this->Fields->getColumns($tableName);
-        $fields = $this->Fields->find('all')->where(['table_name' => $tableName]);
-        foreach ($fields as $field) {
-            $field->set('column', $this->Fields->getColumn($tableName, $field['name']));
-        }
+		$fields = $this->Fields->getAll($tableName);
 
-        $this->set([
+		$this->set([
             "tableFields" => $fields,
 			"tableName" => $tableName,
-			// "columns" => $columns,
-			// "rows" => $this->Fields->rows
 		]);
     }
 

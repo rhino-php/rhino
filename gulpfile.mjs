@@ -43,6 +43,7 @@ import rename from 'gulp-rename';
 import newer from 'gulp-newer';
 import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
+import { time } from 'node:console';
 
 // Read command line paramters (arguments)
 const argv = yargs(hideBin(process.argv)).argv
@@ -128,6 +129,10 @@ var settings = {
 		src: "./templates/**/*.php",
 		active: true,
 	},
+	theme: {
+		src: dist + "css/main.css",
+		dest: dist + "css/",
+	},
 	css: {
 		src: src + "css/**/*.scss",
 		dest: dist + "css/",
@@ -136,7 +141,7 @@ var settings = {
 			src + "css/layout.scss",
 			src + "css/main.scss",
 			// src + "css/rhino.scss",
-			// src + "css/swu.scss",
+			src + "css/swu.scss",
 			// src + "css/pico.scss",
 			// './src/css/email.scss',
 			// You can add more files here that will be built seperately,
@@ -163,7 +168,7 @@ var settings = {
 		src: src + "js/**/*.js",
 		srcMain: [
 			src + "js/main.js",
-			src + "js/layout.js",
+			src + "js/layout.js"
 			// You can add more files here that will be built seperately,
 			// f.e. newsletter.js
 		],
@@ -189,9 +194,11 @@ var settings = {
 
 	jsVendor: {
 		src: [
-			// src + "js/vendor/**/*.js",
+			src + "js/vendor/**/*.js",
 			"./node_modules/@editorjs/editorjs/dist/editor.js",
 			"./node_modules/@editorjs/header/dist/bundle.js",
+			// "./node_modules/prismjs/prism.js",
+			// "./node_modules/prismjs/components/prism-php.min.js",
 			// "./node_modules/@editorjs/list/dist/bundle.js"
 			// "./shapes/src/js/**/*.js",
 			// Add single vendor files here,
@@ -203,7 +210,8 @@ var settings = {
 
 	cssVendor: {
 		src: [
-			// src + "css/vendor/**/*.css",
+			src + "css/vendor/**/*.css",
+			// "./node_modules/prismjs/themes/prism-twilight.min.css"
 			// "./node_modules/@picocss/pico/css/pico.min.css"
 			// Add single vendor files here,
 			// they will be copied as is to `{prefix}/css/vendor/`,
@@ -304,6 +312,23 @@ function css() {
 		.pipe(browserSync.stream());
 
 	return stream;
+}
+
+function theme(cb) {
+	let theme = argv.set;
+	
+	if (theme == undefined) {
+		log('Please use `--set <name>` to specify a name!');
+		return;
+	}
+
+	css();
+
+	fs.cp(settings.theme.src, settings.theme.dest + argv.set + '.css', () => {
+		log('Theme ' + theme + ' created');
+	});
+	
+	return cb();
 }
 
 
@@ -551,7 +576,7 @@ function checkKey() {
 /*
 * Task: Build all
 */
-const build = series(cleanDist, js, jsModules, jsVendor, css, cssVendor, images, icons, fonts, favicon);
+const build = series(cleanDist, js, jsModules, jsVendor, css, cssVendor, vendor, images, icons, fonts, favicon);
 
 export {
 	build,
@@ -567,5 +592,6 @@ export {
 	icons,
 	favicon,
 	jsModules,
-	templates
+	templates,
+	theme
 };

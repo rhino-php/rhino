@@ -19,13 +19,16 @@
 	<!-- To do: add Version Number to css -->
 	<?= $this->Html->css([
 		'Rhino.webfonts',
-		// 'Rhino.pico',
-		// 'Rhino.' . (isset($user) ? $user->theme : 'rhino'),
-		"Rhino.main"
+		"Rhino.main",
+		"Rhino.vendor/prism.css",
+		$theme
 	]) ?>
 	<!--  $this->Html->css(['Rhino.webfonts', 'Rhino.main', 'Rhino.vendor/pico.min']) ?> -->
 
 	<!-- Load main javascript -->
+	<?= $this->Html->script([
+		'Rhino.vendor/prism.js'
+	]); ?>
 	<?= $this->Html->script(['Rhino.main'], ["type" => "module"]) ?>
 
 	<?= $this->fetch('meta') ?>

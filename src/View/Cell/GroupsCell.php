@@ -45,10 +45,14 @@ class GroupsCell extends Cell {
 		foreach ($_groups as $group) {
 			$apps = [];
 			foreach ($group['applications'] as $app) {
+				$link = ['plugin' => 'Rhino', 'controller' => 'Tables', "action" => "index", $app['name']];
+				if ($app['is_custom']) {
+					$link = ['plugin' => null, 'controller' => $app['name'], "action" => "index"];
+				}
 				$apps[] = [
 					'name' => isset($app['alias']) ? $app['alias'] : $app["name"],
 					'icon' => null,
-					'link' => ['plugin' => 'Rhino', 'controller' => 'Tables', "action" => "index", $app['name']],
+					'link' => $link,
 					'rights' => $app['name']
 				];
 				$handledApps[] = $app['name'];
@@ -66,10 +70,15 @@ class GroupsCell extends Cell {
 				continue;
 			}
 
+			$link = ['plugin' => 'Rhino', 'controller' => 'Tables', "action" => "index", $app['name']];
+			if ($app['is_custom']) {
+				$link = ['plugin' => null, 'controller' => $app['name'], "action" => "index"];
+			}
+
 			$groups[] = [
 				'name' => isset($app['alias']) ? $app['alias'] : $app["name"],
 				'icon' => null,
-				'link' => ['plugin' => 'Rhino', 'controller' => 'Tables', "action" => "index", $app['name']],
+				'link' => $link,
 				'rights' => $app['name']
 			];
 		}
@@ -106,12 +115,6 @@ class GroupsCell extends Cell {
 						'icon' => "Rhino.sidebar",
 						'rights' => 'rhino_widgets'
 					],
-					// [
-					// 	'name' => 'Nodes',
-					// 	'link' => ['controller' => 'Nodes', 'action' => 'index'],
-					// 	'icon' => "Rhino.table",
-					// 	'rights' => 'rhino_widgets'
-					// ]
 				]
 			],
 			[
@@ -126,20 +129,6 @@ class GroupsCell extends Cell {
 						'icon' => "Rhino.table",
 						'link' => ['plugin' => 'Rhino', 'controller' => 'Tables', 'action' => 'index', 'rhino_templates'],
 						'rights' => 'rhino_templates'
-						// 'buttons' => [
-						// 	[
-						// 		'name' => 'Elements',
-						// 		'icon' => "Rhino.book",
-						// 		'link' => ['controller' => 'Tables', 'action' => 'index', 'rhino_elements'],
-						// 		'rights' => 'rhino_elements'
-						// 	],
-						// 	[
-						// 		'name' => 'Layouts',
-						// 		'icon' => "Rhino.book",
-						// 		'link' => ['controller' => 'Tables', 'action' => 'index', 'rhino_layouts'],
-						// 		'rights' => 'rhino_layouts'
-						// 	]
-						// ]
 					],
 					[
 						'name' => _('App-Manager'),
@@ -158,37 +147,7 @@ class GroupsCell extends Cell {
 						'icon' => "Rhino.lock",
 						'link' => ['plugin' => 'Rhino', 'controller' => 'Roles', 'action' => 'index'],
 						'rights' => 'rhino_roles'
-					],
-					[
-						'name' => 'Hello',
-						'icon' => "Rhino.feather",
-						'link' => ['plugin' => null, 'controller' => 'Hello', 'action' => 'index'],
-						'rights' => 'rhino_roles'
 					]
-					// [
-					// 	'name' => 'Admin',
-					// 	'icon' => "Rhino.settings",
-					// 	'buttons' => [
-					// 		[
-					// 			'name' => _('Applications-Manager'),
-					// 			'icon' => "Rhino.unlock",
-					// 			'link' => ['controller' => 'Applications', "action" => "index"],
-					// 			'rights' => 'rhino_apps'
-					// 		],
-					// 		[
-					// 			'name' => 'Nutzerverwaltung',
-					// 			'icon' => "Rhino.users",
-					// 			'link' => ['controller' => 'Users', 'action' => 'index'],
-					// 			'rights' => 'rhino_users'
-					// 		],
-					// 		[
-					// 			'name' => 'Rechteverwaltung',
-					// 			'icon' => "Rhino.lock",
-					// 			'link' => ['controller' => 'Roles', 'action' => 'index'],
-					// 			'rights' => 'rhino_roles'
-					// 		]
-					// 	]
-					// ]
 				],
 			]
 		];

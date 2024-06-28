@@ -64,6 +64,15 @@ class FieldsTable extends Table {
 		"timezone"
 	];
 
+	public array $unknownEntity = [
+		'alias' => null,
+		'description' => null,
+		'default_value' => null,
+		'created' => null,
+		'modified' => null,
+		'options' => []
+	];
+
     public function initialize(array $config): void {
 		parent::initialize($config);
 
@@ -117,6 +126,38 @@ class FieldsTable extends Table {
 	public function drop(string $tableName, string $field): void {
 		$table = $this->abstract->table($tableName);
 		$table->removeColumn($field)->save();
+	}
+
+	public function getAll(string $tableName) {
+		$fields = $this->find()->where(['table_name' => $tableName])->all();
+		$columns = $this->getUnknown($tableName, array_column($fields->toArray(), 'name'));
+		$fields = $fields->append($columns);
+		return $fields;
+	}
+
+	public function getUnknown(string $tableName, array $filter) {
+		if (!$this->abstract->hasTable($tableName)) {
+			return;
+		}
+
+		$query = "describe " . $tableName;
+		$_columns = $this->abstract->query($query)->fetchAll();
+
+		$columns = [];
+		foreach ($_columns as $column) {
+			if (in_array($column["Field"], $filter) || $column["Field"] == 'id') {
+				continue;
+			}
+
+			$columns[] = array_merge($this->unknownEntity ,[
+				'name' =>  $column['Field'],
+				'table_name' => $tableName,
+				'type' => $this->getHumanType($column['Type']),
+				'default' => $column['Default'],
+			]);
+		}
+
+		return $this->newEntities($columns);
 	}
 	
 	public function getColumns(string $tableName) {
