@@ -1,4 +1,17 @@
 <?php
+
+$currentTable = $this->app->name;
+
+$tableColumns = $entry->getVisible();
+
+if (!empty($this->app->overView)) {
+	$tableColumns = $this->app->detailView;
+}
+
+if (empty($tableColumns)) {
+	$tableColumns = $this->app->fields->extract('name');
+}
+
 $options = [];
 
 if (isset($readonly) && $readonly) {
@@ -7,10 +20,12 @@ if (isset($readonly) && $readonly) {
 
 ?>
 
-<section class="stack">
+<section class="stack-400">
 	<h1><?= $title ?></h1>
+	
+	<!-- <?php debug($this->app->fields) ?> -->
 
-	<?= $this->Form->create($entry, ['type' => 'file', "class" => "stack"]); ?>
+	<?= $this->Form->create($entry, ['type' => 'file', "class" => "stack-400"]); ?>
 
 	<?php if ($action != 'add') : ?>
 		<div class="cluster pill">
@@ -18,14 +33,11 @@ if (isset($readonly) && $readonly) {
 			<?= $this->Html->link("next", ["controller" => "tables", "action" => $action, $currentTable, $nextId], ["class" => "button", "disabled" => empty($nextId)]) ?>
 		</div>
 	<?php endif ?>
-	
-	<?= $this->Field->render($fields, $entry, $options) ?>
 
-	<?php if ($entry->getVirtual() > 0) {
-		// foreach ($entry->getVirtual() as $virtual) {
-		// 	echo $virtual;
-		// }
-	} ?>
+	<?php foreach ($tableColumns as $fieldName) : ?>
+		<?php if ($fieldName == 'id') continue; ?>
+		<?= $this->Field->editField($fieldName, $entry, $options) ?>
+	<?php endforeach ?>
 
 	<div class="cluster pill">
 		<?php if ($action != 'view') : ?>

@@ -92,7 +92,12 @@ class Select extends Field {
 	}
 
 	private function getSimpleOptions() {
+		if (getType($this->options['selectValues']) == 'array') {
+			return $this->options['selectValues'];
+		}
+
 		$return = [];
+
 		$values = preg_split("/\r\n|\n|\r/", $this->options['selectValues']);
 		$keys = !empty($keys) ? preg_split("/\r\n|\n|\r/", $this->options['selectKeys']) : [];
 

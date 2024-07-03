@@ -49,12 +49,16 @@ class Field {
 	 */
 	protected object $Templater;
 
-	public function __construct(?object $field = null) {
+	public function __construct(?object $field = null, array $config = []) {
 		if (isset($field)) {
 			$this->field = $field;
 
 			if (isset($field->options)) {
 				$this->options = $field->options;
+			}
+
+			if (isset($config['options'])) {
+				$this->options = array_merge($this->options, $config['options']);
 			}
 		}
 

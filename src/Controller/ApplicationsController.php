@@ -16,51 +16,55 @@ class ApplicationsController extends RhinoController {
 	public function initialize(): void {
 		parent::initialize();
 		$this->Groups = new GroupsTable();
-    }
+	}
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
-    {
-		$groups = $this->Groups->find()->contain(['Applications'])->all()->toArray();
-		$ungrouped = $this->Applications->find()->where(['rhino_group_id IS' => Null])->all()->toArray();
+	/**
+	 * Index method
+	 *
+	 * @return \Cake\Http\Response|null|void Renders view
+	 */
+	public function index() {
+		$groups = $this->Groups->getGroups();
+		$ungrouped = $this->Applications->find()->where(['rhino_group_id IS' => Null])->all();
+		
 		$unknown = $this->Applications->getUnknown();
-		$ungrouped = array_merge($ungrouped, $unknown);
+		
+		if (!empty($unknown)) {
+			$ungrouped = $ungrouped->appendItem($unknown);
+		}
 
-		if (!empty($ungrouped)) {
-			$groups[] = [
+
+		if (!$ungrouped->isEmpty()) {
+			$group = $this->Groups->newEntity([
 				"name" => "Ungrouped",
-				"applications" => $ungrouped
-			];
+			]);
+			$group->applications = $ungrouped;
+			$groups = $groups->appendItem($group);
 		}
 
 		$rhinoTables = $this->Applications->tableBlackList;
 
-        $this->set(compact('groups', 'rhinoTables'));
-    }
+		$this->set(compact('groups', 'rhinoTables'));
+	}
 
-    /**
-     * View method
-     *
-     * @param string|null $id Rhino Media id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view(string $name = null) {
-        $data = $this->Applications->getByName($name, ['contain' => 'Fields']);
-        $this->set(compact('data'));
-    }
+	/**
+	 * View method
+	 *
+	 * @param string|null $id Rhino Media id.
+	 * @return \Cake\Http\Response|null|void Renders view
+	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 */
+	public function view(string $name = null) {
+		$data = $this->Applications->getByName($name, ['contain' => 'Fields']);
+		$this->set(compact('data'));
+	}
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
+	/**
+	 * Add method
+	 *
+	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+	 */
+	public function add() {
 
 		$entry = $this->Applications->newEmptyEntity();
 
@@ -68,15 +72,15 @@ class ApplicationsController extends RhinoController {
 			'success' => __('The table has been saved.'),
 			'error' => __('The table could not be saved. Please, try again.')
 		]);
-    }
+	}
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Table id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+	/**
+	 * Edit method
+	 *
+	 * @param string|null $id Table id.
+	 * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 */
 	public function edit(string $name = null) {
 		$entry = $this->Applications->getByName($name);
 
@@ -98,7 +102,7 @@ class ApplicationsController extends RhinoController {
 	public function preCompose($entry, ...$params) {
 		$tableName = $params[0] ?? null;
 
-		$groups = $this->Groups->getGroups();
+		$groups = $this->Groups->getGroupNames();
 
 		if (!empty($tableName) && $entry->has_table) {
 			$appFields = $this->FieldHandler->listColumns($tableName);
@@ -139,34 +143,34 @@ class ApplicationsController extends RhinoController {
 	}
 
 	public function newGroup() {
-        if ($this->request->is(['patch', 'post', 'put'])) {
+		if ($this->request->is(['patch', 'post', 'put'])) {
 			$entry = $this->Groups->newEmptyEntity();
-            $group = $this->Groups->patchEntity($entry, $this->request->getData());
+			$group = $this->Groups->patchEntity($entry, $this->request->getData());
 
 			if ($this->Groups->save($group)) {
-                $this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
+				$this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
 
-                return $this->redirect(['action' => 'index']);
-            }
+				return $this->redirect(['action' => 'index']);
+			}
 
-            $this->Flash->error(__('The table could not be saved. Please, try again.'), ['plugin' => 'Rhino']);
-        }
+			$this->Flash->error(__('The table could not be saved. Please, try again.'), ['plugin' => 'Rhino']);
+		}
 	}
 
 	public function renameGroup($id) {
 		$entry = $this->Groups->get($id);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $group = $this->Groups->patchEntity($entry, $this->request->getData());
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			$group = $this->Groups->patchEntity($entry, $this->request->getData());
 
 			if ($this->Groups->save($group)) {
-                $this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
+				$this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
 
-                return $this->redirect(['action' => 'index']);
-            }
+				return $this->redirect(['action' => 'index']);
+			}
 
-            $this->Flash->error(__('The table could not be saved. Please, try again.'), ['plugin' => 'Rhino']);
-        }
+			$this->Flash->error(__('The table could not be saved. Please, try again.'), ['plugin' => 'Rhino']);
+		}
 
 		$this->set(['entity' => $entry]);
 	}
@@ -175,32 +179,32 @@ class ApplicationsController extends RhinoController {
 		$entry = $this->Groups->get($id);
 
 		if ($this->Groups->delete($entry)) {
-            $this->Flash->success(__('The user has been deleted.'), ['plugin' => 'Rhino']);
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'), ['plugin' => 'Rhino']);
-        }
+			$this->Flash->success(__('The user has been deleted.'), ['plugin' => 'Rhino']);
+		} else {
+			$this->Flash->error(__('The user could not be deleted. Please, try again.'), ['plugin' => 'Rhino']);
+		}
 
-        return $this->redirect(['action' => 'index']);
+		return $this->redirect(['action' => 'index']);
 	}
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Table id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete(string $tableName) {
+	/**
+	 * Delete method
+	 *
+	 * @param string|null $id Table id.
+	 * @return \Cake\Http\Response|null|void Redirects to index.
+	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 */
+	public function delete(string $tableName) {
 		$entry = $this->Applications->getByName($tableName);
 		if ($entry) {
 			$this->Applications->delete($entry);
 		}
 		$this->Applications->drop($tableName);
-        return $this->redirect(['action' => 'index']);
-    }
+		return $this->redirect(['action' => 'index']);
+	}
 
 	public function createTable() {
 		$this->Tables->createTable();
-		 return $this->redirect(['action' => 'index']);
+		return $this->redirect(['action' => 'index']);
 	}
 }

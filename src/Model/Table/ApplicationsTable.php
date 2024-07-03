@@ -8,6 +8,7 @@ use Cake\ORM\Table;
 // use Rhino\Model\Table\FieldsTable;
 use Migrations\Migrations;
 use Migrations\AbstractMigration;
+use Cake\Collection\Collection;
 
 class ApplicationsTable extends Table
 {
@@ -77,10 +78,15 @@ class ApplicationsTable extends Table
     }
 
 	public function getByName($tableName) {
+		if (empty($tableName)) {
+			return false;
+		}
+
 		$query = $this->find()->where(['Applications.name' => $tableName]);
 
 		if ($query->all()->isEmpty()) {
-			return false;
+			$unknown = $this->getUnknown(false);
+			return $unknown->firstMatch(['name'=> $tableName]);
 		}
 
 		return $query->first();
@@ -91,6 +97,7 @@ class ApplicationsTable extends Table
 		if ($filtered) {
 			$balcklist = array_merge($this->tableBlackList, $filter);
 		}
+
 		$_tables = $this->abstract->query("show tables")->fetchAll();
 
 		$tables = [];
@@ -111,16 +118,20 @@ class ApplicationsTable extends Table
 		}
 	}
 
-	public function getUnknown() {
+	public function getUnknown(bool $filtered = true) {
 		$unknown = [];
 		$apps = $this->find()->select(['name'])->where(['has_table' => true])->all()->toArray();
-		$_unknown = $this->getList(array_column($apps, 'name'));
+		$_unknown = $this->getList(array_column($apps, 'name'), $filtered);
+		
+		if (empty($_unknown)) {
+			return;
+		}
 		
 		foreach ($_unknown as $table) {
 			$unknown[] = array_merge($this->unknownEntity, ['name' => $table]);
 		}
 
-		return $this->newEntities($unknown);
+		return new Collection($this->newEntities($unknown));
 	}
 
 	public function hasTable(string $tableName) : bool {

@@ -26,8 +26,13 @@ class GroupsTable extends Table
 
 		$this->hasMany('Rhino.Applications');
     }
+
+	public function getGroups() {
+		$groups = $this->find()->contain(['Applications'])->all();
+		return $groups;
+	}
 		
-	public function getGroups(): array {
+	public function getGroupNames(): array {
 		$_groups = $this->find()->all()->toArray();
 		
 		$keys = array_column($_groups, "id");

@@ -5,46 +5,48 @@ namespace Rhino\Controller;
 
 use Rhino\Controller\RhinoController;
 use InvalidArgumentException;
+
 /**
  * Tables Controller
  *
  * @method \Rhino\Model\Entity\Table[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class TablesController extends RhinoController
-{
+class TablesController extends RhinoController {
 	public function initialize(): void {
 		parent::initialize();
-    }
+	}
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function list() {
-        $tables = $this->Tables->getList();
-        $this->set(compact('tables'));
-    }
+	/**
+	 * Index method
+	 *
+	 * @return \Cake\Http\Response|null|void Renders view
+	 */
+	public function list() {
+		$tables = $this->Tables->getList();
+		$this->set(compact('tables'));
+	}
 
-    /**
-     * View method
-     *
-     * @param string|null $id Table id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function index($tableName = null) {
-        $this->setTable($tableName);
+	/**
+	 * View method
+	 *
+	 * @param string|null $id Table id.
+	 * @return \Cake\Http\Response|null|void Renders view
+	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 */
+	public function index($tableName = null) {
+		$this->setTable($tableName);
+		$this->set(['_app' => $tableName]);
+
 		$columns = $this->FieldHandler->listColumns($tableName);
+		$data = $this->Table->find("all");
+		$data = $this->paginateFilter($data);
 
-		$data = $this->paginateFilter($this->Table->find("all"));
-
-        $this->set([
+		$this->set([
 			'data' => $data,
 			'columns' => $columns,
 			'tableName' => $tableName
 		]);
-    }
+	}
 
 	/**
 	 * Add method
@@ -53,6 +55,7 @@ class TablesController extends RhinoController
 	 */
 	public function add($tableName = null) {
 		$this->setTable($tableName);
+		$this->set(['_app' => $tableName]);
 		$entry = $this->Table->newEmptyEntity();
 		$this->set(['title' => 'Add']);
 		$this->compose($entry, ["redirect" => ['action' => 'index', $tableName]]);
@@ -67,6 +70,7 @@ class TablesController extends RhinoController
 	 */
 	public function edit($tableName = null, $id = null) {
 		$this->setTable($tableName);
+		$this->set(['_app' => $tableName]);
 		$entry = $this->Table->get($id);
 		$this->set(['title' => 'Edit']);
 		$this->compose($entry, ["redirect" => ['action' => 'index', $tableName]]);
@@ -81,6 +85,7 @@ class TablesController extends RhinoController
 	 */
 	public function view($tableName = null, $id = null) {
 		$this->setTable($tableName);
+		$this->set(['_app' => $tableName]);
 		$entry = $this->Table->get($id);
 		$this->set(['title' => 'View', 'readonly' => true]);
 		$this->compose($entry, ["redirect" => ['action' => 'index', $tableName]]);
@@ -115,7 +120,7 @@ class TablesController extends RhinoController
 		} else {
 			$this->Flash->error('The category could not be moved down. Please, try again.');
 		}
-		return $this->redirect($this->referer(['action' =>'index', $tableName]));
+		return $this->redirect($this->referer(['action' => 'index', $tableName]));
 	}
 
 

@@ -264,6 +264,33 @@ class FieldHandler {
 		$field = $this->getField($fieldName, $tableName);
 		return $field;
 	}
+
+	public function getHumanType($type) {
+		foreach ($this->customTypes as $customType) {
+			if (isset($customType['type']) && $customType['type'] == $type) {
+				return $customType['type'];
+			}
+		};
+
+		return $type;
+	}
+
+	public function display($name, $field) {
+		if ($name == 'id') {
+			return;
+		}
+
+		$field->type = $this->getHumanType($field->type);
+		$Field = $this->getFieldClass($field);
+		
+		if (!$Field) {
+			return;
+		}
+
+		dd($Field);
+
+		return $Field->display($value, $entity);
+	}
 }
 
 ?>

@@ -1,6 +1,6 @@
 <section class="stack">
 
-	<h1><?= $tableName ?></h1>
+	<h1><?= $table->alias ?></h1>
 
 	<figure class="table-wrapper">
 		<table role="grid">
@@ -28,16 +28,16 @@
                         $this->start('actions');
                         echo $this->element("layout-elements/actions", [
                             "edit" => [
-                                "link" => ['action' => 'edit', $tableName, $field->name],
+                                "link" => ['action' => 'edit', $table->name, $field->name],
                                 "valid" => in_array('edit', $rights)
                             ],
                             "duplicate" => [
-                                "link" => ['action' => 'duplicate', $tableName, $field->name],
+                                "link" => ['action' => 'duplicate', $table->name, $field->name],
                                 'valid' => true || in_array('edit', $rights)
                                 // TODO: Extra rule for 'duplicate'? Else should be covered by 'new' - but does this exist?
                             ],
                             "delete" => [
-                                "link" => ['action' => 'delete', $tableName, $field->name],
+                                "link" => ['action' => 'delete', $table->name, $field->name],
                                 "valid" => in_array('edit', $rights),
                                 "confirm" => __('Are you sure you want to delete: {0}?', $field->name),
                             ],
@@ -53,7 +53,7 @@
 	</figure>
 
     <div class="action-area">
-        <?= $this->Html->link("Add Cloumn", ["controller" => "Fields", "action" => "add", $tableName], ["class" => "button"]) ?>
+        <?= $this->Html->link("Add Field", ["controller" => "Fields", "action" => "add", $table->name], ["class" => "button"]) ?>
         <?= $this->Html->link("Back", ['controller' => 'applications'], ["class" => "button"]); ?>
     </div>
 </section>

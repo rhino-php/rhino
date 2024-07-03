@@ -8,11 +8,12 @@ use Rhino\Controller\RhinoController;
 class FieldsController extends RhinoController
 {
     public function index(string $tableName) {
+		$app = $this->Fields->Applications->getByName($tableName);
 		$fields = $this->Fields->getAll($tableName);
 
 		$this->set([
             "tableFields" => $fields,
-			"tableName" => $tableName,
+			"table" => $app,
 		]);
     }
 
@@ -49,7 +50,6 @@ class FieldsController extends RhinoController
 
 	public function preCompose($entry, ...$params) {
 		$tableName = $params[0];
-		$field = $params[1] ?? null;
 
 		$types = $this->FieldHandler->customTypes;
 		$typeOptions = $this->FieldHandler->getTypes();

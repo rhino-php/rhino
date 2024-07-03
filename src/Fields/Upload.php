@@ -9,7 +9,7 @@ class Upload extends Field {
 	public function load($value) {
 		$displayOptions = [
 			'type' => 'file',
-			'directory' => $this->options['uploadDirectory']
+			'directory' => $this->options['uploadDirectory'] ?? null,
 		];
 
 		if (isset($this->options['uploadTypes'])) {
@@ -63,7 +63,11 @@ class Upload extends Field {
 			return $value;
 		}
 
-		$path = ROOT . $this->options['uploadDirectory'];
+		$path = ROOT;
+		if (isset($this->options['uploadDirectory'])) {
+			$path .= $this->options['uploadDirectory'];
+		}
+
 		if (is_array($file)) {
 			foreach ($file as $_file) {
 				$name = $_file->getClientFilename();

@@ -38,23 +38,20 @@ class GroupsCell extends Cell {
 
 		// ToDo: Contain bricks new installs?
 		$_groups = $this->Groups->find('all')->contain(['Applications'])->all();
-		$_apps = $this->Groups->Applications->find('all')->toArray();
+		$_applications = $this->Groups->Applications->find('all')->where(['active' => true])->toArray();
 		$groups = [];
 
 		$handledApps = [];
 		foreach ($_groups as $group) {
 			$apps = [];
 			foreach ($group['applications'] as $app) {
-				$link = ['plugin' => 'Rhino', 'controller' => 'Tables', "action" => "index", $app['name']];
-				if ($app['is_custom']) {
-					$link = ['plugin' => null, 'controller' => $app['name'], "action" => "index"];
-				}
 				$apps[] = [
-					'name' => isset($app['alias']) ? $app['alias'] : $app["name"],
+					'name' => $app->alias,
 					'icon' => null,
-					'link' => $link,
-					'rights' => $app['name']
+					'link' => $app->link,
+					'rights' => $app->name
 				];
+
 				$handledApps[] = $app['name'];
 			}
 
@@ -65,21 +62,16 @@ class GroupsCell extends Cell {
 			];
 		}
 
-		foreach ($_apps as $app) {
+		foreach ($_applications as $app) {
 			if (in_array($app['name'], $handledApps)) {
 				continue;
 			}
 
-			$link = ['plugin' => 'Rhino', 'controller' => 'Tables', "action" => "index", $app['name']];
-			if ($app['is_custom']) {
-				$link = ['plugin' => null, 'controller' => $app['name'], "action" => "index"];
-			}
-
 			$groups[] = [
-				'name' => isset($app['alias']) ? $app['alias'] : $app["name"],
+				'name' => $app->alias,
 				'icon' => null,
-				'link' => $link,
-				'rights' => $app['name']
+				'link' => $app->link,
+				'rights' => $app->name
 			];
 		}
 
@@ -89,7 +81,13 @@ class GroupsCell extends Cell {
 				"buttons" => [
 					[
 						'name' => 'Dashboard',
-						'link' => ['plugin' => 'Rhino', 'controller' => 'Overview', 'action' => 'display', 'home'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'Overview',
+							'action' => 'display',
+							'home',
+							'prefix' => false,
+						],
 						'icon' => "Rhino.home"
 					]
 				]
@@ -99,19 +97,34 @@ class GroupsCell extends Cell {
 				"buttons" => [
 					[
 						'name' => 'Seiten',
-						'link' => ['plugin' => 'Rhino', 'controller' => 'Pages', 'action' => 'index'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'Pages',
+							'action' => 'index',
+							'prefix' => false,
+						],
 						'icon' => "Rhino.file",
 						'rights' => 'rhino_pages'
 					],
 					[
 						'name' => 'Medien',
-						'link' => ['plugin' => 'Rhino', 'controller' => 'MediaCategories', 'action' => 'index'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'MediaCategories',
+							'action' => 'index',
+							'prefix' => false,
+						],
 						'icon' => "Rhino.image",
 						'rights' => 'rhino_media'
 					],
 					[
 						'name' => 'Widgets',
-						'link' => ['plugin' => 'Rhino', 'controller' => 'WidgetCategories', 'action' => 'index'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'WidgetCategories',
+							'action' => 'index',
+							'prefix' => false,
+						],
 						'icon' => "Rhino.sidebar",
 						'rights' => 'rhino_widgets'
 					],
@@ -127,25 +140,46 @@ class GroupsCell extends Cell {
 					[
 						'name' => 'Templates',
 						'icon' => "Rhino.table",
-						'link' => ['plugin' => 'Rhino', 'controller' => 'Tables', 'action' => 'index', 'rhino_templates'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'Tables',
+							'action' => 'index',
+							'rhino_templates',
+							'prefix' => false,
+						],
 						'rights' => 'rhino_templates'
 					],
 					[
 						'name' => _('App-Manager'),
 						'icon' => "Rhino.database",
-						'link' => ['plugin' => 'Rhino', 'controller' => 'Applications', "action" => "index"],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'Applications',
+							"action" => "index",
+							'prefix' => false,
+						],
 						'rights' => 'rhino_apps'
 					],
 					[
 						'name' => 'Nutzerverwaltung',
 						'icon' => "Rhino.users",
-						'link' => ['plugin' => 'Rhino', 'controller' => 'Users', 'action' => 'index'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'Users',
+							'action' => 'index',
+							'prefix' => false,
+						],
 						'rights' => 'rhino_users'
 					],
 					[
 						'name' => 'Rechteverwaltung',
 						'icon' => "Rhino.lock",
-						'link' => ['plugin' => 'Rhino', 'controller' => 'Roles', 'action' => 'index'],
+						'link' => [
+							'plugin' => 'Rhino',
+							'controller' => 'Roles',
+							'action' => 'index',
+							'prefix' => false,
+						],
 						'rights' => 'rhino_roles'
 					]
 				],

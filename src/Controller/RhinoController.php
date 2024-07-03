@@ -248,28 +248,28 @@ class RhinoController extends BaseController {
 			$this->viewBuilder()->setClassName('Rhino.Rhino');
 		}
 
-		if ($this->useTable) {
-			$tableName = $this->Table->getTable();
-			$this->set([
-				'currentTable' => $tableName
-			]);
+		// if ($this->useTable) {
+		// 	$tableName = $this->Table->getTable();
+		// 	$this->set([
+		// 		'currentTable' => $tableName
+		// 	]);
 			
-			if (isset($this->Table->fieldConfig)) {
-				$this->FieldHandler->setConfig($this->Table->fieldConfig);
-			}
+		// 	if (isset($this->Table->fieldConfig)) {
+		// 		$this->FieldHandler->setConfig($this->Table->fieldConfig);
+		// 	}
 			
-			$fields = $this->FieldHandler->getFields($tableName);
-			$app = $this->Apps->getByName($tableName);
+		// 	$fields = $this->FieldHandler->getFields($tableName);
+		// 	$app = $this->Apps->getByName($tableName);
 			
-			if (empty($app)) {
-				$app = $this->Apps->newEntity(['name' => $tableName]);
-			}
+		// 	if (empty($app)) {
+		// 		$app = $this->Apps->newEntity(['name' => $tableName]);
+		// 	}
 
-			$this->set([
-				'fields' => $fields,
-				'app' => $app
-			]);
-		}
+		// 	$this->set([
+		// 		'fields' => $fields,
+		// 		'app' => $app
+		// 	]);
+		// }
 
 		return parent::render($template, $layout);
 	}

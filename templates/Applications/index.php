@@ -1,6 +1,5 @@
 <section class="index stack">
 	<h1><?= __('Application-Manager') ?></h1>
-
 	<figure>
 		<table role="grid">
 			<thead>
@@ -43,29 +42,29 @@
 							<?php endif ?>
 						</td>
 					</tr>
-					<?php foreach ($group['applications'] as $table): ?>
+					<?php foreach ($group->applications as $app): ?>
 						<tr>
-							<td data-cell="Application">
+							<td data-cell="Application">					
 								<?= $this->Html->link(
-									isset($table['alias']) ? sprintf('%s [%s]', $table['alias'], $table['name']) : $table['name'],
-									["controller" => "Tables", "action" => 'index', $table['name']],
+									sprintf('%s [%s]', $app->alias, $app->name),
+									$app->link,
 									['class' => 'button outline']
-								) ?>
+								); ?>
 							</td>
 							<td data-cell="Actions" colspan="2">
 								<?php
 								$actions = [
-									$this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $table['name']]),
-									$this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $table['name']]),
-									$this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $table['name']],
+									$this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $app->name]),
+									$this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $app->name]),
+									$this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $app->name],
 										[
-											'confirm' => __('Are you sure you want to delete: {0}?', $table['name']),
+											'confirm' => __('Are you sure you want to delete: {0}?', $app->name),
 											'title' => __('Delete entry'),
 										]
 									)
 								];
 
-								if (!$table['has_table']) {
+								if (!$app->has_table) {
 									unset($actions[0]);
 								}
 

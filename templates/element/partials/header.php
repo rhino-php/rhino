@@ -25,15 +25,24 @@
 						<li><a href="#" data-theme-switcher="dark">Theme: Dark</a></li>
 						<li role="presentation">
 							<?= $this->Html->link(
-								$this->Icon->svg('Rhino.user') . "<span>Profil</span>",
-								['plugin' => 'Rhino', "controller" => "Users", "action" => "edit", $this->Identity->get("id")],
+								$this->Icon->svg('Rhino.user') . "<span>Profil</span>", [
+									'plugin' => 'Rhino',
+									"controller" => "Users",
+									"action" => "edit",
+									'prefix' => false,
+									$this->Identity->get("id"),
+								],
 								['class' => 'button', 'escape' => false]
 							) ?>
 						</li>
 						<li role="presentation">
 							<?= $this->Html->link(
-								$this->Icon->svg('Rhino.log-out') . "<span>Log-out</span>",
-								['plugin' => 'Rhino', 'controller' => 'users', 'action' => 'logout'],
+								$this->Icon->svg('Rhino.log-out') . "<span>Log-out</span>", [
+									'plugin' => 'Rhino',
+									'controller' => 'users',
+									'action' => 'logout',
+									'prefix' => false,
+								],
 								['class' => 'button', 'escape' => false]
 							) ?>
 						</li>

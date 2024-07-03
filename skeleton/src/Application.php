@@ -173,16 +173,20 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 	}
 
 	public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface {
-
-		if ($request->getParam('plugin') === "Rhino") {
+		if ($request->getParam('plugin') === "Rhino" || $request->getParam('prefix') == 'RhinoApp') {
 			// Reuse fields in multiple authenticators.
 			$fields = [
 				AbstractIdentifier::CREDENTIAL_USERNAME => 'email',
 				AbstractIdentifier::CREDENTIAL_PASSWORD => 'password',
 			];
 
-			$login = Router::url(['plugin' => 'Rhino', 'controller' => 'Users', 'action' => 'login']);
-
+			$login = Router::url([
+				'plugin' => 'Rhino',
+				'controller' => 'Users',
+				'action' => 'login',
+				'prefix' => false,
+			]);
+		
 			$authenticationService = new AuthenticationService([
 				'unauthenticatedRedirect' => $login,
 				'queryParam' => 'redirect',
