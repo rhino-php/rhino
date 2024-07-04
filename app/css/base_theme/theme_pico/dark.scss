@@ -6,10 +6,7 @@
 
 // Default: Dark theme
 @mixin theme {
-	#{$css-var-prefix}background-color: #{mix(
-			colors.$slate-950,
-			colors.$slate-900
-		)};
+	 #{$css-var-prefix}background-color: #{colors.$slate-800};
 
 	// Text color
 	#{$css-var-prefix}color: #{colors.$zinc-200};
@@ -23,7 +20,7 @@
 
 	// Muted colors
 	#{$css-var-prefix}muted-color: #{colors.$zinc-450};
-	#{$css-var-prefix}muted-border-color: #{colors.$slate-850};
+	#{$css-var-prefix}muted-border-color: #{colors.$zinc-850};
 
 	// Primary colors
 	@include theme-colors.color-scheme($theme-color-primary, "primary", "dark");

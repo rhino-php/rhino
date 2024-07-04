@@ -303,6 +303,16 @@
         #{$css-var-prefix}border-width: 0.1875rem;
       }
     }
+
+	tbody {
+		tr:nth-of-type(2n) {
+			background-color: var(#{$css-var-prefix}muted-border-color);
+
+			& td {
+				background-color: transparent;
+			}
+		}
+	}
   }
 
   // Code

@@ -3,8 +3,8 @@
 
 // // Default: Dark theme
 @mixin dark {
-	--background-color: #{color("background", 700)};
-	--backdrop-color: #{color("background", 800)}; // #{$black};
+	--background-color: #{color("neutral", 900)};
+	--backdrop-color: #{color("neutral", 900)}; //#{color("background", 700)}; // #{$black};
 
 	// Texts colors
 	--text-color: #{color("neutral", 100)};
