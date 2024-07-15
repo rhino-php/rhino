@@ -9,7 +9,6 @@ class Application extends Entity
 {
 	protected array $_virtual = [
 		'overviewData',
-		'alias',
 		'link',
 		'fields',
 	];
@@ -22,8 +21,8 @@ class Application extends Entity
 		return json_decode($this->overview_fields, true);
 	}
 
-	public function _getAlias() {
-		return $this->alias ?? ucfirst($this->name);
+	public function _getAlias($alias) {
+		return $alias ?? ucfirst($this->name);
 	}
 
 	public function _getLink() {

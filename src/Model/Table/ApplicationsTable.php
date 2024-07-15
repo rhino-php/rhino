@@ -60,6 +60,8 @@ class ApplicationsTable extends Table
             'bindingKey' => 'name',
         ]);
 
+		$this->belongsTo('Rhino.Groups');
+
         $this->setTable('rhino_apps');
 		$this->setDisplayField('name');
         $this->setPrimaryKey('id');

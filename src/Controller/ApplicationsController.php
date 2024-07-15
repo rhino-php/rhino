@@ -15,7 +15,6 @@ class ApplicationsController extends RhinoController {
 
 	public function initialize(): void {
 		parent::initialize();
-		$this->Groups = new GroupsTable();
 	}
 
 	/**
@@ -24,18 +23,18 @@ class ApplicationsController extends RhinoController {
 	 * @return \Cake\Http\Response|null|void Renders view
 	 */
 	public function index() {
-		$groups = $this->Groups->getGroups();
+		$groups = $this->Applications->Groups->getGroups();
 		$ungrouped = $this->Applications->find()->where(['rhino_group_id IS' => Null])->all();
 		
 		$unknown = $this->Applications->getUnknown();
 		
 		if (!empty($unknown)) {
-			$ungrouped = $ungrouped->appendItem($unknown);
+			$ungrouped = $ungrouped->append($unknown);
 		}
 
 
 		if (!$ungrouped->isEmpty()) {
-			$group = $this->Groups->newEntity([
+			$group = $this->Applications->Groups->newEntity([
 				"name" => "Ungrouped",
 			]);
 			$group->applications = $ungrouped;
@@ -102,7 +101,7 @@ class ApplicationsController extends RhinoController {
 	public function preCompose($entry, ...$params) {
 		$tableName = $params[0] ?? null;
 
-		$groups = $this->Groups->getGroupNames();
+		$groups = $this->Applications->Groups->getGroupNames();
 
 		if (!empty($tableName) && $entry->has_table) {
 			$appFields = $this->FieldHandler->listColumns($tableName);
@@ -144,10 +143,10 @@ class ApplicationsController extends RhinoController {
 
 	public function newGroup() {
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$entry = $this->Groups->newEmptyEntity();
-			$group = $this->Groups->patchEntity($entry, $this->request->getData());
+			$entry = $this->Applications->Groups->newEmptyEntity();
+			$group = $this->Applications->Groups->patchEntity($entry, $this->request->getData());
 
-			if ($this->Groups->save($group)) {
+			if ($this->Applications->Groups->save($group)) {
 				$this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
 
 				return $this->redirect(['action' => 'index']);
@@ -158,12 +157,12 @@ class ApplicationsController extends RhinoController {
 	}
 
 	public function renameGroup($id) {
-		$entry = $this->Groups->get($id);
+		$entry = $this->Applications->Groups->get($id);
 
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$group = $this->Groups->patchEntity($entry, $this->request->getData());
+			$group = $this->Applications->Groups->patchEntity($entry, $this->request->getData());
 
-			if ($this->Groups->save($group)) {
+			if ($this->Applications->Groups->save($group)) {
 				$this->Flash->success(__('The table has been saved.'), ['plugin' => 'Rhino']);
 
 				return $this->redirect(['action' => 'index']);
@@ -176,9 +175,9 @@ class ApplicationsController extends RhinoController {
 	}
 
 	public function deleteGroup($id) {
-		$entry = $this->Groups->get($id);
+		$entry = $this->Applications->Groups->get($id);
 
-		if ($this->Groups->delete($entry)) {
+		if ($this->Applications->Groups->delete($entry)) {
 			$this->Flash->success(__('The user has been deleted.'), ['plugin' => 'Rhino']);
 		} else {
 			$this->Flash->error(__('The user could not be deleted. Please, try again.'), ['plugin' => 'Rhino']);

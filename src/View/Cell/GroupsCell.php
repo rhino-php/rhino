@@ -104,7 +104,7 @@ class GroupsCell extends Cell {
 							'prefix' => false,
 						],
 						'icon' => "Rhino.file",
-						'rights' => 'rhino_pages'
+						'rights' => 'rhino_nodes'
 					],
 					[
 						'name' => 'Medien',
