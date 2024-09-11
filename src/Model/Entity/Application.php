@@ -64,7 +64,7 @@ class Application extends Entity
 			return null;
 		}
 
-		$field->class = $field->getClass($this);
+		// $field->class = $field->getClass($this);
 		return $field;
 	}
 }

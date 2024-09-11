@@ -11,7 +11,7 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-// @use "swu" as *; // use to create swu theme
+@use "swu" as *; // use to create swu theme
 
 $use-type-scale: false;
 $vertical-unit: 1.5rem;

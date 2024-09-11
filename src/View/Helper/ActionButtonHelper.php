@@ -28,12 +28,12 @@ class ActionButtonHelper extends Helper {
     /**
      * Generate a link styled as a button with icon 
      *
-     * @param string|null $iconName     Optional: The name of the icon to use (@see https://feathericons.com/, prepend with `Rhino.xxx`
-     * @param string|null $labelText    Optional: The text to use for the label
+     * @param string $iconName     Optional: The name of the icon to use (@see https://feathericons.com/, prepend with `Rhino.xxx`
      * @param string|array $url         The link's target: Either an Array (@see CakePHP) or a string: URL
+     * @param string|null $labelText    Optional: The text to use for the label
      * @param array $options             Params passed to `Cake\View\Helper\HtmlHelper::link()`
      */
-    public function link(string|null $iconName = null, string|null $labelText = null, string|array $url, array $options = []) : string {
+    public function link(string $iconName, string|array $url, string|null $labelText = null, array $options = []) : string {
         $options = array_merge([
             'escape' => false,
             'title' => $labelText,
@@ -59,12 +59,12 @@ class ActionButtonHelper extends Helper {
      * the link will be called with a POST request (and will not be triggered by
      * f.e. web crawlers etc.)
      *
-     * @param string|null $iconName     Optional: The name of the icon to use (@see https://feathericons.com/, prepend with `Rhino.xxx`
-     * @param string|null $labelText    Optional: The text to use for the label
+     * @param string $iconName     Optional: The name of the icon to use (@see https://feathericons.com/, prepend with `Rhino.xxx`
      * @param string|array $url         The link's target: Either an Array (@see CakePHP) or a string: URL
+     * @param string|null $labelText    Optional: The text to use for the label
      * @param array $options             Params passed to `Rhino\View\Helper\RhinoHelper::post()`
      */
-    public function postLink(string|null $iconName = null, string|null $labelText = null, string|array $url, array $options = []) : string {
+    public function postLink(string $iconName, string|array $url, string|null $labelText = null, array $options = []) : string {
         $options = array_merge([
             'escape' => false,
             'title' => $labelText,

@@ -7,8 +7,12 @@ use Cake\ORM\Table;
 
 use Migrations\Migrations;
 use Migrations\AbstractMigration;
+use Cake\Database\Schema\TableSchema;
+use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\TableRegistry;
 
 class FieldsTable extends Table {
+	use LocatorAwareTrait;
 
 	public $types = [
 		"string",
@@ -85,6 +89,23 @@ class FieldsTable extends Table {
 		$this->setTable('rhino_fields');
 		$this->setDisplayField('id');
 		$this->setPrimaryKey('id');
+    }
+
+	protected function getTableRegistry($tableName) {
+		try {
+			$Table = TableRegistry::getTableLocator()->get(ucfirst($tableName));
+		} catch (\Throwable $th) {
+			$Table = TableRegistry::getTableLocator()->get('Rhino.Tables');
+			$Table->setTable($tableName);
+		}
+
+		return $Table;
+	}
+
+	private function getAbstract() {
+		if (isset($this->abstract)) {
+			return $this->abstract;
+		}
 
 		// Create Abstact to start Database Operations
 		$migrations = new Migrations;
@@ -96,9 +117,11 @@ class FieldsTable extends Table {
 		// https://book.cakephp.org/phinx/0/en/migrations.html
 		$this->abstract = new AbstractMigration('default', 19700101000000);
 		$this->abstract->setAdapter($env->getAdapter());
-    }
+		return $this->abstract;
+	}
 
 	public function create(string $tableName, array $data): void {
+		$this->getAbstract();
 		$table = $this->abstract->table($tableName);
 		
 		$name = $data['name'];
@@ -110,6 +133,7 @@ class FieldsTable extends Table {
 	}
 
 	public function update($tableName, $fieldName, $data) {
+		$this->getAbstract();
 		$type = $data["type"];
 		$table = $this->abstract->table($tableName);
 
@@ -119,11 +143,13 @@ class FieldsTable extends Table {
 	}
 
 	public function rename(string $tableName, string $currentName, string $name): void {
+		$this->getAbstract();
 		$table = $this->abstract->table($tableName);
 		$table->renameColumn($currentName, $name)->save();
 	}
 
 	public function drop(string $tableName, string $field): void {
+		$this->getAbstract();
 		$table = $this->abstract->table($tableName);
 		$table->removeColumn($field)->save();
 	}
@@ -135,33 +161,38 @@ class FieldsTable extends Table {
 		return $fields;
 	}
 
-	public function getUnknown(string $tableName, array $filter) {
-		if (!$this->abstract->hasTable($tableName)) {
-			return;
-		}
+	public function getTableSchema(string $tableName) {
+		$this->Schema = $this->getTableRegistry($tableName)->getSchema();
+		return $this->Schema;
+	}
 
-		$query = "describe " . $tableName;
-		$_columns = $this->abstract->query($query)->fetchAll();
+	public function getUnknown(string $tableName, array $filter) {
+		$schema = $this->getTableSchema($tableName);
+		$_columns = $schema->columns();
 
 		$columns = [];
-		foreach ($_columns as $column) {
-			if (in_array($column["Field"], $filter) || $column["Field"] == 'id') {
+		foreach ($_columns as $columnName) {
+			$column = $schema->getColumn($columnName);
+
+			if (in_array($columnName, $filter) || $columnName == 'id') {
 				continue;
 			}
 
 			$columns[] = array_merge($this->unknownEntity ,[
-				'name' =>  $column['Field'],
+				'name' =>  $columnName,
 				'table_name' => $tableName,
-				'type' => $this->getHumanType($column['Type']),
-				'default' => $column['Default'],
+				'type' => $this->getHumanType($column['type']),
+				'default' => $column['default'],
 			]);
 		}
 
 		return $this->newEntities($columns);
 	}
-	
+
+	// todo: Change from Abstract to Schema! 
 	public function getColumns(string $tableName) {
 		// Protection against posible SQL Injection
+		$this->getAbstract();
 		if (!$this->abstract->hasTable($tableName)) {
 			return;
 		}

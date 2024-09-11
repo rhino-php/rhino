@@ -54,10 +54,9 @@
 							<td data-cell="Actions" colspan="2">
 								<?php
 								$actions = [
-									$this->ActionButton->link('Rhino.table', __('Edit fields'), ['controller' => 'fields', 'action' => 'index', $app->name]),
-									$this->ActionButton->link('Rhino.edit', null, ['action' => 'edit', $app->name]),
-									$this->ActionButton->postLink('Rhino.trash', null, ['action' => 'delete', $app->name],
-										[
+									$this->ActionButton->link('Rhino.table', ['controller' => 'fields', 'action' => 'index', $app->name], __('Edit fields')),
+									$this->ActionButton->link('Rhino.edit', ['action' => 'edit', $app->name]),
+									$this->ActionButton->postLink('Rhino.trash', ['action' => 'delete', $app->name], options: [
 											'confirm' => __('Are you sure you want to delete: {0}?', $app->name),
 											'title' => __('Delete entry'),
 										]

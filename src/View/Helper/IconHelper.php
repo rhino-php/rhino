@@ -14,6 +14,13 @@ use Cake\Core\Plugin;
 class IconHelper extends Helper {
 
 	/**
+	 * Other Helpers
+	 */
+	protected array $helpers = [
+		'Html',
+	];
+
+	/**
 	 * Constant for view file type 'element'
 	 *
 	 * @var string
@@ -34,6 +41,15 @@ class IconHelper extends Helper {
 	 */
 	protected array $viewVars = [];
 
+	/**
+	 * Generates SVG in the HTML form a file
+	 * 
+	 * @param string $name		The name of the file excluding the file-ending, should be located in /webroot/icon/{file}.svg
+	 * @param array $data		Additional data
+	 * @param array $options	e.g. ['ignoreMissing']
+	 * @throws \Cake\View\Exception\MissingElementException
+	 * @return string
+	 */
 	public function svg(string $name, array $data = [], array $options = []): string {
 		$options += [
 			'callbacks' => false,
@@ -60,6 +76,25 @@ class IconHelper extends Helper {
 		$paths = iterator_to_array($this->getElementPaths($plugin));
 
 		throw new MissingElementException([$name . $this->_ext, $elementName . $this->_ext], $paths);
+	}
+
+	/**
+	 * Creates a button with an icon in it.
+	 * Adds an alt-text for screen-readers and a title to the button.
+	 * 
+	 * @param string $name		The Name of the Icon file, excluding the ending 
+	 * @param string $label		The Explanation text (alt-text)
+	 * @param array $data		Additional data for the button e.g. ['type' => 'submit]
+	 * @return string			html
+	 */
+	public function button(string $name, string $label, array $data = []): string {
+		$svg = $this->svg($name);
+		$labelSpan = $this->Html->tag('span', $label, ['class' => 'sr-only']);
+		$svgSpan = $this->Html->tag('span', $svg);
+
+		$data['title'] = $label;
+
+		return $this->Html->tag('button', "{$labelSpan} {$svgSpan}", $data);
 	}
 
 	/**

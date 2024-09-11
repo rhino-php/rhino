@@ -11,7 +11,7 @@
     </table>
 
     <?php echo $this->ActionButton->ActionArea([
-        $this->ActionButton->link('Rhino.arrow-left', __('Back'), ['action' => 'index']),
-        $this->ActionButton->link('Rhino.arrow-right', __('Somewhere else'), 'https://www.example.com'),
+        $this->ActionButton->link('Rhino.arrow-left', ['action' => 'index'], __('Back')),
+        $this->ActionButton->link('Rhino.arrow-right', 'https://www.example.com', __('Somewhere else')),
     ]); ?>
 </section>
