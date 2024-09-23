@@ -214,10 +214,22 @@ class RhinoInit extends AbstractMigration
 			->addColumn('template_id', 'integer', [
 				'default' => 0,
 			])
-			->addColumn('language', 'string')
-			->addColumn('version', 'integer')
-			->addColumn('config', 'text')
-			->addColumn('content', 'text')
+			->addColumn('language', 'string', [
+				'default' => 'de',
+				'null' => false,
+			])
+			->addColumn('version', 'integer', [
+					'default' => null,
+					'null' => true,
+				])
+			->addColumn('config', 'text', [
+					'default' => null,
+					'null' => true,
+				])
+			->addColumn('content', 'text', [
+					'default' => null,
+					'null' => true,
+				])
 			->addIndex(['lft'], ['name' => 'idx_lft'])
 			->addIndex(['parent_id'])
 			->create();

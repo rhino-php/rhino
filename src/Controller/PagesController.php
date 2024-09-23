@@ -224,14 +224,16 @@ class PagesController extends NodesController {
 		}
 		
 		$this->Pages = new PagesTable();
-		$page = $this->Pages->slug(urldecode($slug ?: ""));
+		$page = $this->Pages->slug(urldecode(string: $slug));
+
+		dd($page);
 		
 		if ($page->role === 1) { // Link
 			$redirect =	$this->redirect($page->content); 
 			return $redirect;
 		}
 		
-		$children = $this->Pages->find('children', for: $page->id)
+		$children = $this->Pages->find('children', for: $page->id ?? 1)
 			->find('threaded')
 			->contain(['Templates'])
 			->all();

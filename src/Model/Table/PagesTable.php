@@ -58,8 +58,15 @@ class PagesTable extends NodesTable {
 	}
 
 	public function slug(string $slug = null) {
-		$where = $slug ? ["Pages.name" => $slug] : ["role" => 3];
+		$where = ["Pages.name" => $slug];
 		$where['node_type'] = 0;
+
+		if ($slug == null || $slug == 'default') {
+			$where= [
+				"role" => 3, 
+				'node_type' => 0
+			];
+		}
 
 		$page = $this->find()
 			->where($where)
