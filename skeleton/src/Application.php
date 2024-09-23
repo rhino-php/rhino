@@ -75,19 +75,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 			);
 		}
 
-		/*
-         * Only try to load DebugKit in development mode
-         * Debug Kit should not be installed on a production system
-         */
-		if (Configure::read('debug')) {
-			$this->addPlugin('DebugKit');
-		}
-
 		// Load more plugins here
 		$this->addPlugin('Rhino');
 		$this->addPlugin('Authentication');
 		$this->addPlugin('Authorization');
-		$this->addPlugin('Migrations');
 		// $this->addPlugin('CsvView');
 	}
 
@@ -156,22 +147,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 	public function services(ContainerInterface $container): void {
 	}
 
-	/**
-	 * Bootstrapping for CLI application.
-	 *
-	 * That is when running commands.
-	 *
-	 * @return void
-	 */
-	protected function bootstrapCli(): void {
-		$this->addOptionalPlugin('Cake/Repl');
-		$this->addOptionalPlugin('Bake');
-
-		$this->addPlugin('Migrations');
-
-		// Load more plugins here
-	}
-
 	public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface {
 		if ($request->getParam('plugin') === "Rhino" || $request->getParam('prefix') == 'RhinoApp') {
 			// Reuse fields in multiple authenticators.
@@ -186,26 +161,23 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 				'action' => 'login',
 				'prefix' => false,
 			]);
-		
+
 			$authenticationService = new AuthenticationService([
 				'unauthenticatedRedirect' => $login,
 				'queryParam' => 'redirect',
 			]);
 
-
-
 			// Load the authenticators, you want session first
 			$authenticationService->loadAuthenticator('Authentication.Session');
+
+			// If the user is on the login page, check for a cookie as well.
+			$authenticationService->loadAuthenticator('Authentication.Cookie', [
+				'fields' => $fields
+			]);
 
 			// Configure form data check to pick email and password
 			$authenticationService->loadAuthenticator('Authentication.Form', [
 				'fields' => $fields
-			]);
-
-			// If the user is on the login page, check for a cookie as well.
-			$authenticationService->loadAuthenticator('Authentication.Cookie', [
-				'fields' => $fields,
-				'loginUrl' => $login
 			]);
 
 			// Load identifiers, ensure we check email and password fields
