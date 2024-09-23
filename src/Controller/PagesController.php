@@ -225,8 +225,6 @@ class PagesController extends NodesController {
 		
 		$this->Pages = new PagesTable();
 		$page = $this->Pages->slug(urldecode(string: $slug));
-
-		dd($page);
 		
 		if ($page->role === 1) { // Link
 			$redirect =	$this->redirect($page->content); 
