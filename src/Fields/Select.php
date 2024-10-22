@@ -64,7 +64,7 @@ class Select extends Field {
 		if (isset($this->options['selectMultiple']) && $this->options['selectMultiple'] && !empty($value)) {
 			$value = join($this->options['selectSeparator'], $value);
 		}
-		
+
 		return $value;
 	}
 
@@ -73,7 +73,7 @@ class Select extends Field {
 
 		$select = [
 			'fields' => [
-				$this->options["selectFromValue"], 
+				$this->options["selectFromValue"],
 				$this->options["selectFromAlias"]
 			]
 		];
