@@ -28,22 +28,27 @@ $border-width: 4px;
 	display: flex;
 	gap: var(--spacing, $spacing);
 	align-items: center;
-
+	min-height: 2.5rem;
 	padding: 0;
-	// padding-right: 1rem;
 
 	p {
+		word-wrap: nowrap;
+		word-break: keep-all;
+		white-space: nowrap;
 		padding: 0;
 		margin: 0;
 	}
 
 	a:not(.layout-button) {
 		color: color('primary', 400);
+		text-decoration-color: currentColor;
 	}
 
 	.layout-button {
 		padding-block: 0.25rem;
 		min-height: 100%;
+		margin-bottom: 0;
+		border-radius: 0;
 	}
 }
 
@@ -56,6 +61,10 @@ $border-width: 4px;
 .layout-container, .layout-element, .layout-slot {
 	width: 100%;
 	position: relative;
+
+	&:focus-within {
+		z-index: 900;
+	}
 }
 
 // .layout-container {
@@ -87,6 +96,22 @@ $border-width: 4px;
 	.ce-toolbar__content {
 		max-width: 100%;
 	}
+
+	&.inactive {
+		.element-container {
+			filter: contrast(90%);
+		}
+
+		.layout-button[name=toggle] {
+			.feather-eye-off {
+				display: block;
+			}
+
+			.feather-eye {
+				display: none;
+			}
+		}
+	}
 }
 
 .layout-slot {
@@ -114,6 +139,13 @@ $border-width: 4px;
 	}
 
 	&__actions {
+		display: flex;
+
+		button {
+			border-radius: 0;
+	
+		}
+
 		:first-child {
 			border-bottom-left-radius: $border-radius;
 		}
@@ -188,6 +220,12 @@ $border-width: 4px;
 			}
 		}
 	}
+
+	&[name=toggle] {
+		.feather-eye-off {
+			display: none;
+		}
+	}
 }
 
 .rhino-select {
@@ -196,23 +234,24 @@ $border-width: 4px;
 
 	display: inline-block;
 	color: color("neutral", 700);
-	// background-color: $white;
 	font-weight: 600;
 	appearance: none;
 	padding-right: 2rem;
 	padding-left: 0.5rem;
 	padding-block: 0rem;
 	text-decoration: none;
-	margin-top: $border-width * -1;
 	border: color('primary', 400) solid $border-width;
 	border-radius: 0 0 $border-radius $border-radius;
 	cursor: pointer;
-
+	
 	--icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{to-rgb(color("neutral", 700))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 	background-image: var(--icon-chevron);
 	background-position: center right 0.75rem;
 	background-size: 1rem auto;
 	background-repeat: no-repeat;
+	
+	border-top: none;
+	margin-top: 0;
 }
 
 .select-media {
@@ -330,4 +369,9 @@ $border-width: 4px;
 
 .mark {
 	outline: tomato 8px dotted;
+}
+
+.cdx-notifies {
+	position: relative;
+	z-index: 1000;
 }

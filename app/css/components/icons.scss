@@ -1,0 +1,18 @@
+.icon-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 1ch;
+	
+	svg {
+		height: 1lh;
+		padding: 0;
+	}	
+}
+
+a.icon-link:not(.button) {
+	gap: 0.5ch;
+	
+	svg {
+		height: 1em;
+	}
+}

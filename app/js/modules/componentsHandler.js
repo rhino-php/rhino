@@ -24,10 +24,12 @@ export default class ComponentsHandler {
 		}
 
 		this.Actions = {
-			new: 	'/rhino/components/new/',
-			save: '/rhino/components/save_all/',
-			switch: '/rhino/components/switch/',
-			delete: '/rhino/components/delete/',
+			new: '/pages/new/',
+			save: '/pages/save_page/',
+			switch: '/pages/switch/',
+			delete: '/pages/remove/',
+			toggle: '/pages/toggle/',
+			move: '/pages/move/',
 		}
 
 		this.containers = {};

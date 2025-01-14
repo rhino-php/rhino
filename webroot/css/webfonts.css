@@ -1,9 +1,39 @@
 /**
  * @project       tusk
  * @author        carsten.coull@swu.de
- * @build         Wed, Sep 11, 2024 5:29 PM ET
- * @release       bb7d38593a64fd853c85873a3742f267f8e92fb0 [main]
- * @copyright     Copyright (c) 2024, SWU Stadtwerke Ulm / Neu-Ulm GmbH
+ * @build         Fri, Jan 10, 2025 11:23 AM ET
+ * @release       9cdc452c535dd3b2e8f88074575afd1a1e971e8c [main]
+ * @copyright     Copyright (c) 2025, SWU Stadtwerke Ulm / Neu-Ulm GmbH
  *
  */
-@font-face{font-display:swap;font-family:Manrope;font-style:normal;font-weight:400;src:url("../font/manrope-v13-latin/manrope-v13-latin-regular.woff2") format("woff2"),url("../font/manrope-v13-latin/manrope-v13-latin-regular.woff") format("woff")}@font-face{font-display:swap;font-family:Manrope;font-style:normal;font-weight:600;src:url("../font/manrope-v13-latin/manrope-v13-latin-600.woff2") format("woff2"),url("../font/manrope-v13-latin/manrope-v13-latin-600.woff") format("woff")}@font-face{font-display:swap;font-family:Manrope;font-style:normal;font-weight:700;src:url("../font/manrope-v13-latin/manrope-v13-latin-700.woff2") format("woff2"),url("../font/manrope-v13-latin/manrope-v13-latin-700.woff") format("woff")}@font-face{font-display:swap;font-family:Manrope;font-style:normal;font-weight:800;src:url("../font/manrope-v13-latin/manrope-v13-latin-800.woff2") format("woff2"),url("../font/manrope-v13-latin/manrope-v13-latin-800.woff") format("woff")}
+
+/* app/css/webfonts.scss */
+@font-face {
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../assets/manrope-v13-latin-regular-OUZ6I5TX.woff2") format("woff2"), url("../assets/manrope-v13-latin-regular-4MALBGHZ.woff") format("woff");
+}
+@font-face {
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 600;
+  src: url("../assets/manrope-v13-latin-600-VTD2MEN4.woff2") format("woff2"), url("../assets/manrope-v13-latin-600-PCC4K62G.woff") format("woff");
+}
+@font-face {
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../assets/manrope-v13-latin-700-UR3MIV7S.woff2") format("woff2"), url("../assets/manrope-v13-latin-700-MAIH4JCY.woff") format("woff");
+}
+@font-face {
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../assets/manrope-v13-latin-800-NCX44FEF.woff2") format("woff2"), url("../assets/manrope-v13-latin-800-2REYJCAI.woff") format("woff");
+}
+/*# sourceMappingURL=webfonts.css.map */

@@ -1,0 +1,22 @@
+ul, ol, dl {
+	outline: 4px solid white;
+	border: 2px solid black;
+	padding: 4px;
+	padding-top: 1rem;
+	margin: 4px;
+	position: relative;
+	background-color: white;
+
+	&::before {
+		position: absolute;
+		top: -6px;
+		padding: 0 4px;
+		content: 'list';
+		background: white;
+		line-height: 1;
+	}
+}
+
+div, section {
+	outline: lightcoral 1px dashed;
+}

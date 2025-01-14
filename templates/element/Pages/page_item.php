@@ -14,18 +14,18 @@
 
 				<?php
 				$this->start('actions');
-				echo $this->element("layout-elements/actions", [
+				echo $this->element("Rhino.layout-elements/actions", [
 					"view" => [
 						"link" => ['action' => 'layout', $page['id']],
-						"valid" => in_array('view', $rights)
+						// "valid" => in_array('view', $rights)
 					],
 					"edit" => [
 						"link" => ['action' => 'edit', $page['id']],
-						"valid" => in_array('edit', $rights)
+						// "valid" => in_array('edit', $rights)
 					],
 					"delete" => [
 						"link" => ['action' => 'delete', $page['id']],
-						"valid" => in_array('delete', $rights),
+						// "valid" => in_array('delete', $rights),
 						"confirm" => __('Are you sure you want to delete # {0}?', $page['name']),
 					]
 				]);
@@ -39,7 +39,7 @@
 
 		<?php if (!empty($page['children'])) : ?>
 			<ul>
-				<?= $this->element('Pages/page_item', [
+				<?= $this->element('Rhino.Pages/page_item', [
 					'pages' => $page['children']
 				]) ?>
 			</ul>

@@ -1,0 +1,10 @@
+.sidebar {
+	flex: 1 1 100%;
+	background: lightblue;
+	max-width: 20rem;
+
+	&__wrapper {
+		display: flex;
+		flex: 1 1 100%;
+	}
+}

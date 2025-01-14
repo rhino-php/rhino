@@ -44,6 +44,13 @@ class ComponentsController extends BaseController {
 		}
     }
 
+	public function beforeFilter(\Cake\Event\EventInterface $event) {
+		parent::beforeFilter($event);
+		// Configure the login action to not require authentication, preventing
+		// the infinite redirect loop issue
+		$this->Authentication->addUnauthenticatedActions(['saveAll']);
+	}
+
 	public function edit(int $id) {
 		$entry = $this->Components->getEntry($id);
 		$elements = $this->Components->Elements->find('list');

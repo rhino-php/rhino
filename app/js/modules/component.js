@@ -19,10 +19,10 @@ export default class Component {
 		} else if (typeof element == "string") {
 			this.element = this.createElement(element);
 		}
-		
+
 		this.id = this.element.dataset.id;
 		this.region = this.element.dataset.region;
-		
+
 		this.initialize();
 	}
 
@@ -36,9 +36,14 @@ export default class Component {
 		this.deleteButton = this.element.querySelector('[name=delete]');
 		this.toggleButton = this.element.querySelector('[name=toggle]');
 		this.moveHandle = this.element.querySelector('[name=move]');
+		this.moveUpButton = this.element.querySelector('[name=move_up]');
+		this.moveDownButton = this.element.querySelector('[name=move_down]');
 		this.slots = this.element.querySelectorAll('.layout-slot[value="' + this.id + '"]');
 
 		this.deleteButton.addEventListener('click', () => this.delete());
+		this.toggleButton.addEventListener('click', () => this.toggle());
+		this.moveDownButton.addEventListener('click', () => this.move('down'));
+		this.moveUpButton.addEventListener('click', () => this.move('up'));
 		this.select.addEventListener('change', () => this.switch({
 			template_id: this.select.value
 		}));
@@ -91,9 +96,50 @@ export default class Component {
 	async delete() {
 		this.Handler.postFetch(this.Handler.Actions.delete, {
 			id: this.id
-		}).then((response) => response.text())
+		})
+			.then((response) => response.text())
 			.then((html) => {
 				this.destroy();
+			});
+	}
+
+	async move(direction) {
+		let sibling;
+		switch (direction) {
+			case 'up':
+				sibling = this.element.previousElementSibling;
+
+				if (sibling) {
+					this.element.after(sibling);
+				}
+				break;
+			case 'down':
+				sibling = this.element.nextElementSibling;
+
+				if (sibling) {
+					this.element.before(sibling);
+				}
+				break;
+		}
+
+		if (sibling) {
+			this.Handler.postFetch(this.Handler.Actions.move, {
+				id: this.id,
+				direction: direction
+			})
+				.then((response) => response.text())
+				.then((html) => {});
+		}
+	}
+
+	async toggle() {
+		this.Handler.postFetch(this.Handler.Actions.toggle, {
+			id: this.id
+		})
+			.then((response) => response.text())
+			.then((html) => {
+				let data = JSON.parse(html);
+				this.element.classList.toggle('inactive');
 			});
 	}
 
@@ -210,7 +256,7 @@ export default class Component {
 	 */
 	destroy() {
 		let index = this.Handler.components.indexOf(this);
-	
+
 		if (index > -1) { // only splice array when item is found
 			this.Handler.components.splice(index, 1);
 		}

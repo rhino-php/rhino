@@ -1,9 +1,16 @@
-import * as EditorJS from '../../vendor/editorjs/dist/editor.mjs';
-// import * as Header from '/rhino/js/vendor/bundle.js';
-// import List from '@editorjs/list';
-
-// Todo: Implement:
-// https://codesandbox.io/s/editor-js-data-parser-demo-forked-l1v7v?file=/src/index.js
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import List from "@editorjs/list";
+import CodeTool from "@editorjs/code";
+import InlineCode from "@editorjs/inline-code";
+import Quote from "@editorjs/quote";
+import Table from '@editorjs/table';
+import Embed from '@editorjs/embed';
+import Delimiter from '@editorjs/delimiter';
+import LinkTool from '@editorjs/link';
+import ImageTool from '@editorjs/image';
+import Warning from '@editorjs/warning';
+import RawTool from '@editorjs/raw';
 
 export default class Editor {
 	constructor(selector, contents) {
@@ -28,11 +35,47 @@ export default class Editor {
 			tools: {
 				header: {
 					class: Header,
-					inlineToolbar: ['link']
+					inlineToolbar: ["link"],
 				},
-				list: List 
+				list: {
+					class: List,
+					inlineToolbar: true,
+				},
+				code: CodeTool,
+				quote: {
+					class: Quote,
+					inlineToolbar: true,
+					shortcut: "CMD+SHIFT+O",
+					config: {
+						quotePlaceholder: "Enter a quote",
+						captionPlaceholder: "Quote's author",
+					},
+				},
+				inlineCode: {
+					class: InlineCode,
+					shortcut: "CMD+SHIFT+M",
+				},
+				table: Table,
+				embed: Embed,
+				delimiter: Delimiter,
+				warning: Warning,
+				raw: RawTool,
+				linkTool: {
+					class: LinkTool,
+					config: {
+						endpoint: '/pages/fetchUrl', // Your backend endpoint for url data fetching,
+					}
+				},
+				image: {
+					class: ImageTool,
+					config: {
+						endpoints: {
+							byFile: '/uploadFile', // Your backend file uploader endpoint
+							byUrl: '/pages/fetchUrl', // Your endpoint that provides uploading by Url
+						}
+					}
+				}
 			},
-
 			autofocus: true,
 			placeholder: 'Let`s write an awesome story!',
 			data: editorData,

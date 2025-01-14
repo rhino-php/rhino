@@ -1,16 +1,15 @@
-$global-theme: 'swu';
+$global-theme: 'rhino';
 
 // add reset, makes things easier to handel
-@forward "library/reset";
+// @forward "library/reset";
 
 // Add Base pico styling
 // @forward "theme/custom-pico";
 
 // Add Theme
-@forward "theme";
+// @forward "theme";
 
 // components are used for specific elements
-@forward "theme_components";
-@forward "partials";
+// @forward "theme_components";
+// @forward "partials";
 @forward "components";
-

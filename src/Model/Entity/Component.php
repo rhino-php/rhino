@@ -7,5 +7,9 @@ use Rhino\Model\Entity\Node;
 
 
 class Component extends Node {
-
+	public function toggle() {
+		$status = !$this->active;
+		$this->active = $status;
+		return $status;
+	}
 }

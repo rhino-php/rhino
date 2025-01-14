@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Rhino\Controller;
 
-use Rhino\Controller\RhinoController;
+use Rhino\Controller\RhinoController as BaseController;
 
 /**
  * Nodes Controller
  *
  * @property \Rhino\Model\Table\NodesTable $Nodes
  */
-class NodesController extends RhinoController
+class NodesController extends BaseController
 {
     /**
      * Index method
@@ -43,11 +43,7 @@ class NodesController extends RhinoController
     public function add()
     {
 		$nodeTree = $this->Nodes->newEmptyEntity();
-		$this->compose($nodeTree, [
-			'entity' => 'nodeTree',
-			'success' => __('The page has been saved.'),
-			'error' => __('The page could not be saved. Please, try again.')
-		]);
+		$this->compose($nodeTree);
     }
 
     /**
@@ -59,11 +55,7 @@ class NodesController extends RhinoController
      */
     public function edit(int $id) {
         $nodeTree = $this->Nodes->get($id, contain: []);
-      	$this->compose($nodeTree, [
-			'entity' => 'nodeTree',
-			'success' => __('The page has been saved.'),
-			'error' => __('The page could not be saved. Please, try again.')
-		]);
+      	$this->compose($nodeTree);
     }
 
     /**
@@ -93,7 +85,7 @@ class NodesController extends RhinoController
 	 * @param  [type] ...$params
 	 * @return void
 	 */
-	public function preCompose($entry, ...$params) {
+	public function preCompose($entry) {
 		$templates = $this->Nodes->Templates->find('list')->all();
 		
 		$nodes = $this->Nodes->find('treeList', [
@@ -111,8 +103,8 @@ class NodesController extends RhinoController
 		]);
 	}
 
-	public function preSave($data, $params) {
-		if ($params['action'] == 'add') {
+	public function preSave($data) {
+		if ($this->request->getAttribute('action') == 'add') {
 			$data['user_id'] = $this->user->id;
 		}
 

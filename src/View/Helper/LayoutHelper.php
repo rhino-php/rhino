@@ -116,7 +116,7 @@ class LayoutHelper extends Helper
 
 	public function component($component) {
 		$this->counter[$component->id] = 0;
-		$element = $this->_View->element('Rhino.' . '../Components/element', ['component' => $component]);
+		$element = $this->_View->element('Rhino.' . '../Pages/element', ['component' => $component]);
 		return $element;
 	}
 

@@ -7,6 +7,7 @@ use Cake\Collection\Iterator\UniqueIterator;
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
 use Cake\Utility\Inflector;
+use Durlecode\EJSParser\Parser;
 use Rhino\Handlers\FileHandler;
 use Cake\View\Helper\IdGeneratorTrait;
 use Cake\Core\Configure;
@@ -382,19 +383,19 @@ class RhinoHelper extends Helper {
 		return $form . $button;
 	}
 
-	public function humanize(string $string) : string {
+	public function humanize(string $string): string {
 		return __(Inflector::humanize(Inflector::underscore($string)));
 	}
 
-	public function escape(string $string) : string {
+	public function escape(string $string): string {
 		return $this->_domId($string);
 	}
 
-	public function backLink() : string {
+	public function backLink(): string {
 		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "#";
 	}
 
-	public function getCurrent($args) : ?string {
+	public function getCurrent($args): ?string {
 		$request = $this->_View->getRequest();
 		if (is_string($args)) {
 			if ($args != $request->getEnv("REQUEST_URI")) {
@@ -408,7 +409,7 @@ class RhinoHelper extends Helper {
 					$key = 'pass';
 				}
 
-				$value = $request->getParam((string)$key);
+				$value = $request->getParam((string) $key);
 
 				if (is_array($value)) {
 					$value = $value[0];
@@ -423,51 +424,18 @@ class RhinoHelper extends Helper {
 		return 'aria-current="page"';
 	}
 
-	public function editor() : string {
+	public function editor(): string {
 		$json = isset($this->currentComponent->content) ? $this->currentComponent->content : '[]';
-		
+
 		if ($this->layoutMode) {
 			return $this->Layout->parseEditor($json);
 		}
 
-		$object = json_decode($json ?? '');
-
-		if (empty($object)) {
-			return $json;
-		}
-
-		$content = '';
-		foreach ($object->blocks as $key => $block) {
-			$data = $block->data;
-
-			switch ($block->type) {
-				case 'header':
-					$level = 'h' . $data->level;
-					$content .= '<' . $level . '>' . $data->text . '</' . $level . '>';
-					break;
-
-				case 'list':
-					# code...
-					$items = '';
-					foreach ($data->items as $listItem) {
-						$items .= '<li>' . $listItem . '</li>';
-					}
-
-					$style = $data->style == "ordered" ? 'ol' : 'ul';
-
-					$content .= '<' . $style . '>' . $items . '</' . $style . '>';
-					break;
-
-				default:
-					$content .= '<p>' . $data->text . '</p>';
-					break;
-			}
-		}
-
-		return $content;
+		$html = Parser::parse($json)->toHtml();
+		return $html;
 	}
 
-	public function media() : string {
+	public function media(): string {
 		$this->MediaCategories = new MediaCategoriesTable();
 		$id = isset($this->currentComponent->content) ? $this->currentComponent->content : null;
 		$media = null;
@@ -475,13 +443,13 @@ class RhinoHelper extends Helper {
 		if (!empty($id)) {
 			$media = $this->MediaCategories->Media->get($id);
 		}
-		
+
 		$content = $this->displayMedia($media);
-		
+
 		if ($this->layoutMode) {
 			return $this->Layout->parseMedia($content, $id);
 		}
-		
+
 		return $content;
 	}
 
@@ -543,7 +511,7 @@ class RhinoHelper extends Helper {
 		$count = $this->counter[$parentId]++;
 
 		if (empty($name)) {
-			$name = (string)$count;
+			$name = (string) $count;
 		}
 
 		$component = $this->Components->find()
@@ -566,16 +534,16 @@ class RhinoHelper extends Helper {
 
 
 
-    // public function ActionArea(array $actions) : string {
-    //     $content = '';
-    //     foreach ($actions as $action) {
-    //         $content .= $this->Html->tag('li', $action);
-    //     }
-    //     return $this->_View->element('action-area', compact('content'));
-    // }
+	// public function ActionArea(array $actions) : string {
+	//     $content = '';
+	//     foreach ($actions as $action) {
+	//         $content .= $this->Html->tag('li', $action);
+	//     }
+	//     return $this->_View->element('action-area', compact('content'));
+	// }
 
 
 
-    public function ActionButton(string $labelText = null, mixed $link = null, string $iconName = null, array $params = []) : string {
-    }
+	public function ActionButton(string $labelText = null, mixed $link = null, string $iconName = null, array $params = []): string {
+	}
 }

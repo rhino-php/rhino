@@ -6,6 +6,7 @@ namespace Rhino\View\Helper;
 use Cake\View\Helper;
 use Rhino\Model\Table\PagesTable;
 use Cake\View\StringTemplateTrait;
+use Rhino\View\Helper\TemplatingTrait;
 use Generator;
 use Cake\Core\App;
 use Cake\View\Exception\MissingElementException;
@@ -15,6 +16,7 @@ use Cake\Core\Plugin;
 
 class MenuHelper extends Helper {
 	use StringTemplateTrait;
+	use TemplatingTrait;
 
 	/**
      * Default config for this class
@@ -43,6 +45,30 @@ class MenuHelper extends Helper {
 
 	public function initialize(array $config): void {
 		$this->Pages = new PagesTable();
+
+		$this->loadTemplate('toggleButton', 'Menu/toggleButton');
+	}
+
+	public function toggleButton(string $content = 'Toggle Button', array $attributes = []): string {
+		$defaults = [
+			'id' => 'menu-button',
+			'class' => 'menu__button button',
+			'aria-expanded' => 'false',
+		];
+
+		return $this->renderTemplate(
+			name: 'toggleButton',
+			content: $content,
+			attrs: array_merge($defaults, $attributes)
+		);
+	}
+
+	public function create(string $type = '') {
+		return '<div class="menu ' . $type . '"><nav id="main-menu">';
+	}
+
+	public function end() {
+		return '</nav></div>';
 	}
 
 	public function get(?int $root = null, ?array $options = null) {

@@ -18,6 +18,7 @@ class IconHelper extends Helper {
 	 */
 	protected array $helpers = [
 		'Html',
+		'Url',
 	];
 
 	/**
@@ -89,12 +90,63 @@ class IconHelper extends Helper {
 	 */
 	public function button(string $name, string $label, array $data = []): string {
 		$svg = $this->svg($name);
-		$labelSpan = $this->Html->tag('span', $label, ['class' => 'sr-only']);
-		$svgSpan = $this->Html->tag('span', $svg);
+		$labelSpan = $this->Html->tag('span', $label);
 
-		$data['title'] = $label;
+		if (isset($data['label']) && !$data['label']) {
+			$data['title'] = $label;
+			$labelSpan = $this->Html->tag('span', $label, ['class' => 'sr-only']);
+		} else {
+			$labelSpan = $this->Html->tag('span', $label);
+		}
 
-		return $this->Html->tag('button', "{$labelSpan} {$svgSpan}", $data);
+		if (isset($data['class'])) {
+			$data['class'] .= ' icon-link';
+		} else {
+			$data['class'] = 'icon-link';
+		}
+
+		$content = "{$labelSpan}{$svg}";
+		if (isset($data['reverse']) && $data['reverse']) {
+			$content = "{$svg}{$labelSpan}";
+		}
+		unset($data['reverse']);
+
+		return $this->Html->tag('button', $content, $data);
+	}
+
+	/**
+	 * Creates a link with an icon in it.
+	 * Adds an alt-text for screen-readers and a title to the button.
+	 * 
+	 * @param string $name		The Name of the Icon file, excluding the ending 
+	 * @param string $label		The Explanation text (alt-text)
+	 * @param array $data		Additional data for the button e.g. ['type' => 'submit]
+	 * @return string			html
+	 */
+	public function link(string $name, string $label, mixed $url,  array $data = []): string {
+		$svg = $this->svg($name);
+		$data['href'] = $this->Url->build($url);
+		
+		if (isset($data['label']) && !$data['label']) {
+			$data['title'] = $label;
+			$labelSpan = $this->Html->tag('span', $label, ['class' => 'sr-only']);
+		} else {
+			$labelSpan = $this->Html->tag('span', $label);
+		}
+		
+		if (isset($data['class'])) {
+			$data['class'] .= ' icon-link';
+		} else {
+			$data['class'] = 'icon-link';
+		}
+
+		$content = "{$labelSpan}{$svg}";
+		if (isset($data['reverse']) && $data['reverse']) {
+			$content = "{$svg}{$labelSpan}";
+		}
+		unset($data['reverse']);
+
+		return $this->Html->tag('a', $content, $data);
 	}
 
 	/**

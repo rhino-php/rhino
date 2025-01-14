@@ -18,7 +18,7 @@ class ComponentsTable extends NodesTable {
      */
     public function initialize(array $config): void {
         parent::initialize($config);
-    }
+	}
 
 	public function getEntry(int $id = null): object {
 		if (!empty($id)) {
