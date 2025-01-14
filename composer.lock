@@ -132,12 +132,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/authorization.git",
-                "reference": "6e880cb402a3270301a1d5bdbf914c91f00b6ae0"
+                "reference": "ed52f1ae48357cdc90dc1aa92ad6544cf0cbfee9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/authorization/zipball/6e880cb402a3270301a1d5bdbf914c91f00b6ae0",
-                "reference": "6e880cb402a3270301a1d5bdbf914c91f00b6ae0",
+                "url": "https://api.github.com/repos/cakephp/authorization/zipball/ed52f1ae48357cdc90dc1aa92ad6544cf0cbfee9",
+                "reference": "ed52f1ae48357cdc90dc1aa92ad6544cf0cbfee9",
                 "shasum": ""
             },
             "require": {
@@ -190,7 +190,7 @@
                 "issues": "https://github.com/cakephp/authorization/issues",
                 "source": "https://github.com/cakephp/authorization"
             },
-            "time": "2025-01-05T16:28:53+00:00"
+            "time": "2025-01-13T04:11:12+00:00"
         },
         {
             "name": "cakephp/cakephp",
@@ -198,12 +198,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "7127e26cd8d4664826f6c221de9a37d09663305b"
+                "reference": "13a88f4db6e78871909c57d6a4377dd31b7c6a72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/7127e26cd8d4664826f6c221de9a37d09663305b",
-                "reference": "7127e26cd8d4664826f6c221de9a37d09663305b",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/13a88f4db6e78871909c57d6a4377dd31b7c6a72",
+                "reference": "13a88f4db6e78871909c57d6a4377dd31b7c6a72",
                 "shasum": ""
             },
             "require": {
@@ -310,7 +310,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2025-01-10T13:35:45+00:00"
+            "time": "2025-01-14T02:18:15+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -2239,16 +2239,16 @@
         },
         {
             "name": "spatie/temporary-directory",
-            "version": "2.2.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/temporary-directory.git",
-                "reference": "76949fa18f8e1a7f663fd2eaa1d00e0bcea0752a"
+                "reference": "580eddfe9a0a41a902cac6eeb8f066b42e65a32b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/76949fa18f8e1a7f663fd2eaa1d00e0bcea0752a",
-                "reference": "76949fa18f8e1a7f663fd2eaa1d00e0bcea0752a",
+                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/580eddfe9a0a41a902cac6eeb8f066b42e65a32b",
+                "reference": "580eddfe9a0a41a902cac6eeb8f066b42e65a32b",
                 "shasum": ""
             },
             "require": {
@@ -2284,7 +2284,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/temporary-directory/issues",
-                "source": "https://github.com/spatie/temporary-directory/tree/2.2.1"
+                "source": "https://github.com/spatie/temporary-directory/tree/2.3.0"
             },
             "funding": [
                 {
@@ -2296,7 +2296,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-25T11:46:58+00:00"
+            "time": "2025-01-13T13:04:43+00:00"
         },
         {
             "name": "symfony/cache",
@@ -2648,12 +2648,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "6a20779ac9f60cf1a99d0ebcd8fd0d79e85a2cca"
+                "reference": "c42a20ccb1e3524def5d2c62b047ae53b41c9496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/6a20779ac9f60cf1a99d0ebcd8fd0d79e85a2cca",
-                "reference": "6a20779ac9f60cf1a99d0ebcd8fd0d79e85a2cca",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/c42a20ccb1e3524def5d2c62b047ae53b41c9496",
+                "reference": "c42a20ccb1e3524def5d2c62b047ae53b41c9496",
                 "shasum": ""
             },
             "require": {
@@ -2720,7 +2720,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-07T10:50:58+00:00"
+            "time": "2025-01-10T14:48:57+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4557,12 +4557,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "9d1397afa4e64f2292d061564dfebb40187c5e24"
+                "reference": "65fa0c67f8db5039bf1b0e8aac4e268328798082"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9d1397afa4e64f2292d061564dfebb40187c5e24",
-                "reference": "9d1397afa4e64f2292d061564dfebb40187c5e24",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/65fa0c67f8db5039bf1b0e8aac4e268328798082",
+                "reference": "65fa0c67f8db5039bf1b0e8aac4e268328798082",
                 "shasum": ""
             },
             "require": {
@@ -4630,7 +4630,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-10T07:28:17+00:00"
+            "time": "2025-01-12T17:49:25+00:00"
         },
         {
             "name": "tyqo/editorjs-html-parser",
@@ -5241,12 +5241,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "15a2f3e0a5b2abf2b47fe4eca92a2929b700e6cb"
+                "reference": "e76586fa3d49714f230221734b44892e384109d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/15a2f3e0a5b2abf2b47fe4eca92a2929b700e6cb",
-                "reference": "15a2f3e0a5b2abf2b47fe4eca92a2929b700e6cb",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e76586fa3d49714f230221734b44892e384109d7",
+                "reference": "e76586fa3d49714f230221734b44892e384109d7",
                 "shasum": ""
             },
             "require": {
@@ -5334,7 +5334,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-10T08:52:57+00:00"
+            "time": "2025-01-13T09:33:05+00:00"
         },
         {
             "name": "sebastian/cli-parser",
