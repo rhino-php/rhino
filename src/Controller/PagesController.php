@@ -56,33 +56,37 @@ class PagesController extends NodesController {
 		$this->composeTemplate = 'Rhino.compose';
 		$this->uploadFolder = 'file_upload';
 		$this->basePath = join(DS, [ROOT, 'data']);
-
-		if ($this->request->is('htmx')) {
-			$this->viewBuilder()->disableAutoLayout();
-		}
 	}
 
 	public function beforeFilter(\Cake\Event\EventInterface $event) {
 		parent::beforeFilter($event);
 		// Configure the login action to not require authentication, preventing
 		// the infinite redirect loop issue
-		$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
-		$this->FormProtection->setConfig('unlockedActions', [
-			'test',
-			'savePage',
-			'new',
-			'remove',
-			'toggle',
-			'move',
-			'switch',
-			'fetchUrl',
-			'uploadFile',
-			'delete',
-		]);
+		if (isset($this->Authentication)) {
+			$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
+		}
+
+		if (isset($this->FormProtection)) {
+			$this->FormProtection->setConfig('unlockedActions', [
+				'test',
+				'savePage',
+				'new',
+				'remove',
+				'toggle',
+				'move',
+				'switch',
+				'fetchUrl',
+				'uploadFile',
+				'delete',
+			]);
+		}
 	}
 
 	public function test() {
 		$this->request->allowMethod(['post']);
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
 		return $this->response->withStringBody(__('this is a Test'));
 	}
 
@@ -237,7 +241,7 @@ class PagesController extends NodesController {
 
 		if ($this->Pages->delete($entry)) {
 			$this->Pages->recover();
-			
+
 			if ($this->request->is('htmx')) {
 				return $this->response->withStringBody('1');
 			}
@@ -247,6 +251,9 @@ class PagesController extends NodesController {
 			$this->Flash->error(__('The Page could not be deleted. Please, try again.'), ['plugin' => 'Rhino']);
 		}
 
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
 		return $this->redirect(['action' => 'index']);
 	}
 
@@ -341,6 +348,10 @@ class PagesController extends NodesController {
 			$this->Flash->error(__('The table could not be saved. Please, try again.'), ['plugin' => 'Rhino']);
 		}
 
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		$this->set([
 			'entry' => $entry,
 			'page' => $page,
@@ -370,6 +381,10 @@ class PagesController extends NodesController {
 				]));
 		}
 
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		return $response;
 	}
 
@@ -392,6 +407,10 @@ class PagesController extends NodesController {
 
 		$this->Components->save($component);
 
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		return $this->getElement($component, true);
 	}
 
@@ -402,6 +421,11 @@ class PagesController extends NodesController {
 		$content = $this->Components->get($data['id']);
 		$content = $this->Components->patchEntity($content, $data);
 		$this->Components->save($content);
+
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		return $this->getElement($content, true);
 	}
 
@@ -428,6 +452,10 @@ class PagesController extends NodesController {
 				]));
 		}
 
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		return $response;
 	}
 
@@ -438,7 +466,12 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
+
 		$status = $entry->toggle();
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		if ($this->Components->save($entry)) {
 			return $this->response->withType('application/json')
 				->withStringBody(json_encode([
@@ -471,6 +504,10 @@ class PagesController extends NodesController {
 			case 'down':
 				$this->Components->moveDown($entry);
 				break;
+		}
+
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
 		}
 
 		return $this->response->withType('application/json')
@@ -517,6 +554,10 @@ class PagesController extends NodesController {
 			'image' => ['url' => $headerData['image'] ?? $headerData['og:image'] ?? $headerData['twitter:image:src']],
 		];
 
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
+
 		return $this->response->withType('application/json')
 			->withStringBody(json_encode([
 				'success' => 1,
@@ -528,6 +569,10 @@ class PagesController extends NodesController {
 		$file = $this->request->getData('image');
 		$type = $file->getClientMediaType();
 		$error = $file->getError();
+
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
 
 		if (!preg_match('/^image\/.*/', $type) || $error != 0) {
 			return $this->response->withType('application/json')
@@ -582,6 +627,10 @@ class PagesController extends NodesController {
 			'component' => $component,
 			'layoutmode' => $layoutMode
 		]);
+
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
 
 		try {
 			return $this->render('Rhino.element');
