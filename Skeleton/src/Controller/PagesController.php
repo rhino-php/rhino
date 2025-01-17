@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -15,11 +14,9 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+namespace App\Controller;
 
-namespace Rhino\Controller;
-
-use Rhino\Handlers\FileHandler;
-use Rhino\Controller\RhinoController as BaseController;
+use Rhino\Controller\PagesController as BaseController;
 
 /**
  * Static content controller
@@ -28,26 +25,37 @@ use Rhino\Controller\RhinoController as BaseController;
  *
  * @link https://book.cakephp.org/4/en/controllers/pages-controller.html
  */
-class FilesController extends BaseController {
-
+class PagesController extends BaseController {
 	public function initialize(): void {
 		parent::initialize();
-		$this->Files = new FileHandler();
-
-		if ($this->request->getQuery('modal')) {
-			$this->viewBuilder()->disableAutoLayout();
-		}
+	}
+	
+	/**
+	 * Called when editing a Page in Layout Mode
+	 * @param int $id
+	 * 
+	 * @return void
+	 */
+	public function layout(int $id) {
+		parent::layout($id);
 	}
 
-	public function get() {
-		$directory = $this->request->getQuery('dir');
-		$types = $this->request->getQuery('types');
-
-		if (!empty($types)) {
-			$types = explode(',', $types);
-		}
-
-		$dirs = $this->Files->get($directory, $types ?? []);
-		$this->set(compact('dirs'));
+	/**
+	 * Called to display a Page or Template
+	 * @param string[] $path
+	 * 
+	 * @return void
+	 */
+	public function display(string ...$path) {
+		parent::display(...$path);
+	}
+	
+	/**
+	 * Called when getting an Image
+	 * 
+	 * @return void
+	 */
+	public function getFile() {
+		parent::getFile();
 	}
 }

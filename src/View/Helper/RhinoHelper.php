@@ -8,7 +8,7 @@ use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
 use Cake\Utility\Inflector;
 use Durlecode\EJSParser\Parser;
-use Rhino\Handlers\FileHandler;
+// use Rhino\Handlers\FileHandler;
 use Cake\View\Helper\IdGeneratorTrait;
 use Cake\Core\Configure;
 use Rhino\Model\Table\MediaCategoriesTable;
@@ -56,7 +56,7 @@ class RhinoHelper extends Helper {
 	protected array $helpers = ['Form', 'Html', 'Icon', 'Url', 'Layout'];
 
 	public function initialize(array $config): void {
-		$this->FileHandler = new FileHandler();
+		// $this->FileHandler = new FileHandler();
 		$this->layoutMode = Configure::read('layoutMode') ?? false;
 	}
 
@@ -429,6 +429,11 @@ class RhinoHelper extends Helper {
 
 		if ($this->layoutMode) {
 			return $this->Layout->parseEditor($json);
+		}
+
+		$parsed = json_decode($json);
+		if (empty($parsed->blocks)) {
+			return '';
 		}
 
 		$html = Parser::parse($json)->toHtml();

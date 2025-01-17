@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Rhino\View;
 
 use Cake\Core\Configure;
-use Cake\View\View;
+use App\View\AppView;
 
 /**
  * Application View
@@ -25,7 +25,7 @@ use Cake\View\View;
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
  */
-class PageView extends View {
+class PageView extends AppView {
 	/**
 	 * Initialization hook method.
 	 *
@@ -37,22 +37,11 @@ class PageView extends View {
 	 */
 	public function initialize(): void {
 		parent::initialize();
-		Configure::load('app', 'default', true);
-		$local = Configure::read('App.defaultLocale');
-		$this->set(compact("local"));
 
 		$isLayout = Configure::read('layoutMode');
-		$title = $this->get('pageTitle', $this->name);
-
-		$this->assign('title', $title);
-
-		$this->loadHelper('Authentication.Identity');
-		$this->loadHelper('Rhino.Icon');
-		$this->loadHelper('Rhino.Menu');
-		$this->loadHelper('Rhino.Rhino');
-		$this->loadHelper('Rhino.Layout');
-
+		
 		if ($isLayout) {
+			$this->loadHelper('Rhino.Layout');
 			$pass = $this->request->getParam('pass');
 			$pageId = $pass[0];
 

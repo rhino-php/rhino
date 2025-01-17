@@ -44,8 +44,6 @@ class MenuHelper extends Helper {
 	private ?int $maxLevel = null; 
 
 	public function initialize(array $config): void {
-		$this->Pages = new PagesTable();
-
 		$this->loadTemplate('toggleButton', 'Menu/toggleButton');
 	}
 
@@ -63,35 +61,66 @@ class MenuHelper extends Helper {
 		);
 	}
 
-	public function create(string $type = '') {
-		return '<div class="menu ' . $type . '"><nav id="main-menu">';
+	public function fetch($options = []) {
+		$menu = $this->_View->fetch('menu');
+		
+		if (!isset($options['class'])) {
+			$options['class'] = 'menu-list';
+		}
+
+		$list = $this->formatTemplate('ul', [
+			'attrs' => $this->templater()->formatAttributes($options),
+			'content' => $menu,
+		]);
+
+		return $this->formatTemplate('tag', [
+			'attrs' => $this->templater()->formatAttributes(['id' => 'main-menu', 'class' => 'menu']),
+			'content' => $list,
+			'tag' => 'nav',
+		]);
 	}
 
-	public function end() {
-		return '</nav></div>';
-	}
-
-	public function get(?int $root = null, ?array $options = null) {
+	public function set(?int $root = null, ?array $options = []) {
+		$this->Pages = new PagesTable();
 		$menu = $this->Pages->getMenu($root, $options['limit'] ?? null);
 		unset($options['limit']);
-
-		// if (isset($options['limit'])) {
-		// 	$this->maxLevel = $menu[0]->level + $options['limit'];
-		// }
-
-		$out = $this->nestedList($menu, $options);
-		return $out;
+		$out = $this->nestedList($menu, $options, true);
+		$this->_View->append('menu', $out);
 	}
 
-	private function nestedList($items, array $options = []) {
+	public function get(?int $root = null, ?array $options = []) {
+		$this->set($root, $options);
+		$menu = $this->_View->fetch('menu');
+		
+		$listOptions = $options['list'];
+		if (!isset($listOptions['class'])) {
+			$listOptions['class'] = 'menu-list';
+		}
+
+		return $this->formatTemplate('ul', [
+			'attrs' => $this->templater()->formatAttributes($listOptions),
+			'content' => $menu,
+		]);
+	}
+
+	private function nestedList($items, array $options = [], bool $first = false) {
 		$out = '';
 
 		foreach ($items as $item) {
 			$out .= $this->nestedItem($item, $options);
 		}
 
+		$listOptions = $options['list'];
+		if (!isset($listOptions['class'])) {
+			$listOptions['class'] = 'menu-list';
+		}
+		
+		if ($first) {
+			return $out;
+		}
+
 		return $this->formatTemplate('ul', [
-			'attrs' => $this->templater()->formatAttributes($options['ul'] ?? []),
+			'attrs' => $this->templater()->formatAttributes($listOptions),
 			'content' => $out,
 		]);
 	}
@@ -105,12 +134,22 @@ class MenuHelper extends Helper {
 		}
 
 		$type = 'Page';
-		// $type = $this->Pages->pageTypes[$item->page_type];
+
+		if (!isset($options['class'])) {
+			$options['class'] = 'menu-' . strtolower($type);
+		}
+
+		$linkOptions = $options['link'];
+		if (empty($linkOptions)) {
+			$linkOptions['class'] = 'menu-link';
+		} else {
+			$linkOptions['class'] .= ' menu-link';
+		}
 		
 		switch ($type) {
 			case 'Page':
 				$itemOut .= $this->formatTemplate('link', [
-					'attrs' => $this->templater()->formatAttributes($options['link'] ?? []),
+					'attrs' => $this->templater()->formatAttributes($linkOptions),
 					'content' => $item->name,
 					'url' =>  $this->Url->build(['controller' => 'pages', 'action' => 'display', $item->name])
 				]);
@@ -118,7 +157,7 @@ class MenuHelper extends Helper {
 				break;
 			case 'Link':
 				$itemOut .= $this->formatTemplate('link', [
-					'attrs' => $this->templater()->formatAttributes($options['link'] ?? []),
+					'attrs' => $this->templater()->formatAttributes($linkOptions),
 					'content' => $item->name,
 					'url' => $item->url
 				]);
@@ -126,19 +165,24 @@ class MenuHelper extends Helper {
 				break;
 			case 'Folder':
 				$summary = $this->formatTemplate('summary', [
-					'attrs' => $this->templater()->formatAttributes($options['summary'] ?? []),
+					'attrs' => $this->templater()->formatAttributes($linkOptions),
 					'content' => $item->name,
 				]);
 
 				$itemOut .= $this->formatTemplate('details', [
-					'attrs' => $this->templater()->formatAttributes($options['details'] ?? []),
+					'attrs' => $this->templater()->formatAttributes($linkOptions),
 					'content' => $summary . $children,
 				]);
 				break;
 		}
 
+		$itemOptions = $options['item'];
+		if (!isset($itemOptions['class'])) {
+			$itemOptions['class'] = 'menu-item';
+		}
+		
 		return $this->formatTemplate('li', [
-			'attrs' => $this->templater()->formatAttributes($options['li'] ?? []),
+			'attrs' => $this->templater()->formatAttributes($itemOptions),
 			'content' => $itemOut,
 		]);
 	}

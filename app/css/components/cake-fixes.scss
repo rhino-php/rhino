@@ -1,0 +1,46 @@
+@use "library" as *;
+
+#main > {
+	.row,
+	.content {
+		@include bound(var(--inner-bound-width), var(--outer-bound));
+	}
+}
+
+.pagination {
+	list-style: none;
+	display: flex;
+	gap: var(--spacing);
+
+	li {
+		list-style: none;
+	}
+}
+
+.float-right {
+	float: right;
+}
+
+.row {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: var(--spacing-400);
+}
+
+.column-80 {
+	flex: 1 1 80%;
+}
+
+.side-nav {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing);
+}
+
+nav details.dropdown {
+	margin: 0;
+}
+
+.table-responsive {
+  overflow: auto;
+}

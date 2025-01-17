@@ -15,6 +15,7 @@ import RawTool from '@editorjs/raw';
 export default class Editor {
 	constructor(selector, contents) {
 		let editorData = '';
+		
 		if (contents && contents.length > 0) {
 			editorData = JSON.parse(contents);
 		} 
@@ -70,10 +71,11 @@ export default class Editor {
 					class: ImageTool,
 					config: {
 						endpoints: {
-							byFile: '/uploadFile', // Your backend file uploader endpoint
+							byFile: '/pages/uploadFile', // Your backend file uploader endpoint
 							byUrl: '/pages/fetchUrl', // Your endpoint that provides uploading by Url
-						}
-					}
+						},
+						additionalRequestHeaders: this.getRequestHeader()
+					},
 				}
 			},
 			autofocus: true,
@@ -82,6 +84,18 @@ export default class Editor {
 			minHeight: 0
 		});
 
+	}
+
+	getRequestHeader() {
+		const token = document.querySelector('meta[name="csrfToken"]').getAttribute('content');
+		
+		if (!token) {
+			return null;
+		}
+
+		return {
+			'X-CSRF-Token': token
+		}
 	}
 	
 	save() {

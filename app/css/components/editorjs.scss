@@ -1,0 +1,50 @@
+@use "settings" as *;
+@use "base_theme/library" as *;
+
+.editor {
+	background: #f6f6f6;
+	color: #333;
+	border-radius: var(--border-radius);
+	padding: var(--spacing);
+
+	@include for-size(md-up) {
+		padding-left: var(--spacing-500);
+	}
+}
+
+.cdx-search-field {
+	justify-content: center;
+	align-items: center;
+
+	input {
+		margin: 0;
+	}
+}
+
+.ce-inline-tool[type=button], .ce-popover-item[type=button] {
+	margin: 0;
+	background: none;
+	color: initial;
+	padding: inherit;
+	font: inherit;
+	border: inherit;
+}
+
+input.ce-inline-tool-input {
+	--form-element-focus-color: transparent;
+	margin: 0;
+}
+
+.ce-block__content,
+.ce-toolbar__content {
+	max-width: 100%;
+}
+
+.mark {
+	outline: tomato 8px dotted;
+}
+
+.cdx-notifies {
+	position: relative;
+	z-index: 1000;
+}

@@ -11,13 +11,14 @@
 /**
  * Import modules, modules are stored in `app/js/modules/`
 */
-import ThemeSwitcher from "./modules/theme-switcher.js";
-import Modal from "./modules/modal.js";
-import Files from "./modules/files.js";
-import Menu from "./modules/menu.js";
-import Tabs from "./modules/tabs.js";
-import FieldOptions from "./modules/field-options.js";
-import HooksHandler from "./modules/hooks-handler.js";
+// import ThemeSwitcher from "./modules/theme-switcher.js";
+// import Modal from "./modules/modal.js";
+// import Files from "./modules/files.js";
+// import Menu from "./modules/menu.js";
+// import Tabs from "./modules/tabs.js";
+// import FieldOptions from "./modules/field-options.js";
+// import HooksHandler from "./modules/hooks-handler.js";
+import Htmx from './modules/htmx';
 
 /**
  * Application main class
@@ -25,11 +26,9 @@ import HooksHandler from "./modules/hooks-handler.js";
 class MAIN {
 	/**
 	 * Constructor
-	*/
+	 */
 	constructor() {
-		console.log('hello');
-		
-		this.debug = false;
+		this.debug = true;
 
 		document.addEventListener("DOMContentLoaded", () => this.init());
 		window.onload = () => this.main();
@@ -44,18 +43,23 @@ class MAIN {
 		if (this.debug) {
 			console.debug("MAIN::init");
 		}
-		
-		// Init Moduls that need to start before the page is visible here:
-		this._layoutUpdate = new CustomEvent("layout-update", {});
 
-		this.Hooks = new HooksHandler(this);
-		this.ThemeSwitcher = new ThemeSwitcher(this);
-		this.FieldOptions = new FieldOptions(this);
-		this.Tabs = new Tabs(this);
-		
+		// Init Moduls that need to start before the page is visible here:
+		// this._layoutUpdate = new CustomEvent("layout-update", {});
+
+		// this.Hooks = new HooksHandler(this);
+		// this.ThemeSwitcher = new ThemeSwitcher(this);
+		// this.FieldOptions = new FieldOptions(this);
+		// this.Tabs = new Tabs(this);
+		this.Htmx = new Htmx(this);
+
 		document.body.classList.add("page-has-loaded");
-		window.addEventListener("resize", () => this.throttle(this.resizeHandler), { passive: true });
-		window.addEventListener("scroll", () => this.throttle(this.scrollHandler), { passive: true });
+		window.addEventListener("resize", () => this.throttle(this.resizeHandler), {
+			passive: true,
+		});
+		window.addEventListener("scroll", () => this.throttle(this.scrollHandler), {
+			passive: true,
+		});
 	}
 
 	layoutUpdate() {
@@ -74,16 +78,15 @@ class MAIN {
 		}
 
 		// Init Moduls here:
-		this.ThemeSwitcher.init();
-		this.FieldOptions.init();
-		this.Tabs.init();
-		this.Modal = new Modal(this);
-		this.Menu = new Menu(this);
-		this.Files = new Files(this);
+		// this.ThemeSwitcher.init();
+		// this.FieldOptions.init();
+		// this.Tabs.init();
+		// this.Modal = new Modal(this);
+		// this.Menu = new Menu(this);
+		// this.Files = new Files(this);
 
 		document.body.classList.add("page-has-rendered");
 	}
-
 
 	/**
 	 * pageInit
@@ -104,6 +107,10 @@ class MAIN {
 			let rect = this.header.getBoundingClientRect();
 			this.headerBottom = rect.top + rect.height;
 		}
+	}
+
+	getToken() {
+		return document.querySelector('meta[name="csrfToken"]').getAttribute("content");
 	}
 
 	/*

@@ -12,8 +12,7 @@ class RhinoInit extends AbstractMigration
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      * @return void
      */
-    public function change(): void {;
-		$contentsTable = 'rhino_contents';
+    public function change(): void {
 		$options = [
 			"collation" => 'utf8mb4_unicode_ci'
 		];
@@ -114,7 +113,7 @@ class RhinoInit extends AbstractMigration
 			])
 			->create();
 
-		$this->table($contentsTable, $options)
+		$this->table('rhino_contents', $options)
 			->addColumn('page_id', 'integer', [
 				'default' => Null,
 			])
@@ -148,45 +147,45 @@ class RhinoInit extends AbstractMigration
 			])
 			->create();
 
-		$this->table('rhino_media', $options)
-			->addColumn('filename', 'string')
-			->addColumn('description', 'text')
-			->addColumn('type', 'string')
-			->addColumn('position', 'integer')
-			->addColumn('media_category_id', 'integer')
-			->addColumn('created', 'timestamp', [
-				'default' => 'CURRENT_TIMESTAMP'
-			])
-			->addColumn('modified', 'timestamp', [
-				'default' => 'CURRENT_TIMESTAMP',
-				'update' => 'CURRENT_TIMESTAMP'
-			])
-			->create();
+		// $this->table('rhino_media', $options)
+		// 	->addColumn('filename', 'string')
+		// 	->addColumn('description', 'text')
+		// 	->addColumn('type', 'string')
+		// 	->addColumn('position', 'integer')
+		// 	->addColumn('media_category_id', 'integer')
+		// 	->addColumn('created', 'timestamp', [
+		// 		'default' => 'CURRENT_TIMESTAMP'
+		// 	])
+		// 	->addColumn('modified', 'timestamp', [
+		// 		'default' => 'CURRENT_TIMESTAMP',
+		// 		'update' => 'CURRENT_TIMESTAMP'
+		// 	])
+		// 	->create();
 
-		$this->table('rhino_media_categories', $options)
-			->addColumn('name', 'string')
-			->addColumn('description', 'text')
-			->create();
+		// $this->table('rhino_media_categories', $options)
+		// 	->addColumn('name', 'string')
+		// 	->addColumn('description', 'text')
+		// 	->create();
 
-		$this->table('rhino_widget_categories', $options)
-			->addColumn('name', 'string')
-			->addColumn('description', 'text')
-			->create();
+		// $this->table('rhino_widget_categories', $options)
+		// 	->addColumn('name', 'string')
+		// 	->addColumn('description', 'text')
+		// 	->create();
 
-		$this->table('rhino_widgets', $options)
-			->addColumn('name', 'string')
-			->addColumn('description', 'text')
-			->addColumn('template', 'string')
-			->addColumn('widget_category_id', 'integer')
-			->addColumn('position', 'integer')
-			->addColumn('created', 'timestamp', [
-				'default' => 'CURRENT_TIMESTAMP'
-			])
-			->addColumn('modified', 'timestamp', [
-				'default' => 'CURRENT_TIMESTAMP',
-				'update' => 'CURRENT_TIMESTAMP'
-			])
-			->create();
+		// $this->table('rhino_widgets', $options)
+		// 	->addColumn('name', 'string')
+		// 	->addColumn('description', 'text')
+		// 	->addColumn('template', 'string')
+		// 	->addColumn('widget_category_id', 'integer')
+		// 	->addColumn('position', 'integer')
+		// 	->addColumn('created', 'timestamp', [
+		// 		'default' => 'CURRENT_TIMESTAMP'
+		// 	])
+		// 	->addColumn('modified', 'timestamp', [
+		// 		'default' => 'CURRENT_TIMESTAMP',
+		// 		'update' => 'CURRENT_TIMESTAMP'
+		// 	])
+		// 	->create();
 
 		if ($this->isMigratingUp()) {
 			$this->table('rhino_templates')

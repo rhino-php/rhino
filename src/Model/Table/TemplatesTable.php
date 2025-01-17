@@ -7,58 +7,14 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Database\Type\EnumType;
+
+enum TemplateType: int {
+	case Layout = 0;
+	case Element = 1;
+}
 
 class TemplatesTable extends Table {
-
-	public array $fieldConfig = [
-		'element' => [
-			'type' => 'upload',
-			'options' => [
-				'uploadDirectory' => '/templates',
-				'uploadTypes' => 'file',
-				'uploadOverwrite' => '',
-				'uploadMultiple' => ''
-			]
-		],
-		'file' => [
-			'type' => 'upload',
-			'options' => [
-				'uploadDirectory' => '/templates',
-				'uploadTypes' => 'file',
-			]
-		],
-		'active' => [
-			'alias' => 'aktiv',
-			'type' => 'checkbox'
-		],
-		'template_type' => [
-			'alias' => 'Art',
-			'type' => 'select',
-			'options' => [
-				'selectValues' => [
-					0 => 'Layout',
-					1 => 'Element'
-				]
-			]
-		]
-	];
-
-	public array $overView = [
-		'id',
-		'name',
-		'active',
-		// 'element',
-		'template_type',
-		'modified',
-		'created',
-	];
-
-	public array $detailView = [
-		'name',
-		'file',
-		'template_type',
-		'active',
-	];
 
 	/**
 	 * Initialize method
@@ -76,6 +32,8 @@ class TemplatesTable extends Table {
 		$this->hasMany('Nodes', [
 			'className' => 'Rhino.Nodes',
 		]);
+
+		$this->getSchema()->setColumnType('template_type', EnumType::from(TemplateType::class));
 	}
 
 	public function getEntry(int $id = null): object {

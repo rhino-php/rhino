@@ -7,6 +7,7 @@
 	.page-list {
 		margin-top: var(--spacing-500);
 		margin-left: var(--spacing);
+		margin-inline: 0;
 
 		&,
 		ul,
@@ -34,12 +35,17 @@
 		}
 	}
 
+	& > .page-list > .page-item > .page-item__body {
+		padding-inline: 0;
+	}
+
 	.page-item {
 		margin: 0;
-
+		
 		&__body {
 			position: relative;
-			padding: var(--spacing);
+			// padding: var(--spacing);
+			// padding-right: 0;
 			margin: var(--spacing) 0;
 			display: flex;
 			justify-content: space-between;

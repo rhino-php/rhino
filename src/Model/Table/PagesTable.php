@@ -9,24 +9,17 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Database\Type\EnumType;
+
+enum PageRoles: int {
+	case Page = 0;
+	// case Link = 1;
+	// case Folder = 2;
+	case Home_Page = 3;
+	case Error_Page = 4;
+}
 
 class PagesTable extends NodesTable {
-	public array $root = [null => 'Root'];
-
-	public array $pageTypes = [
-		0 => "Page",
-		1 => "Link",
-		2 => "Folder"
-	];
-
-	public array $roles = [
-		0 => "Page",
-		1 => "Link",
-		2 => "Folder",
-		3 => "Home Page",
-		4 => "Error Page",
-	];
-
 	/**
 	 * Initialize method
 	 *
@@ -35,24 +28,22 @@ class PagesTable extends NodesTable {
 	 */
 	public function initialize(array $config): void {
 		parent::initialize($config);
+		$this->getSchema()->setColumnType('role', EnumType::from(PageRoles::class));
 	}
 
-	public function afterSave($event, $entity, $options) {
-		if (!$entity["is_homepage"]) {
+	public function beforeSave($event, $entity, $options) {
+		$isHomePage = $entity->role->value == 3;
+		if (!$isHomePage) {
 			return;
 		}
 
 		$pages = $this->find()
-			->where(["is_homepage" => 1])
+			->where(["role" => 3])
 			->all()
 			->toArray();
 
-		array_walk($pages, function ($page) use ($entity) {
-			if ($page["id"] == $entity["id"] || !$page["is_homepage"]) {
-				return;
-			}
-
-			$page["is_homepage"] = false;
+		array_walk($pages, function ($page) {
+			$page->role = 0;
 			$this->save($page);
 		});
 	}

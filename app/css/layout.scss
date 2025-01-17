@@ -8,6 +8,7 @@
 @use "base_theme/theme/measurements" as *;
 
 @forward "components/media-select";
+@forward "components/editorjs";
 
 $spacing: 1rem;
 $border-radius: 0.5rem;
@@ -80,7 +81,7 @@ $border-width: 4px;
 	border: solid $border-width transparent;
 	transition: 150ms border-color;
 
-	&:hover {
+	&:hover, &:focus, &:focus-within {
 		border: solid $border-width color('primary', 400);
 
 		& > .layout-handle {
@@ -90,11 +91,6 @@ $border-width: 4px;
 		.select-media {
 			opacity: 1;
 		}
-	}
-
-	.ce-block__content,
-	.ce-toolbar__content {
-		max-width: 100%;
 	}
 
 	&.inactive {
@@ -125,7 +121,7 @@ $border-width: 4px;
 	opacity: 0;
 	position: absolute;
 	z-index: 10;
-	top: 0;
+	bottom: 100%;
 	right: 1rem;
 	left: 1rem;
 	transition: 150ms opacity;
@@ -147,11 +143,11 @@ $border-width: 4px;
 		}
 
 		:first-child {
-			border-bottom-left-radius: $border-radius;
+			border-top-left-radius: $border-radius;
 		}
 
 		:last-child {
-			border-bottom-right-radius: $border-radius;
+			border-top-right-radius: $border-radius;
 		}
 	}
 }
@@ -170,6 +166,7 @@ $border-width: 4px;
 	border: none;
 	padding: 0.5rem 1rem;
 	cursor: pointer;
+	margin-bottom: 0;
 
 	svg {
 		// ToDo: Check Webcomponents or CSS Layers
@@ -233,6 +230,7 @@ $border-width: 4px;
 	@include measurements;
 
 	display: inline-block;
+	min-width: fit-content;
 	color: color("neutral", 700);
 	font-weight: 600;
 	appearance: none;
@@ -241,7 +239,7 @@ $border-width: 4px;
 	padding-block: 0rem;
 	text-decoration: none;
 	border: color('primary', 400) solid $border-width;
-	border-radius: 0 0 $border-radius $border-radius;
+	border-radius: $border-radius $border-radius 0 0;
 	cursor: pointer;
 	
 	--icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{to-rgb(color("neutral", 700))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -250,8 +248,8 @@ $border-width: 4px;
 	background-size: 1rem auto;
 	background-repeat: no-repeat;
 	
-	border-top: none;
-	margin-top: 0;
+	border-bottom: none;
+	margin-bottom: $border-width;
 }
 
 .select-media {
@@ -360,18 +358,3 @@ $border-width: 4px;
 // 	}
 // }
 
-.editor {
-	background: #f6f6f6;
-	color: #333;
-	border-radius: $border-radius;
-	padding: $spacing $spacing $spacing $spacing * 4;
-}
-
-.mark {
-	outline: tomato 8px dotted;
-}
-
-.cdx-notifies {
-	position: relative;
-	z-index: 1000;
-}

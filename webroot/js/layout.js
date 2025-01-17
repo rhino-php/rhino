@@ -1,8 +1,8 @@
 /**
  * @project       tusk
  * @author        carsten.coull@swu.de
- * @build         Fri, Jan 10, 2025 11:23 AM ET
- * @release       9cdc452c535dd3b2e8f88074575afd1a1e971e8c [main]
+ * @build         Fri, Jan 17, 2025 9:44 AM ET
+ * @release       7944eb767432c14e4a07f052d9bf49262bf145db [main]
  * @copyright     Copyright (c) 2025, SWU Stadtwerke Ulm / Neu-Ulm GmbH
  *
  */
@@ -18083,11 +18083,12 @@
             class: P4,
             config: {
               endpoints: {
-                byFile: "/uploadFile",
+                byFile: "/pages/uploadFile",
                 // Your backend file uploader endpoint
                 byUrl: "/pages/fetchUrl"
                 // Your endpoint that provides uploading by Url
-              }
+              },
+              additionalRequestHeaders: this.getRequestHeader()
             }
           }
         },
@@ -18096,6 +18097,15 @@
         data: editorData,
         minHeight: 0
       });
+    }
+    getRequestHeader() {
+      const token = document.querySelector('meta[name="csrfToken"]').getAttribute("content");
+      if (!token) {
+        return null;
+      }
+      return {
+        "X-CSRF-Token": token
+      };
     }
     save() {
       return this.editor.save();

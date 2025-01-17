@@ -41,50 +41,48 @@ class NodesTable extends Table {
 		2 => "Content"
 	];
 
-	public array $roles = [
-		0 => "default",
-		1 => "main"
-	];
+	// public array $roles = [
+	// 	0 => "default",
+	// 	1 => "main"
+	// ];
 
+	/**
+	 * Initialize method
+	 *
+	 * @param array<string, mixed> $config The configuration for the Table.
+	 * @return void
+	 */
+	public function initialize(array $config): void {
+		parent::initialize($config);
 
-    /**
-     * Initialize method
-     *
-     * @param array<string, mixed> $config The configuration for the Table.
-     * @return void
-     */
-    public function initialize(array $config): void
-    {
-        parent::initialize($config);
+		$this->setTable('rhino_nodes');
+		$this->setDisplayField('name');
+		$this->setPrimaryKey('id');
 
-        $this->setTable('rhino_nodes');
-        $this->setDisplayField('name');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
-        $this->addBehavior('Tree', [
+		$this->addBehavior('Timestamp');
+		$this->addBehavior('Tree', [
 			'level' => 'level'
 		]);
 
 		$this->hasOne('Users', [
-            'className' => 'Rhino.Users',
-            'foreignKey' => 'user_id',
-        ]);
+			'className' => 'Rhino.Users',
+			'foreignKey' => 'user_id',
+		]);
 
 		$this->belongsTo('Parent', [
 			'className' => 'Rhino.Nodes',
-            'foreignKey' => 'id',
+			'foreignKey' => 'id',
 		]);
-		
+
 		$this->hasMany('Children', [
 			'className' => 'Rhino.Nodes',
-            'foreignKey' => 'parent_id',
+			'foreignKey' => 'parent_id',
 		]);
 
 		$this->belongsTo('Templates', [
 			'className' => 'Rhino.Templates',
 		]);
-    }
+	}
 
 	public function getChildren(int $parentId): ResultSet {
 		return $this->find()
@@ -94,69 +92,68 @@ class NodesTable extends Table {
 			->all();
 	}
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator
-            ->scalar('name')
-            ->maxLength('name', 100)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+	/**
+	 * Default validation rules.
+	 *
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 * @return \Cake\Validation\Validator
+	 */
+	public function validationDefault(Validator $validator): Validator {
+		$validator
+			->scalar('name')
+			->maxLength('name', 100)
+			->requirePresence('name', 'create')
+			->notEmptyString('name');
 
-        $validator
-            ->boolean('active')
-            ->allowEmptyString('active');
+		$validator
+			->boolean('active')
+			->allowEmptyString('active');
 
-        $validator
-            ->integer('user_id')
-            ->requirePresence('user_id', 'create')
-            ->notEmptyString('user_id');
+		$validator
+			->integer('user_id')
+			->requirePresence('user_id', 'create')
+			->notEmptyString('user_id');
 
-        $validator
-            ->scalar('type')
-            ->maxLength('type', 255)
-            ->notEmptyString('type');
+		$validator
+			->scalar('type')
+			->maxLength('type', 255)
+			->notEmptyString('type');
 
-        $validator
-            ->scalar('role')
-            ->maxLength('role', 255)
-            ->allowEmptyString('role');
+		$validator
+			->scalar('role')
+			->maxLength('role', 255)
+			->allowEmptyString('role');
 
-        $validator
-            ->integer('parent_id')
-            ->allowEmptyString('parent_id');
+		$validator
+			->integer('parent_id')
+			->allowEmptyString('parent_id');
 
-        $validator
-            ->integer('level')
-            ->notEmptyString('level');
+		$validator
+			->integer('level')
+			->notEmptyString('level');
 
-        $validator
-            ->integer('template_id')
-            ->allowEmptyString('template_id');
+		$validator
+			->integer('template_id')
+			->allowEmptyString('template_id');
 
-        $validator
-            ->scalar('language')
-            ->maxLength('language', 255)
-            ->allowEmptyString('language');
+		$validator
+			->scalar('language')
+			->maxLength('language', 255)
+			->allowEmptyString('language');
 
-        $validator
-            ->integer('version')
-            ->allowEmptyString('version');
+		$validator
+			->integer('version')
+			->allowEmptyString('version');
 
-        $validator
-            ->scalar('config')
-            ->allowEmptyString('config');
+		$validator
+			->scalar('config')
+			->allowEmptyString('config');
 
-        $validator
-            ->scalar('content')
-            ->allowEmptyString('content');
+		$validator
+			->scalar('content')
+			->allowEmptyString('content');
 
-        return $validator;
-    }
+		return $validator;
+	}
 
 }

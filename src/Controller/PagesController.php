@@ -38,22 +38,52 @@ use Dom\HTMLDocument;
  */
 class PagesController extends NodesController {
 
+	private bool $useTable = true;
+
 	public function initialize(): void {
 		parent::initialize();
 
-		$this->Pages = $this->fetchTable('Rhino.Pages');
-		$this->Components = $this->fetchTable('Rhino.Components');
+		// Make tables optionals
+		try {
+
+			$this->Pages = $this->fetchTable('Rhino.Pages');
+			$this->Nodes = $this->Pages;
+			$this->Components = $this->fetchTable('Rhino.Components');
+		} catch (\Throwable $th) {
+			$this->useTable = false;
+		}
+
 		$this->composeTemplate = 'Rhino.compose';
+		$this->uploadFolder = 'file_upload';
+		$this->basePath = join(DS, [ROOT, 'data']);
+
+		if ($this->request->is('htmx')) {
+			$this->viewBuilder()->disableAutoLayout();
+		}
 	}
 
 	public function beforeFilter(\Cake\Event\EventInterface $event) {
 		parent::beforeFilter($event);
 		// Configure the login action to not require authentication, preventing
 		// the infinite redirect loop issue
-		$this->Authentication->addUnauthenticatedActions(['display']);
+		$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
 		$this->FormProtection->setConfig('unlockedActions', [
-			'savePage', 'new', 'remove', 'toggle', 'move', 'fetchUrl'
+			'test',
+			'savePage',
+			'new',
+			'remove',
+			'toggle',
+			'move',
+			'switch',
+			'fetchUrl',
+			'uploadFile',
+			'delete',
 		]);
+	}
+
+	public function test() {
+		$this->request->allowMethod(['post']);
+		return $this->response->withStringBody(__('this is a Test'));
 	}
 
 	/**
@@ -68,7 +98,7 @@ class PagesController extends NodesController {
 	 *   be found and not in debug mode.
 	 * @throws \Cake\View\Exception\MissingTemplateException In debug mode.
 	 */
-	public function display(string ...$path): ?Response {
+	public function display(string ...$path) {
 		if (in_array('..', $path, true) || in_array('.', $path, true)) {
 			throw new ForbiddenException();
 		}
@@ -86,7 +116,9 @@ class PagesController extends NodesController {
 		$layout = 'default';
 		$template = $slug;
 
-		$page = $this->Pages->slug(urldecode(string: $slug));
+		if ($this->useTable) {
+			$page = $this->Pages->slug(urldecode(string: $slug));
+		}
 
 		if (!empty($page)) {
 
@@ -110,6 +142,7 @@ class PagesController extends NodesController {
 		try {
 			$this->viewBuilder()->setClassName('Rhino.Page');
 			$this->viewBuilder()->setLayout($layout);
+			$this->setPlugin(null);
 			return $this->render($template);
 		} catch (MissingTemplateException $exception) {
 			if (Configure::read('debug')) {
@@ -171,7 +204,7 @@ class PagesController extends NodesController {
 	 * @return void
 	 */
 	public function preCompose($entry): void {
-		$templates = $this->Pages->Templates->find('list')->all();
+		$templates = $this->Pages->Templates->find('list')->where(['template_type' => 0])->all();
 
 		$pages = $this->Pages
 			->find('treeList', [
@@ -186,7 +219,6 @@ class PagesController extends NodesController {
 			'entry' => $entry,
 			'pages' => $pages,
 			'templates' => $templates,
-			'roles' => $this->Pages->roles
 		]);
 	}
 
@@ -205,6 +237,11 @@ class PagesController extends NodesController {
 
 		if ($this->Pages->delete($entry)) {
 			$this->Pages->recover();
+			
+			if ($this->request->is('htmx')) {
+				return $this->response->withStringBody('1');
+			}
+
 			$this->Flash->success(__('The Page has been deleted.'), ['plugin' => 'Rhino']);
 		} else {
 			$this->Flash->error(__('The Page could not be deleted. Please, try again.'), ['plugin' => 'Rhino']);
@@ -347,12 +384,25 @@ class PagesController extends NodesController {
 			'content' => '',
 			'user_id' => 1,
 			'node_type' => 1,
-			'template_id' => 2
+			'template_id' => $this->Components->Templates->find()
+				->where(['template_type' => 1])
+				->first()
+				->id
 		]);
 
 		$this->Components->save($component);
 
 		return $this->getElement($component, true);
+	}
+
+	public function switch() {
+		$this->viewBuilder()->disableAutoLayout();
+		$data = $this->request->getData();
+
+		$content = $this->Components->get($data['id']);
+		$content = $this->Components->patchEntity($content, $data);
+		$this->Components->save($content);
+		return $this->getElement($content, true);
 	}
 
 	public function remove() {
@@ -474,6 +524,38 @@ class PagesController extends NodesController {
 			]));
 	}
 
+	public function uploadFile() {
+		$file = $this->request->getData('image');
+		$type = $file->getClientMediaType();
+		$error = $file->getError();
+
+		if (!preg_match('/^image\/.*/', $type) || $error != 0) {
+			return $this->response->withType('application/json')
+				->withStringBody(json_encode([
+					'success' => 0,
+				]));
+		}
+
+		$path = join(DS, [$this->basePath, $this->uploadFolder, $file->getClientFilename()]);
+		$file->moveTo($path);
+
+		return $this->response->withType('application/json')
+			->withStringBody(json_encode([
+				'success' => 1,
+				'file' => [
+					'url' => '/img/' . $file->getClientFilename()
+				],
+			]));
+	}
+
+	public function getFile() {
+		$fileName = $this->request->getParam('file');
+		$path = join(DS, [$this->basePath, $this->uploadFolder, $fileName]);
+		$response = $this->response->withFile($path);
+
+		return $response;
+	}
+
 	private function getElement($component, $layoutMode = false) {
 		$this->setPlugin(null);
 
@@ -483,9 +565,12 @@ class PagesController extends NodesController {
 		}
 
 		$templateId = $component->template_id ?? 1;
-
 		if (empty($component->template)) {
-			$component->template = $this->Components->Templates->get($templateId);
+			try {
+				$component->template = $this->Components->Templates->get($templateId);
+			} catch (\Throwable $th) {
+				$component->template = $this->Components->Templates->newEntity(['file' => 'Rhino.template_error']);
+			}
 		}
 
 		if ($layoutMode) {

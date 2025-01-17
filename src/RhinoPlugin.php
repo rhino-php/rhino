@@ -9,6 +9,7 @@ use Cake\Core\ContainerInterface;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
+use Cake\Routing\Route\DashedRoute;
 
 /**
  * Plugin for Rhino
@@ -38,8 +39,21 @@ class RhinoPlugin extends BasePlugin {
 	public function routes(RouteBuilder $routes): void {
 		parent::routes($routes);
 
+		$routes->connect('/img/{file}', ['plugin' => 'Rhino', 'controller' => 'Pages', 'action' => 'getFile']);
+
+		$routes->scope('/', function (RouteBuilder $routes) {
+			$routes->resources('/pages/display/{page}', ['path' => '/de/{pages}']);
+		});
+
+		$routes->connect('/de/{page}', ['controller' => 'Pages', 'action' => 'display'])
+			->setPass(['page', 'lang'])
+			->setPatterns(['lang' => 'en|fr|es|de'])
+			->setPersist(['lang']);
+
+		$routes->connect('/templates', ['controller' => 'Templates', 'plugin' => 'Rhino', 'action' => 'index']);
+
 		$routes->plugin('Rhino', function (RouteBuilder $routes) {
-			$routes->fallbacks();
+			$routes->fallbacks(DashedRoute::class);
 		});
 	}
 
