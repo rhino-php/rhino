@@ -38,10 +38,10 @@ use Dom\HTMLDocument;
  */
 class PagesController extends NodesController {
 
-	private bool $useTable = true;
-
 	public function initialize(): void {
 		parent::initialize();
+
+		$this->loadComponent('CakeHtmx.Htmx');
 
 		// Make tables optionals
 		try {
@@ -169,6 +169,7 @@ class PagesController extends NodesController {
 		]);
 
 		try {
+			$this->setPlugin(null);
 			return $this->render('Rhino.index');
 		} catch (MissingTemplateException $exception) {
 			if (Configure::read('debug')) {
@@ -219,6 +220,7 @@ class PagesController extends NodesController {
 
 		$pages = $this->Pages->root + $pages->toArray();
 
+		$this->setPlugin(null);
 		$this->set([
 			'entry' => $entry,
 			'pages' => $pages,
@@ -299,6 +301,8 @@ class PagesController extends NodesController {
 			'contain' => ['Templates']
 		]);
 
+		$pageTitle = $page->name;
+
 		$children = $this->Pages->find('children', for: $page->id)
 			->find('threaded')
 			->contain(['Templates'])
@@ -310,15 +314,18 @@ class PagesController extends NodesController {
 			'page' => $page,
 			'children' => $children,
 			'templates' => $templates,
+			'pageTitle' => $pageTitle,
 			'layoutMode' => true
 		]);
 
-		$this->viewBuilder()
-			->setLayout($page->template->element);
-
+		$template = 'Rhino.display';
+		$layout = $page->template->element;
+			
 		try {
 			$this->viewBuilder()->setClassName('Rhino.Page');
-			return $this->render('Rhino.layout');
+			$this->viewBuilder()->setLayout($layout);
+			$this->setPlugin(null);
+			return $this->render($template);
 		} catch (MissingTemplateException $exception) {
 			if (Configure::read('debug')) {
 				throw $exception;

@@ -38,6 +38,9 @@ class RhinoPlugin extends BasePlugin {
 	 */
 	public function routes(RouteBuilder $routes): void {
 		parent::routes($routes);
+		
+		$routes->connect('/pages', ['controller' => 'Pages', 'plugin' => 'Rhino', 'action' => 'index']);
+		$routes->connect('/templates', ['controller' => 'Templates', 'plugin' => 'Rhino', 'action' => 'index']);
 
 		$routes->connect('/img/{file}', ['plugin' => 'Rhino', 'controller' => 'Pages', 'action' => 'getFile']);
 
@@ -49,8 +52,6 @@ class RhinoPlugin extends BasePlugin {
 			->setPass(['page', 'lang'])
 			->setPatterns(['lang' => 'en|fr|es|de'])
 			->setPersist(['lang']);
-
-		$routes->connect('/templates', ['controller' => 'Templates', 'plugin' => 'Rhino', 'action' => 'index']);
 
 		$routes->plugin('Rhino', function (RouteBuilder $routes) {
 			$routes->fallbacks(DashedRoute::class);

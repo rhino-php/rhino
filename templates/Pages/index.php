@@ -1,4 +1,5 @@
 <?php
+$this->Html->css('Rhino.main', ['block' => true]);
 $this->Html->script('Rhino.main', ['block' => true]);
 $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['block' => true]);
 ?>

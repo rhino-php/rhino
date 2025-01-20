@@ -1,3 +1,9 @@
+<?php
+$this->Html->css('Rhino.main', ['block' => true]);
+$this->Html->script('Rhino.main', ['block' => true]);
+$this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['block' => true]);
+?>
+
 <section class="inner-bound">
 	<h1>
 		<?= __(ucfirst($action)) ?> Page

@@ -3,6 +3,10 @@
  * @var \App\View\AppView $this
  * @var \Cake\Datasource\EntityInterface $template
  */
+
+$this->Html->css('Rhino.main', ['block' => true]);
+$this->Html->script('Rhino.main', ['block' => true]);
+$this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['block' => true]);
 ?>
 <div class="row">
     <aside class="column">

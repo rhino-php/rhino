@@ -16,6 +16,8 @@ class RhinoController extends BaseController {
 
 	public string $composeTemplate = 'compose';
 
+	public bool $useTable = true;
+
 	public function initialize(): void
     {
         parent::initialize();

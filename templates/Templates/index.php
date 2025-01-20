@@ -4,9 +4,11 @@
  * @var iterable<\Cake\Datasource\EntityInterface> $templates
  */
 
+$this->Html->css('Rhino.main', ['block' => true]);
 $this->Html->script('Rhino.main', ['block' => true]);
 $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['block' => true]);
 ?>
+
 <section class="templates index content stack-400">
 	<div>
 		<?= $this->Icon->link('plus', __('New'), ['action' => 'add'], ['class' => 'button float-right', 'reverse' => true]) ?>
@@ -60,4 +62,7 @@ $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['bloc
         </ul>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
+	<div>
+		<?= $this->Icon->link('Rhino.file', __('Manage Pages'), ['controller' => 'Pages', 'action' => 'index'], ['class' => 'button secondary', 'reverse' => true]) ?>
+	</div>
 </section>

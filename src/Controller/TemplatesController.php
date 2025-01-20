@@ -26,9 +26,11 @@ class TemplatesController extends BaseController {
 
 	public function beforeFilter(\Cake\Event\EventInterface $event) {
 		parent::beforeFilter($event);
-		$this->FormProtection->setConfig('unlockedActions', [
-			'delete',
-		]);
+		if (isset($this->FormProtection)) {
+			$this->FormProtection->setConfig('unlockedActions', [
+				'delete',
+			]);
+		}
 	}
 
 	/**
