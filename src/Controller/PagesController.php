@@ -38,6 +38,8 @@ use Dom\HTMLDocument;
  */
 class PagesController extends NodesController {
 
+	private bool $authenticate = false;
+
 	public function initialize(): void {
 		parent::initialize();
 
@@ -64,6 +66,7 @@ class PagesController extends NodesController {
 		// the infinite redirect loop issue
 		if (isset($this->Authentication)) {
 			$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
+			$this->authenticate = true;
 		}
 
 		if (isset($this->FormProtection)) {
@@ -136,6 +139,7 @@ class PagesController extends NodesController {
 			$children = $this->Pages->find('children', for: $page->id ?? 1)
 				->find('threaded')
 				->contain(['Templates'])
+				->where(['role IN' => [0, 3]])
 				->all();
 
 			$this->set(compact('page', 'subpage', 'children', 'pageTitle'));
@@ -163,6 +167,9 @@ class PagesController extends NodesController {
 	 */
 	public function index() {
 		$pages = $this->Pages->find('threaded')->where(['node_type' => 0])->orderBy(["lft" => 'ASC']);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($pages);
+		}
 
 		$this->set([
 			'pages' => $pages,
@@ -186,6 +193,10 @@ class PagesController extends NodesController {
 	 */
 	public function add(int $id = null) {
 		$entry = $this->Pages->newEmptyEntity();
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry);
+		}
+
 		$this->compose($entry);
 	}
 
@@ -198,6 +209,10 @@ class PagesController extends NodesController {
 	 */
 	public function edit(int $id) {
 		$entry = $this->Pages->get($id);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry);
+		}
+
 		$this->compose($entry);
 	}
 
@@ -238,6 +253,9 @@ class PagesController extends NodesController {
 	public function delete(int $id) {
 		$this->request->allowMethod(['post', 'delete']);
 		$entry = $this->Pages->get($id);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry);
+		}
 
 		$this->Pages->removeFromTree($entry);
 
@@ -301,11 +319,16 @@ class PagesController extends NodesController {
 			'contain' => ['Templates']
 		]);
 
+		if ($this->authenticate) {
+			$this->Authorization->authorize($page, 'view');
+		}
+
 		$pageTitle = $page->name;
 
 		$children = $this->Pages->find('children', for: $page->id)
 			->find('threaded')
 			->contain(['Templates'])
+			->where(['role IN' => [0, 3]])
 			->all();
 
 		$templates = $this->Pages->Templates->list(1);
@@ -343,6 +366,9 @@ class PagesController extends NodesController {
 	public function addContent(int $id) {
 		$page = $this->Pages->getEntry($id);
 		$entry = $this->Contents->newEmptyEntity();
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry, 'add');
+		}
 
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$content = $this->Contents->patchEntity($entry, $this->request->getData());
@@ -370,9 +396,13 @@ class PagesController extends NodesController {
 		$ids = array_column($data, 'id');
 		$list = $this->Components->find()
 			->where(['id IN' => $ids])
-			->all()
-			->toList();
-		$content = $this->Components->patchEntities($list, $data);
+			->all();
+
+		if ($this->authenticate) {
+			$this->Authorization->authorize($list, 'edit');
+		}
+
+		$content = $this->Components->patchEntities($list->toList(), $data);
 
 		if ($this->Components->saveMany($content)) {
 			$response = $this->response->withType('application/json')
@@ -411,6 +441,9 @@ class PagesController extends NodesController {
 				->first()
 				->id
 		]);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($component, 'add');
+		}
 
 		$this->Components->save($component);
 
@@ -426,6 +459,10 @@ class PagesController extends NodesController {
 		$data = $this->request->getData();
 
 		$content = $this->Components->get($data['id']);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($content, 'edit');
+		}
+
 		$content = $this->Components->patchEntity($content, $data);
 		$this->Components->save($content);
 
@@ -444,6 +481,9 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry,'delete');
+		}
 
 		if ($this->Components->delete($entry)) {
 			$response = $this->response->withType('application/json')
@@ -473,6 +513,9 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry, 'edit');
+		}
 
 		$status = $entry->toggle();
 		if ($this->request->is('htmx')) {
@@ -503,6 +546,9 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($entry, 'edit');
+		}
 
 		switch ($data['direction']) {
 			case 'up':
@@ -527,6 +573,10 @@ class PagesController extends NodesController {
 	public function fetchUrl() {
 		$Http = new Client();
 		$data = $this->request->getQuery();
+
+		if ($this->authenticate) {
+			$this->Authorization->authorize($this->Components, 'edit');
+		}
 
 		$response = $Http->get($data['url'], [], [
 			'redirect' => 5,
@@ -576,6 +626,10 @@ class PagesController extends NodesController {
 		$file = $this->request->getData('image');
 		$type = $file->getClientMediaType();
 		$error = $file->getError();
+
+		if ($this->authenticate) {
+			$this->Authorization->authorize($this->Components, 'edit');
+		}
 
 		if ($this->request->is('htmx')) {
 			$this->viewBuilder()->disableAutoLayout();

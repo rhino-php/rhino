@@ -12,6 +12,7 @@ use Rhino\Controller\RhinoController as BaseController;
  * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
  */
 class TemplatesController extends BaseController {
+	private bool $authenticate = false;
 
 	/**
 	 * Initialize controller
@@ -26,6 +27,11 @@ class TemplatesController extends BaseController {
 
 	public function beforeFilter(\Cake\Event\EventInterface $event) {
 		parent::beforeFilter($event);
+
+		if (isset($this->Authentication)) {
+			$this->authenticate = true;
+		}
+
 		if (isset($this->FormProtection)) {
 			$this->FormProtection->setConfig('unlockedActions', [
 				'delete',
@@ -40,6 +46,10 @@ class TemplatesController extends BaseController {
 	 */
 	public function index() {
 		$query = $this->Templates->find();
+		if ($this->authenticate) {
+			$this->Authorization->authorize($query);
+		}
+
 		$templates = $this->paginate($query);
 		$this->set(compact('templates'));
 		$this->setPlugin(null);
@@ -55,6 +65,10 @@ class TemplatesController extends BaseController {
 	 */
 	public function view($id = null) {
 		$template = $this->Templates->get($id);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($template);
+		}
+
 		$this->set(compact('template'));
 		$this->set('templateTypes', $this->templateTypes);
 		$this->setPlugin(null);
@@ -68,6 +82,10 @@ class TemplatesController extends BaseController {
 	 */
 	public function add() {
 		$template = $this->Templates->newEmptyEntity();
+		if ($this->authenticate) {
+			$this->Authorization->authorize($template);
+		}
+
 		$this->compose($template);
 	}
 
@@ -80,6 +98,10 @@ class TemplatesController extends BaseController {
 	 */
 	public function edit($id = null) {
 		$template = $this->Templates->get($id, contain: []);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($template);
+		}
+
 		$this->compose($template);
 	}
 
@@ -117,6 +139,10 @@ class TemplatesController extends BaseController {
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
 		$template = $this->Templates->get($id);
+		if ($this->authenticate) {
+			$this->Authorization->authorize($template);
+		}
+		
 		if ($this->Templates->delete($template)) {
 			if ($this->request->is('htmx')) {
 				return $this->response->withStringBody('1');
