@@ -28,11 +28,11 @@ class TemplatesController extends BaseController {
 	public function beforeFilter(\Cake\Event\EventInterface $event) {
 		parent::beforeFilter($event);
 
-		if (isset($this->Authentication)) {
+		if ($this->components()->has('Authentication')) {
 			$this->authenticate = true;
 		}
 
-		if (isset($this->FormProtection)) {
+		if ($this->components()->has('FormProtection')) {
 			$this->FormProtection->setConfig('unlockedActions', [
 				'delete',
 			]);
@@ -142,7 +142,7 @@ class TemplatesController extends BaseController {
 		if ($this->authenticate) {
 			$this->Authorization->authorize($template);
 		}
-		
+
 		if ($this->Templates->delete($template)) {
 			if ($this->request->is('htmx')) {
 				return $this->response->withStringBody('1');

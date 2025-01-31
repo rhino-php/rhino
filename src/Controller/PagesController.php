@@ -47,7 +47,6 @@ class PagesController extends NodesController {
 
 		// Make tables optionals
 		try {
-
 			$this->Pages = $this->fetchTable('Rhino.Pages');
 			$this->Nodes = $this->Pages;
 			$this->Components = $this->fetchTable('Rhino.Components');
@@ -64,12 +63,12 @@ class PagesController extends NodesController {
 		parent::beforeFilter($event);
 		// Configure the login action to not require authentication, preventing
 		// the infinite redirect loop issue
-		if (isset($this->Authentication)) {
-			$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
+		if ($this->components()->has('Authentication')) {
 			$this->authenticate = true;
+			$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
 		}
 
-		if (isset($this->FormProtection)) {
+		if ($this->components()->has('FormProtection')) {
 			$this->FormProtection->setConfig('unlockedActions', [
 				'test',
 				'savePage',
