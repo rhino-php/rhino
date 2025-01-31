@@ -38,7 +38,7 @@ use Dom\HTMLDocument;
  */
 class PagesController extends NodesController {
 
-	private bool $authenticate = false;
+	private bool $authorize = false;
 
 	public function initialize(): void {
 		parent::initialize();
@@ -63,8 +63,11 @@ class PagesController extends NodesController {
 		parent::beforeFilter($event);
 		// Configure the login action to not require authentication, preventing
 		// the infinite redirect loop issue
+		if ($this->components()->has('Authorization')) {
+			$this->authorize = true;
+		}
+
 		if ($this->components()->has('Authentication')) {
-			$this->authenticate = true;
 			$this->Authentication->addUnauthenticatedActions(['display', 'getFile']);
 		}
 
@@ -85,6 +88,7 @@ class PagesController extends NodesController {
 	}
 
 	public function test() {
+		$this->Authorization->skipAuthorization();
 		$this->request->allowMethod(['post']);
 		if ($this->request->is('htmx')) {
 			$this->viewBuilder()->disableAutoLayout();
@@ -105,6 +109,7 @@ class PagesController extends NodesController {
 	 * @throws \Cake\View\Exception\MissingTemplateException In debug mode.
 	 */
 	public function display(string ...$path) {
+		$this->Authorization->skipAuthorization();
 		if (in_array('..', $path, true) || in_array('.', $path, true)) {
 			throw new ForbiddenException();
 		}
@@ -166,7 +171,7 @@ class PagesController extends NodesController {
 	 */
 	public function index() {
 		$pages = $this->Pages->find('threaded')->where(['node_type' => 0])->orderBy(["lft" => 'ASC']);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($pages);
 		}
 
@@ -192,7 +197,7 @@ class PagesController extends NodesController {
 	 */
 	public function add(int $id = null) {
 		$entry = $this->Pages->newEmptyEntity();
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry);
 		}
 
@@ -208,7 +213,7 @@ class PagesController extends NodesController {
 	 */
 	public function edit(int $id) {
 		$entry = $this->Pages->get($id);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry);
 		}
 
@@ -252,7 +257,7 @@ class PagesController extends NodesController {
 	public function delete(int $id) {
 		$this->request->allowMethod(['post', 'delete']);
 		$entry = $this->Pages->get($id);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry);
 		}
 
@@ -318,7 +323,7 @@ class PagesController extends NodesController {
 			'contain' => ['Templates']
 		]);
 
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($page, 'view');
 		}
 
@@ -365,7 +370,7 @@ class PagesController extends NodesController {
 	public function addContent(int $id) {
 		$page = $this->Pages->getEntry($id);
 		$entry = $this->Contents->newEmptyEntity();
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry, 'add');
 		}
 
@@ -397,7 +402,7 @@ class PagesController extends NodesController {
 			->where(['id IN' => $ids])
 			->all();
 
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($list, 'edit');
 		}
 
@@ -440,7 +445,7 @@ class PagesController extends NodesController {
 				->first()
 				->id
 		]);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($component, 'add');
 		}
 
@@ -458,7 +463,7 @@ class PagesController extends NodesController {
 		$data = $this->request->getData();
 
 		$content = $this->Components->get($data['id']);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($content, 'edit');
 		}
 
@@ -480,7 +485,7 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry,'delete');
 		}
 
@@ -512,7 +517,7 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry, 'edit');
 		}
 
@@ -545,7 +550,7 @@ class PagesController extends NodesController {
 		}
 
 		$entry = $this->Components->get($data['id']);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($entry, 'edit');
 		}
 
@@ -573,7 +578,7 @@ class PagesController extends NodesController {
 		$Http = new Client();
 		$data = $this->request->getQuery();
 
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($this->Components, 'edit');
 		}
 
@@ -626,7 +631,7 @@ class PagesController extends NodesController {
 		$type = $file->getClientMediaType();
 		$error = $file->getError();
 
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($this->Components, 'edit');
 		}
 
@@ -654,6 +659,7 @@ class PagesController extends NodesController {
 	}
 
 	public function getFile() {
+		$this->Authorization->skipAuthorization();
 		$fileName = $this->request->getParam('file');
 		$path = join(DS, [$this->basePath, $this->uploadFolder, $fileName]);
 		$response = $this->response->withFile($path);

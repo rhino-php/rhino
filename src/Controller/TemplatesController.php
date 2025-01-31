@@ -12,7 +12,7 @@ use Rhino\Controller\RhinoController as BaseController;
  * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
  */
 class TemplatesController extends BaseController {
-	private bool $authenticate = false;
+	private bool $authorize = false;
 
 	/**
 	 * Initialize controller
@@ -28,8 +28,8 @@ class TemplatesController extends BaseController {
 	public function beforeFilter(\Cake\Event\EventInterface $event) {
 		parent::beforeFilter($event);
 
-		if ($this->components()->has('Authentication')) {
-			$this->authenticate = true;
+		if ($this->components()->has('Authorization')) {
+			$this->authorize = true;
 		}
 
 		if ($this->components()->has('FormProtection')) {
@@ -46,7 +46,7 @@ class TemplatesController extends BaseController {
 	 */
 	public function index() {
 		$query = $this->Templates->find();
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($query);
 		}
 
@@ -65,7 +65,7 @@ class TemplatesController extends BaseController {
 	 */
 	public function view($id = null) {
 		$template = $this->Templates->get($id);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($template);
 		}
 
@@ -82,7 +82,7 @@ class TemplatesController extends BaseController {
 	 */
 	public function add() {
 		$template = $this->Templates->newEmptyEntity();
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($template);
 		}
 
@@ -98,7 +98,7 @@ class TemplatesController extends BaseController {
 	 */
 	public function edit($id = null) {
 		$template = $this->Templates->get($id, contain: []);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($template);
 		}
 
@@ -139,7 +139,7 @@ class TemplatesController extends BaseController {
 	public function delete($id = null) {
 		$this->request->allowMethod(['post', 'delete']);
 		$template = $this->Templates->get($id);
-		if ($this->authenticate) {
+		if ($this->authorize) {
 			$this->Authorization->authorize($template);
 		}
 
