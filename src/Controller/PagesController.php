@@ -398,13 +398,15 @@ class PagesController extends NodesController {
 	public function savePage() {
 		$data = $this->request->getData();
 		$ids = array_column($data, 'id');
+		
+		if ($this->authorize) {
+			$this->Authorization->authorize($this->Components, 'add');
+		}
+
 		$list = $this->Components->find()
 			->where(['id IN' => $ids])
 			->all();
 
-		if ($this->authorize) {
-			$this->Authorization->authorize($list, 'edit');
-		}
 
 		$content = $this->Components->patchEntities($list->toList(), $data);
 
