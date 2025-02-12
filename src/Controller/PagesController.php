@@ -87,15 +87,6 @@ class PagesController extends NodesController {
 		}
 	}
 
-	public function test() {
-		$this->Authorization->skipAuthorization();
-		$this->request->allowMethod(['post']);
-		if ($this->request->is('htmx')) {
-			$this->viewBuilder()->disableAutoLayout();
-		}
-		return $this->response->withStringBody(__('this is a Test'));
-	}
-
 	/**
 	 * Displays a view
 	 *
@@ -109,7 +100,10 @@ class PagesController extends NodesController {
 	 * @throws \Cake\View\Exception\MissingTemplateException In debug mode.
 	 */
 	public function display(string ...$path) {
-		$this->Authorization->skipAuthorization();
+		if ($this->components()->has('Authorization')) {
+			$this->Authorization->skipAuthorization();
+		}
+
 		if (in_array('..', $path, true) || in_array('.', $path, true)) {
 			throw new ForbiddenException();
 		}
@@ -661,7 +655,10 @@ class PagesController extends NodesController {
 	}
 
 	public function getFile() {
-		$this->Authorization->skipAuthorization();
+		if ($this->components()->has('Authorization')) {
+			$this->Authorization->skipAuthorization();
+		}
+		
 		$fileName = $this->request->getParam('file');
 		$path = join(DS, [$this->basePath, $this->uploadFolder, $fileName]);
 		$response = $this->response->withFile($path);
