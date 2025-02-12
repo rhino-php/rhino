@@ -92,7 +92,7 @@ class MenuHelper extends Helper {
 		$this->set($root, $options);
 		$menu = $this->_View->fetch('menu');
 		
-		$listOptions = $options['list'];
+		$listOptions = isset($options['list']) ? $options['list'] : [];
 		if (!isset($listOptions['class'])) {
 			$listOptions['class'] = 'menu-list';
 		}
@@ -110,7 +110,7 @@ class MenuHelper extends Helper {
 			$out .= $this->nestedItem($item, $options);
 		}
 
-		$listOptions = $options['list'];
+		$listOptions = isset($options['list']) ? $options['list'] : [];
 		if (!isset($listOptions['class'])) {
 			$listOptions['class'] = 'menu-list';
 		}
@@ -176,7 +176,7 @@ class MenuHelper extends Helper {
 				break;
 		}
 
-		$itemOptions = $options['item'];
+		$itemOptions = isset($options['item']) ? $options['item'] : [];
 		if (!isset($itemOptions['class'])) {
 			$itemOptions['class'] = 'menu-item';
 		}
