@@ -36,7 +36,7 @@ class TemplatesTable extends Table {
 		$this->getSchema()->setColumnType('template_type', EnumType::from(TemplateType::class));
 	}
 
-	public function getEntry(int $id = null): object {
+	public function getEntry(?int $id = null): object {
 		if (!empty($id)) {
 			return $this->get($id);
 		}

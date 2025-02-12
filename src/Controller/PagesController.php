@@ -189,7 +189,7 @@ class PagesController extends NodesController {
 	 *
 	 * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
 	 */
-	public function add(int $id = null) {
+	public function add(?int $id = null) {
 		$entry = $this->Pages->newEmptyEntity();
 		if ($this->authorize) {
 			$this->Authorization->authorize($entry);
@@ -658,7 +658,7 @@ class PagesController extends NodesController {
 		if ($this->components()->has('Authorization')) {
 			$this->Authorization->skipAuthorization();
 		}
-		
+
 		$fileName = $this->request->getParam('file');
 		$path = join(DS, [$this->basePath, $this->uploadFolder, $fileName]);
 		$response = $this->response->withFile($path);

@@ -505,7 +505,7 @@ class RhinoHelper extends Helper {
 		return $element;
 	}
 
-	public function slot(int $parentId, string $name = null) {
+	public function slot(int $parentId, ?string $name = null) {
 		$this->Components = new ComponentsTable();
 		$content = '';
 
@@ -549,6 +549,6 @@ class RhinoHelper extends Helper {
 
 
 
-	public function ActionButton(string $labelText = null, mixed $link = null, string $iconName = null, array $params = []): string {
-	}
+	// public function ActionButton(string $labelText = null, mixed $link = null, string $iconName = null, array $params = []): string {
+	// }
 }

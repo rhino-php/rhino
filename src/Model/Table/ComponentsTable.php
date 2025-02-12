@@ -20,7 +20,7 @@ class ComponentsTable extends NodesTable {
         parent::initialize($config);
 	}
 
-	public function getEntry(int $id = null): object {
+	public function getEntry(?int $id = null): object {
 		if (!empty($id)) {
 			return $this->get($id);
 		}

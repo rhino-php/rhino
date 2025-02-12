@@ -48,7 +48,7 @@ class PagesTable extends NodesTable {
 		});
 	}
 
-	public function slug(string $slug = null) {
+	public function slug(?string $slug = null) {
 		$where = ["Pages.name" => $slug];
 		$where['node_type'] = 0;
 
