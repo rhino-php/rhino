@@ -105,9 +105,9 @@ class IconHelper extends Helper {
 			$data['class'] = 'icon-link';
 		}
 
-		$content = "{$labelSpan}{$svg}";
+		$content = "{$svg}{$labelSpan}";
 		if (isset($data['reverse']) && $data['reverse']) {
-			$content = "{$svg}{$labelSpan}";
+			$content = "{$labelSpan}{$svg}";
 		}
 		unset($data['reverse']);
 
@@ -140,9 +140,9 @@ class IconHelper extends Helper {
 			$data['class'] = 'icon-link';
 		}
 
-		$content = "{$labelSpan}{$svg}";
+		$content = "{$svg}{$labelSpan}";
 		if (isset($data['reverse']) && $data['reverse']) {
-			$content = "{$svg}{$labelSpan}";
+			$content = "{$labelSpan}{$svg}";
 		}
 		unset($data['reverse']);
 
