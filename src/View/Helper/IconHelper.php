@@ -105,6 +105,11 @@ class IconHelper extends Helper {
 			$data['class'] = 'icon-link';
 		}
 
+		// Cake uses type=submit by default
+		if (!isset($data['type'])) {
+			$data['type'] = 'button';
+		}
+
 		$content = "{$svg}{$labelSpan}";
 		if (isset($data['reverse']) && $data['reverse']) {
 			$content = "{$labelSpan}{$svg}";
