@@ -14,6 +14,7 @@ use Cake\Core\Configure;
 use Rhino\Model\Table\MediaCategoriesTable;
 use Rhino\Model\Table\WidgetsTable;
 use Rhino\Model\Table\ComponentsTable;
+use Cake\View\StringTemplate;
 
 class RhinoHelper extends Helper {
 	use StringTemplateTrait;
@@ -536,8 +537,16 @@ class RhinoHelper extends Helper {
 		return $content;
 	}
 
-
-
+	public function parseString(string $text, array $data = []) {
+		$templater = new StringTemplate();
+		$templater->add(['template' => $text]);
+		return $templater->format('template', $data);
+	}
+	
+	public function parseJson(string $json, array $data = []) {
+		$text = Parser::parse($json)->toHtml();
+		return $this->parseString($text, $data);
+	}
 
 	// public function ActionArea(array $actions) : string {
 	//     $content = '';

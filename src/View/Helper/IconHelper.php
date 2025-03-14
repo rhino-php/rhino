@@ -17,8 +17,9 @@ class IconHelper extends Helper {
 	 * Other Helpers
 	 */
 	protected array $helpers = [
-		'Html',
 		'Url',
+		'Html',
+		'Form',
 	];
 
 	/**
@@ -90,7 +91,6 @@ class IconHelper extends Helper {
 	 */
 	public function button(string $name, string $label, array $data = []): string {
 		$svg = $this->svg($name);
-		$labelSpan = $this->Html->tag('span', $label);
 
 		if (isset($data['label']) && !$data['label']) {
 			$data['title'] = $label;
@@ -111,7 +111,10 @@ class IconHelper extends Helper {
 		}
 		unset($data['reverse']);
 
-		return $this->Html->tag('button', $content, $data);
+		$data['escape'] = false;
+		$data['escapeTitle'] = false;
+
+		return $this->Form->button($content, $data);
 	}
 
 	/**
@@ -125,15 +128,14 @@ class IconHelper extends Helper {
 	 */
 	public function link(string $name, string $label, mixed $url,  array $data = []): string {
 		$svg = $this->svg($name);
-		$data['href'] = $this->Url->build($url);
-		
+
 		if (isset($data['label']) && !$data['label']) {
 			$data['title'] = $label;
 			$labelSpan = $this->Html->tag('span', $label, ['class' => 'sr-only']);
 		} else {
 			$labelSpan = $this->Html->tag('span', $label);
 		}
-		
+
 		if (isset($data['class'])) {
 			$data['class'] .= ' icon-link';
 		} else {
@@ -146,7 +148,47 @@ class IconHelper extends Helper {
 		}
 		unset($data['reverse']);
 
-		return $this->Html->tag('a', $content, $data);
+		$data['escape'] = false;
+		$data['escapeTitle'] = false;
+
+		return $this->Html->link($content, $url, $data);
+	}
+
+	/**
+	 * Creates a link with an icon in it.
+	 * Adds an alt-text for screen-readers and a title to the button.
+	 * 
+	 * @param string $name		The Name of the Icon file, excluding the ending 
+	 * @param string $label		The Explanation text (alt-text)
+	 * @param array $data		Additional data for the button e.g. ['type' => 'submit]
+	 * @return string			html
+	 */
+	public function postLink(string $name, string $label, mixed $url, array $data = []): string {
+		$svg = $this->svg($name);
+
+		if (isset($data['label']) && !$data['label']) {
+			$data['title'] = $label;
+			$labelSpan = $this->Html->tag('span', $label, ['class' => 'sr-only']);
+		} else {
+			$labelSpan = $this->Html->tag('span', $label);
+		}
+
+		if (isset($data['class'])) {
+			$data['class'] .= ' icon-link';
+		} else {
+			$data['class'] = 'icon-link';
+		}
+
+		$content = "{$svg}{$labelSpan}";
+		if (isset($data['reverse']) && $data['reverse']) {
+			$content = "{$labelSpan}{$svg}";
+		}
+		unset($data['reverse']);
+		
+		$data['escape'] = false;
+		$data['escapeTitle'] = false;
+
+		return $this->Form->postLink($content, $url, $data);
 	}
 
 	/**
