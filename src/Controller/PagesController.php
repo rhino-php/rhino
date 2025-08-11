@@ -28,6 +28,7 @@ use Cake\Controller\ControllerFactory;
 use Rhino\Model\Table\PagesTable;
 use Cake\Http\Client;
 use Dom\HTMLDocument;
+use Cake\Orm\Table;
 
 /**
  * Static content controller
@@ -39,6 +40,14 @@ use Dom\HTMLDocument;
 class PagesController extends NodesController {
 
 	private bool $authorize = false;
+
+	protected Table $Pages;
+	protected Table $Nodes;
+	protected Table $Components;
+
+	public string $composeTemplate;
+	public string $uploadFolder;
+	public string $basePath;
 
 	public function initialize(): void {
 		parent::initialize();
@@ -341,7 +350,7 @@ class PagesController extends NodesController {
 
 		$template = 'Rhino.display';
 		$layout = $page->template->element;
-			
+
 		try {
 			$this->viewBuilder()->setClassName('Rhino.Page');
 			$this->viewBuilder()->setLayout($layout);
@@ -392,7 +401,7 @@ class PagesController extends NodesController {
 	public function savePage() {
 		$data = $this->request->getData();
 		$ids = array_column($data, 'id');
-		
+
 		if ($this->authorize) {
 			$this->Authorization->authorize($this->Components, 'add');
 		}

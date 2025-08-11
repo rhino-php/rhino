@@ -11,12 +11,15 @@ use Rhino\Model\ApplicationTrait;
 use Rhino\Model\Table\RolesTable;
 use Rhino\Handlers\FilterHandler;
 use Cake\ORM\Exception\MissingTableClassException;
+use Cake\Orm\Table;
 
 class RhinoController extends BaseController {
 
 	public string $composeTemplate = 'compose';
 
 	public bool $useTable = true;
+
+	protected Table $Table;
 
 	public function initialize(): void
     {
@@ -37,13 +40,13 @@ class RhinoController extends BaseController {
 			}
 		}
 	}
-	
+
 	/**
 	 * compose
-	 * 
+	 *
 	 * route the add and edit to the same template and handel save.
 	 * use preCompose for shared operations, and preSave for operations before save.
-	 * 
+	 *
 	 *
 	 * @param  object $entry
 	 * @param  array  $params
@@ -104,7 +107,7 @@ class RhinoController extends BaseController {
 
 	/**
 	 * preCompose
-	 * 
+	 *
 	 * Shared function between add and edit.
 	 *
 	 * @param  object $entity
@@ -117,7 +120,7 @@ class RhinoController extends BaseController {
 
 	/**
 	 * preSave
-	 * 
+	 *
 	 * Shared save Operations.
 	 *
 	 * @param  array $data
@@ -129,7 +132,7 @@ class RhinoController extends BaseController {
 
 	/**
 	 * preSave
-	 * 
+	 *
 	 * Shared save Operations.
 	 *
 	 * @param  object $entity

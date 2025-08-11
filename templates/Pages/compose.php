@@ -32,7 +32,7 @@ $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['bloc
 	</fieldset>
 
 	<div class="grid">
-		<?= $this->Icon->link('arrow-left', __('Back'), ['action' => 'index'], ['class' => 'button contrast outline', 'reverse' => true]); ?>
+		<?= $this->Icon->link('arrow-left', __('Back'), ['action' => 'index'], ['class' => 'button contrast outline']); ?>
 		<?= $this->Icon->button('save', __('Save'), ['type' => 'submit', 'reverse' => true]) ?>
 	</div>
 

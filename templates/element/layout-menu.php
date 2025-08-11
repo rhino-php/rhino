@@ -6,8 +6,8 @@
 			'escape' => false,
 			'title' => __("Back"),
 		]) ?>
-	
-	<p>Editing: <?= $this->Layout->pageLink($page['id'], ['target' => '_blank']) ?></p>
+
+	<p>Editing: <?= $this->Layout->pageLink($pageId, ['target' => '_blank']) ?></p>
 
 	<?= $this->Form->button($this->Icon->svg("Rhino.save"), [
 		'escapeTitle' => false,

@@ -28,6 +28,8 @@ class RhinoHelper extends Helper {
 	public $counter = [];
 	public $currentComponent;
 
+	public string $layoutMode;
+
 	/**
 	 * Default config for this class
 	 *
@@ -542,7 +544,7 @@ class RhinoHelper extends Helper {
 		$templater->add(['template' => $text]);
 		return $templater->format('template', $data);
 	}
-	
+
 	public function parseJson(string $json, array $data = []) {
 		$text = Parser::parse($json)->toHtml();
 		return $this->parseString($text, $data);
