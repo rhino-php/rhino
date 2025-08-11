@@ -45,6 +45,7 @@ class PageView extends AppView {
 			$pass = $this->request->getParam('pass');
 			$pageId = $pass[0];
 
+			$this->set(compact('pageId'));
 			$this->append('meta', $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken')));
 			$this->append('meta', $this->Html->meta('pageId', (string) $pageId));
 			$this->append('script', $this->Html->script(['Rhino.layout'], ["type" => "module"]));

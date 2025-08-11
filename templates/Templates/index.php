@@ -35,14 +35,14 @@ $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['bloc
 					<td><?= h($template->modified) ?></td>
 					<td><?= $this->Form->checkbox('active', ['checked' => $template->active, 'disabled' => true, 'role' => 'switch']); ?></td>
                     <td class="actions">
-                        <?= $this->Icon->link('eye', __('View'), ['action' => 'view', $template->id], ['class' => 'button', 'label' => false]) ?>
-                        <?= $this->Icon->link('edit', __('Edit'), ['action' => 'edit', $template->id], ['class' => 'button', 'label' => false]) ?>
-                        <?= $this->Icon->button('trash', __('Delete'), [
+                        <?= $this->Icon->link('Rhino.eye', __('View'), ['action' => 'view', $template->id], ['class' => 'button', 'label' => false]) ?>
+                        <?= $this->Icon->link('Rhino.edit', __('Edit'), ['action' => 'edit', $template->id], ['class' => 'button', 'label' => false]) ?>
+                        <?= $this->Icon->button('Rhino.trash', __('Delete'), [
 							'hx-delete' => $this->Url->build(['action' => 'delete', $template->id]),
 							'hx-confirm' => __('Are you sure you want to delete {0}?',$template->name),
 							'hx-trigger' => 'click',
 							'hx-swap' => 'delete',
-							'hx-target' => '#table-' . $row, 
+							'hx-target' => '#table-' . $row,
 							'class' => 'button',
 							'label' => false
 						]) ?>
